@@ -2145,55 +2145,71 @@ def build_ceiling_troffers_and_lights():
 #      wall-side rail, butt pointing toward the matching two-top. This shows
 #      the physical encroachment of a player's cue stroke into the service lane.
 def build_cues():
+    # v15L3: cue geometry realistic-rest update.
+    #   - Whole cue shifted 12" (1 ft) closer to the table (deeper onto felt)
+    #   - Tip Z lowered to TBL_H (32") so tip touches the felt.
+    #   - Butt Z raised to 38" (2.5" above 35.5" rail top) so cue clears rail.
+    #   - Rendered as two rotated tapered cylinders (was axis-aligned boxes).
+    import math
+    from mathutils import Vector
     coll = get_or_create_collection("Cues")
-    # Maple-toned cue with a darker butt section -- simple two-segment box.
     shaft_mat = get_or_create_color_material(
         "MAT_cue_shaft", (0.85, 0.72, 0.50, 1.0), roughness=0.35)
     butt_mat = get_or_create_color_material(
         "MAT_cue_butt", (0.20, 0.12, 0.08, 1.0), roughness=0.40)
-    CUE_LEN = 58.0       # standard playing cue
-    CUE_TIP_W = 0.6      # ~12.75mm tip
-    CUE_BUTT_W = 1.25    # ~31mm butt
-    CUE_Z = TBL_H + 0.5  # just above felt
-    INSET_FROM_RAIL = 4  # tip sits 4" inside the rail (mid-felt edge)
+    CUE_LEN = 58.0            # standard playing cue
+    CUE_TIP_R = 0.30          # ~12.75mm tip radius
+    CUE_BUTT_R = 0.625        # ~31mm butt radius
+    CUE_TIP_Z = TBL_H         # 32" - tip touches the felt
+    CUE_BUTT_Z = 38.0         # 2.5" above 35.5" rail top
+    INSET_FROM_RAIL = 16      # was 4"; shifted 12" closer to table (deeper onto felt)
+
+    def _make_cue_seg(name, p0, p1, radius, mat):
+        """Cylinder mesh between two inch-coord 3D points."""
+        dx = p1[0]-p0[0]; dy = p1[1]-p0[1]; dz = p1[2]-p0[2]
+        length_in = math.sqrt(dx*dx + dy*dy + dz*dz)
+        mid = (IN*((p0[0]+p1[0])/2), IN*((p0[1]+p1[1])/2), IN*((p0[2]+p1[2])/2))
+        bpy.ops.mesh.primitive_cylinder_add(
+            radius=IN*radius, depth=IN*length_in,
+            vertices=16, location=mid)
+        obj = bpy.context.active_object
+        obj.name = name
+        v = Vector((dx, dy, dz))
+        obj.rotation_mode = 'QUATERNION'
+        obj.rotation_quaternion = v.to_track_quat('Z', 'Y')
+        for p in obj.data.polygons:
+            p.use_smooth = True
+        if obj.data.materials:
+            obj.data.materials[0] = mat
+        else:
+            obj.data.materials.append(mat)
+        move_to_collection(obj, coll)
+        return obj
+
+    rise = CUE_BUTT_Z - CUE_TIP_Z                # 6.0"
+    run  = math.sqrt(CUE_LEN*CUE_LEN - rise*rise)  # ~57.69"
 
     for (label, cx, ty) in POOL_TABLES:
-        cy = ty + TBL_L / 2          # cue runs at table center along Y
+        cy = ty + TBL_L / 2
         wall = 'L' if cx == xL_center else 'R'
         if wall == 'L':
-            # Tip at west rail interior (x = cx - TBL_W/2 + INSET)
-            tip_x = cx - TBL_W/2 + INSET_FROM_RAIL
-            # Cue extends WEST toward west wall two-tops
-            butt_x = tip_x - CUE_LEN
-            # Shaft = inner 2/3 (toward tip), butt = outer 1/3
-            shaft_start = butt_x + CUE_LEN / 3
-            shaft_w = CUE_LEN * 2/3
-            butt_w = CUE_LEN / 3
-            make_box(f"Cue_{label}_butt",
-                     x=butt_x, y=cy - CUE_BUTT_W/2, z=CUE_Z,
-                     w=butt_w, l=CUE_BUTT_W, h=CUE_BUTT_W,
-                     material=butt_mat, collection=coll)
-            make_box(f"Cue_{label}_shaft",
-                     x=shaft_start, y=cy - CUE_TIP_W/2, z=CUE_Z,
-                     w=shaft_w, l=CUE_TIP_W, h=CUE_TIP_W,
-                     material=shaft_mat, collection=coll)
+            tip_x  = cx - TBL_W/2 + INSET_FROM_RAIL  # 16" onto felt (was 4")
+            butt_x = tip_x - run                     # butt west of tip
         else:
-            # Tip at east rail interior (x = cx + TBL_W/2 - INSET)
-            tip_x = cx + TBL_W/2 - INSET_FROM_RAIL
-            # Cue extends EAST toward east wall two-tops
-            butt_x = tip_x + CUE_LEN
-            shaft_w = CUE_LEN * 2/3
-            butt_w = CUE_LEN / 3
-            shaft_start = tip_x - shaft_w  # shaft is between tip and butt, on the tip side
-            # Reorder: shaft from tip_x going east for shaft_w, then butt for butt_w
-            make_box(f"Cue_{label}_shaft",
-                     x=tip_x, y=cy - CUE_TIP_W/2, z=CUE_Z,
-                     w=shaft_w, l=CUE_TIP_W, h=CUE_TIP_W,
-                     material=shaft_mat, collection=coll)
-            make_box(f"Cue_{label}_butt",
-                     x=tip_x + shaft_w, y=cy - CUE_BUTT_W/2, z=CUE_Z,
-                     w=butt_w, l=CUE_BUTT_W, h=CUE_BUTT_W,
-                     material=butt_mat, collection=coll)
+            tip_x  = cx + TBL_W/2 - INSET_FROM_RAIL
+            butt_x = tip_x + run
+        # Split at 2/3 along cue: shaft (tip-side 2/3) + butt (outer 1/3)
+        t = 2.0 / 3.0
+        sx = tip_x + (butt_x - tip_x) * t
+        sy = cy
+        sz = CUE_TIP_Z + (CUE_BUTT_Z - CUE_TIP_Z) * t
+        split_r = CUE_TIP_R + (CUE_BUTT_R - CUE_TIP_R) * t
+        _make_cue_seg(f"Cue_{label}_shaft",
+                      (tip_x, cy, CUE_TIP_Z), (sx, sy, sz),
+                      radius=(CUE_TIP_R + split_r)/2, mat=shaft_mat)
+        _make_cue_seg(f"Cue_{label}_butt",
+                      (sx, sy, sz), (butt_x, cy, CUE_BUTT_Z),
+                      radius=(split_r + CUE_BUTT_R)/2, mat=butt_mat)
 
 
 # ============================================================================
