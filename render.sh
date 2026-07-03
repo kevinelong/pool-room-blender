@@ -28,11 +28,22 @@ _stage() {
     cp "$REPO_DIR/build_pool_room.py"           "$STAGE_DIR/"
     cp "$REPO_DIR/build_pool_room_furniture.py" "$STAGE_DIR/"
     cp "$DRIVERS_DIR"/*.py                      "$STAGE_DIR/"
-    # Texture PNGs the build code loads at runtime (if present):
-    for tex in "$REPO_DIR"/*.png; do
+    # Texture PNGs: build_pool_room.py loads them from TEXTURE_DIR, which
+    # resolves to /tmp for headless drivers (unsaved .blend). Prefer the
+    # committed textures/ PNGs; a <1KB file is a git-lfs pointer, not an
+    # image, so fall back to regenerating with PIL.
+    local staged=0
+    for tex in "$REPO_DIR"/textures/*.png; do
         [ -e "$tex" ] || continue
-        cp "$tex" "$STAGE_DIR/"
+        if [ "$(stat -c%s "$tex")" -gt 1024 ]; then
+            cp "$tex" /tmp/
+            staged=1
+        fi
     done
+    if [ "$staged" -eq 0 ]; then
+        echo "[stage] textures missing or LFS pointers — regenerating via PIL"
+        python3 "$REPO_DIR/textures/generate_textures.py" /tmp
+    fi
 }
 
 _run_one() {
