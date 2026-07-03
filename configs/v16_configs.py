@@ -1,13 +1,18 @@
 """v16 configuration study — six floor-plan variants of the pool room.
 
-Each config strikes a different balance between pool players, spectators,
-drinkers, eaters, and the two service streams (kitchen food via the mid-east
-kitchen door; bar cocktail service via the SE Main Entry).
+FIXED SPECS (user-locked, 2026-07-03 — do not change):
+  * Every option has EXACTLY SIX pool tables. Never any other quantity.
+  * Round tables: 5 ft (60") diameter stacking folding rounds.
+  * Classroom tables: 2.5 x 8 ft (30" x 96").
+  * Two-tops: 22" x 28" tops, standard bar height (~42").
 
-All coordinates are room inches: x 0..316 (west->east), y 0..682
-(north->south, y=0 is the north/stage wall) — same convention as
-build_pool_room.py / build_pool_room_furniture.py. Table tuples are
-(name, cabinet_center_x, cabinet_top_y) matching build_pool_table().
+With the table count fixed, the options differ in where the six tables sit
+and what fills the freed floor: rail drinking (league), classroom (social),
+a north spectator gallery (tournament), an entry-end high-top lounge
+(lounge), permanent dining rounds (bistro), or a folding flex zone (split).
+
+Coordinates are room inches: x 0..316 (west->east), y 0..682 (north->south,
+y=0 north). Table tuples are (name, cabinet_center_x, cabinet_top_y).
 """
 
 # ---- shared geometry (mirrors the build scripts) ---------------------------
@@ -18,25 +23,26 @@ TBL_W, TBL_L = PLAY_W + 2 * RAIL_W, PLAY_L + 2 * RAIL_W   # 53.5 x 92.5
 CUE = 58.0                       # full cue-swing clearance from playfield edge
 CUE_TIGHT = 54.0                 # "playable but tight" threshold
 
-XL, XR, XC = 105.0, 211.0, 158.0  # west column, east column, center (feature)
+XL, XR, XC = 105.0, 211.0, 158.0  # west column, east column, center
 
 STAGE = (0, 0, 96, 48)            # NW corner stage
 BENCH = (102, 0, 270, 18)         # north-wall bench (7 seats)
 HVAC = (288, 338, 316, 380)       # east-wall chase south of beam
-LOCKERS = (270, 0, 316, 18)       # NE corner locker run (clear of Storage A)
-CLASSROOM = (56, 80, 260, 197.5)  # 2x3 folding-table block (social config)
+LOCKERS = (270, 0, 316, 18)       # NE corner locker run
+CLASSROOM = (56, 40, 260, 197.5)  # 2x3 block of 30"-deep folding tables
 SERVICE_LANE_X = (265, 300)       # east service lane (green strip)
 
-DOOR_MAIN = (316, 612, 316, 682)   # E wall, south end (cocktail stream origin)
-DOOR_KITCHEN = (316, 290, 316, 330)  # E wall, mid (food stream origin)
+DOOR_MAIN = (316, 612, 316, 682)   # E wall, south end (cocktail stream)
+DOOR_KITCHEN = (316, 290, 316, 330)  # E wall, mid (food stream)
 DOOR_EXIT = (221, 682, 286, 682)   # S wall, east half (egress only)
-EXIT_FRONTAGE = (215, 616, 292, 682)  # must stay furniture-free
+EXIT_FRONTAGE = (215, 616, 292, 682)  # egress approach band
 
 SEATS_PER_TABLE = 4       # players per pool table
-ROUND_D = 48              # folding round diameter
-ROUND_COVERS = 5
+N_TABLES = 6              # LOCKED: every option has exactly six tables
+ROUND_D = 60              # LOCKED: 5 ft rounds
+ROUND_COVERS = 8          # a 60" round seats eight
 TWOTOP_SEATS = 2
-HIGHTOP_SEATS = 4
+HIGHTOP_SEATS = 2         # free-standing 22x28 two-top (bar height)
 RAIL_IN_PER_SEAT = 24
 BENCH_SEATS = 7
 CLASSROOM_SEATS = 24
@@ -45,13 +51,19 @@ CLASSROOM_SEATS = 24
 RATES = {"table": 18.0, "drink_seat": 9.0, "dine_cover": 14.0,
          "spectator": 2.0}
 
+# Standard 3-row layout (the current build): back pair + two main pairs.
+ROWS_CURRENT = [233.5, 392.0, 537.0]
+# North-compressed 3-row layout: frees the south third (y > ~500).
+ROWS_NORTH = [100.0, 246.5, 393.0]
+# Spread 3-row layout: generous ~77" aisles across the full room.
+ROWS_SPREAD = [130.0, 300.0, 470.0]
 
-def _rows(y_tops, cols=(XL, XR), prefix="T"):
+
+def _rows(y_tops, cols=(XL, XR)):
     out = []
     for i, yt in enumerate(y_tops):
         for j, cx in enumerate(cols):
-            out.append((f"{prefix}{i}{'LR'[j % 2] if len(cols) == 2 else j}",
-                        cx, yt))
+            out.append((f"T{i}{'LR'[j]}", cx, yt))
     return out
 
 
@@ -59,36 +71,35 @@ CONFIGS = [
     dict(
         key="league",
         name="1 · League Hall",
-        tagline="Player-max: 8 tables, rail drinks only, no food",
-        tables=_rows([100.0, 246.5, 393.0, 539.5]),
+        tagline="Player-first: six tables at maximum elbow room, rail drinks",
+        tables=_rows(ROWS_SPREAD),
         rounds=[], twotops=[], hightops=[],
-        rails=[(2, 350, 2, 650, "drink")],          # west-wall drink rail
+        rails=[(2, 120, 2, 660, "drink")],          # west-wall drink rail
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
         twotop_role=None,
         flip_minutes=0,
         notes=[
-            "Maximizes table-hours: 8 tables, 32 player positions.",
-            "The SE table narrows the exit approach to a ~54\" corridor "
-            "shared with cue swing and the cocktail route.",
-            "Row gaps run tight (54–57\"); no in-room dining, and every "
-            "west-rail drink delivery crosses active cue zones.",
+            "The six tables spread across the full room — the widest aisles "
+            "of any option.",
+            "Drinks live on the west rail; deliveries cross active play.",
+            "No in-room dining and nowhere to host a crowd.",
         ],
     ),
     dict(
         key="social",
         name="2 · Social Hall (current)",
-        tagline="The built v15L3 balance: 6 tables + classroom + two-tops",
-        tables=_rows([233.5, 392.0, 537.0]),
+        tagline="The built layout: six tables + classroom + wall two-tops",
+        tables=_rows(ROWS_CURRENT),
         rounds=[], hightops=[],
         twotops=[(282, y) for y in (335, 386, 437, 488, 539, 590)],
-        twotop_role="flex",                         # drink/eat flex seats
+        twotop_role="flex",
         rails=[],
         bench=True, bench_role="spectate",
         classroom=True, bleachers=[], stage_seats=0,
         flip_minutes=0,
         notes=[
-            "The layout as built — the baseline everything else is judged against.",
+            "The room as built — the baseline every option is judged against.",
             "Two-tops flex between drinkers, eaters, and spectators.",
             "Classroom block serves league meetings and lessons.",
         ],
@@ -96,70 +107,67 @@ CONFIGS = [
     dict(
         key="tournament",
         name="3 · Tournament House",
-        tagline="Feature table + bleachers; spectators outnumber players",
-        tables=[("PracL", XL, 233.5), ("PracR", XR, 233.5),
-                ("Feature", XC, 420.0)],
-        rounds=[], twotops=[(282, 360), (282, 420)],
+        tagline="North gallery: bleachers + stage face the feature row",
+        tables=_rows(ROWS_CURRENT),
+        rounds=[], hightops=[],
+        twotops=[(282, 340), (282, 400)],
         twotop_role="drink",
-        hightops=[],
         rails=[],
-        bench=True, bench_role="spectate",
+        bench=False, bench_role=None,
         classroom=False,
-        bleachers=[(4, 380, 58, 660)],              # 3-row west bleacher
-        stage_seats=8,                               # stage = VIP/commentary
+        bleachers=[(102, 20, 270, 74)],   # 3-row gallery on the north wall
+        stage_seats=8,                     # stage = VIP/commentary
         flip_minutes=45,
         notes=[
-            "One feature table with protected sightlines from a 3-row west bleacher.",
-            "Food reduced to handhelds — trays cannot cross mid-rack sightlines.",
-            "Slowest to flip back (bleachers, 45 min).",
+            "The bench gives way to a three-row gallery; the back pair "
+            "becomes the feature row under the audience's nose.",
+            "Food drops to handhelds while racks are in play.",
+            "Slowest to flip back (bleachers).",
         ],
     ),
     dict(
         key="lounge",
         name="4 · Cocktail Lounge",
-        tagline="Bar-forward: south third is high-tops, shortest tray runs",
-        tables=_rows([100.0, 246.5]),
+        tagline="Bar-forward: tables compress north, high-tops own the entry end",
+        tables=_rows(ROWS_NORTH),
         rounds=[],
-        twotops=[(282, 360), (282, 415), (282, 470)],
+        twotops=[(282, 460), (282, 512)],
         twotop_role="spectate",
-        hightops=[(70, 500), (150, 500), (230, 500),
-                  (70, 590), (150, 590), (230, 590)],
-        rails=[(2, 460, 2, 660, "drink"), (40, 680, 180, 680, "drink")],
+        hightops=[(70, 560), (150, 560), (230, 560), (70, 630), (150, 630)],
+        rails=[(2, 470, 2, 660, "drink"), (40, 680, 180, 680, "drink")],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=15,
         notes=[
             "Bar staff barely enter the room — the lounge zone is at the door.",
-            "37 drink positions; beverage revenue leader.",
-            "Player capacity halved vs league hall.",
+            "Standard bar-height two-tops and wall rails fill the south third.",
+            "Same six tables, tighter aisles than league spacing.",
         ],
     ),
     dict(
         key="bistro",
         name="5 · Billiards Bistro",
-        tagline="Dining-forward: rounds wrap the kitchen door, hot 10-step carry",
-        tables=[("NL", XL, 100.0), ("NR", XR, 100.0), ("C", XC, 246.5)],
-        rounds=[(80, 430), (160, 430), (240, 430),
-                (80, 560), (160, 560), (240, 560)],
+        tagline="Dining-forward: five-foot rounds fill the south third",
+        tables=_rows(ROWS_NORTH),
+        rounds=[(70, 580), (160, 580), (250, 580), (70, 648), (155, 648)],
         twotops=[], hightops=[],
-        rails=[(2, 430, 2, 610, "drink")],
+        rails=[(2, 470, 2, 640, "drink")],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=20,
         notes=[
-            "30 covers within a short carry of the kitchen door.",
-            "Cocktails have the longest run — wants a mid-room drop station.",
-            "Only 12 player positions; pool becomes the amenity, not the anchor.",
+            "Forty covers on five-foot rounds, all south of the play zone.",
+            "Food routes down the east lane past the kitchen door; cocktails "
+            "have the longest run and want a drop station.",
+            "Pool keeps all six tables but loses its walking room to dining.",
         ],
     ),
     dict(
         key="split",
         name="6 · Split-House Flex",
-        tagline="Beam line divides: 4 fixed tables north, flex banquet south",
-        tables=_rows([98.0, 244.5]),
-        rounds=[(68, 420), (148, 420), (228, 420),
-                (68, 545), (148, 545), (228, 545),
-                (68, 630), (148, 630)],
+        tagline="Fixed play north, folding flex zone south of the aisle",
+        tables=_rows(ROWS_NORTH),
+        rounds=[(70, 580), (160, 580), (250, 580), (70, 648), (155, 648)],
         round_role="flex",
         twotops=[], hightops=[],
         rails=[],
@@ -167,9 +175,10 @@ CONFIGS = [
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=20,
         notes=[
-            "Service never crosses the play zone — both doors land in the flex half.",
-            "40 flex covers double as dining, drinking, or overflow spectating.",
-            "Most operationally clean; nothing is optimal, everything is possible.",
+            "Same footprint as the bistro but the rounds fold and stack — "
+            "the south third flips between banquet, dining, and overflow.",
+            "Service never crosses the play zone.",
+            "Nothing is purpose-built; everything is possible.",
         ],
     ),
 ]
@@ -203,9 +212,9 @@ def obstacles(cfg, exclude_table=None):
         r = ROUND_D / 2 + 10   # + chair ring
         obs.append((f"round{i}", (cx - r, cy - r, cx + r, cy + r)))
     for i, (cx, cy) in enumerate(cfg.get("twotops", [])):
-        obs.append((f"twotop{i}", (cx - 17, cy - 17, cx + 17, cy + 17)))
+        obs.append((f"twotop{i}", (cx - 17, cy - 20, cx + 17, cy + 20)))
     for i, (cx, cy) in enumerate(cfg.get("hightops", [])):
-        obs.append((f"hightop{i}", (cx - 22, cy - 22, cx + 22, cy + 22)))
+        obs.append((f"hightop{i}", (cx - 20, cy - 23, cx + 20, cy + 23)))
     for i, bl in enumerate(cfg.get("bleachers", [])):
         obs.append((f"bleacher{i}", bl))
     return obs
@@ -233,6 +242,8 @@ def seat_positions(cfg):
 
 def capacities(cfg):
     n_tables = len(cfg["tables"])
+    assert n_tables == N_TABLES, \
+        f"{cfg['key']}: {n_tables} tables — every option must have exactly 6"
     players = n_tables * SEATS_PER_TABLE
     dine = drink = flex = 0
     for cx, cy in cfg.get("rounds", []):
@@ -257,8 +268,9 @@ def capacities(cfg):
     if cfg.get("classroom"):
         spectators += CLASSROOM_SEATS
     for x0, y0, x1, y1 in cfg.get("bleachers", []):
-        rows = max(1, int((x1 - x0) / 18))
-        spectators += rows * int((y1 - y0) / 22)
+        depth, length = min(x1 - x0, y1 - y0), max(x1 - x0, y1 - y0)
+        rows = max(1, int(depth / 18))
+        spectators += rows * int(length / 22)
     spectators += cfg.get("stage_seats", 0)
     return dict(tables=n_tables, players=players, dine=dine, drink=drink,
                 flex=flex, spectators=spectators)

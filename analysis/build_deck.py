@@ -26,8 +26,6 @@ for c in data["configs"]:
 PERSP_SRC = {
     c["key"]: os.path.join(
         ROOT, "renders",
-        "render_v15L3_persp_west_to_ME_5p5ft_annotated.png"
-        if c["key"] == "social" else
         f"render_v16_{c['key']}_persp_west_to_ME_5p5ft_annotated.png")
     for c in data["configs"]
 }

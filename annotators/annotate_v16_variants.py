@@ -11,16 +11,18 @@ import sys
 SRC_DIR = "/tmp/blender_test"
 
 META = {
+    "social": ("2 · Social Hall (current)",
+               "six tables · classroom · wall two-tops — the built baseline"),
     "split": ("6 · Split-House Flex",
-              "4 tables north of the beam · flex banquet south · both doors serve the flex half"),
+              "six tables north · folding five-foot rounds flex the south third"),
     "lounge": ("4 · Cocktail Lounge",
-               "4 tables north · high-top lounge + drink rails south · shortest tray runs"),
+               "six tables north · bar-height two-top lounge + drink rails at the entry end"),
     "bistro": ("5 · Billiards Bistro",
-               "3 tables north · dining rounds wrap the kitchen door"),
+               "six tables north · five-foot dining rounds fill the south third"),
     "league": ("1 · League Hall",
-               "8 tables · rail drinks only · no in-room dining"),
+               "six tables at maximum elbow room · rail drinks only · no dining"),
     "tournament": ("3 · Tournament House",
-                   "feature table + practice pair · west bleachers · stage VIP"),
+                   "six tables · north bleacher gallery faces the feature row · stage VIP"),
 }
 
 

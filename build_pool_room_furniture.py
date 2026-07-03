@@ -104,7 +104,7 @@ POOL_TABLES = [
 # Classroom tables (back room, north end behind the back pair)
 CLASS_LEN  = 96
 # v12: bumped depth to realistic training-table depth (was 20", real ~24-30")
-CLASS_W    = 24
+CLASS_W    = 30   # v16 spec: classroom tables 2.5 x 8 ft
 # v13: CLASS_GAP_Y increased so the second (north) row of chairs is not jammed
 # between the two table backs. Was 14 (=> 2" pull-out behind 12" chair). Now 26
 # (=> 14" pull-out behind chair).
@@ -156,8 +156,8 @@ bench_y0 = 0                                      # north wall (image-bottom)
 # v15j: two-tops converted to bar/pub height per user reference (Revit family
 #   "Chair_Stool_Bar_4_Legs_BackSeat"). Tables raise from 30" to 42", chairs
 #   become 4-leg bar stools with back + seat, seat top at 30".
-TWOTOP_W = 18
-TWOTOP_L = 14
+TWOTOP_W = 26   # v16 spec: 22x28 top (slot = top + 4)
+TWOTOP_L = 28   # v16 spec: 22x28 top
 TWOTOP_H = 42                # v15j: bar/pub height (was 30)
 TWOTOP_SEAT_H = 30           # v15j: bar-stool seat top (was implicit SEAT_H=17)
 TWOTOP_CHAIR_TOTAL_H = 45    # v15j: total stool height incl. backrest (was CHAIR_H=32)
@@ -954,7 +954,7 @@ def build_two_top(name, y, wall_side, coll):
 
     Footprint, positions, and overall heights match v15c exactly so layout/
     clearances are unchanged. The CONSTANT TWOTOP_W=18 is the WALL-FACING
-    slot width; the actual table top occupies (TWOTOP_W-4) x TWOTOP_L = 14x14.
+    slot width; the actual table top occupies (TWOTOP_W-4) x TWOTOP_L = 22x28.
 
     v15d detail upgrades:
       - rounded-rectangle dark walnut top (slab + corner cylinders + thin
@@ -1678,7 +1678,7 @@ def build_round_tables():
     Chairs at south edge (facing south into the room, backs to north wall).
     """
     coll = get_or_create_collection("Round_Tables")
-    ROUND_DIA = 48.0            # 48" diameter (standard 4-5 seat stacking round)
+    ROUND_DIA = 60.0            # v16 spec: 5 ft diameter stacking round
     N_CHAIRS_PER = 4            # 4 chairs per round table
     corridor_x0 = 96 + 6        # 6" east of NW stage
     corridor_x1 = 276 - 6       # 6" west of Storage A door

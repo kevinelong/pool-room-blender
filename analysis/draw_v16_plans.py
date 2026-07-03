@@ -123,11 +123,11 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
         d.ellipse([px(cx - r), py(cy + r), px(cx + r), py(cy - r)],
                   fill=COL_WOOD, outline=(120, 90, 50))
     for cx, cy in cfg.get("twotops", []):
-        d.rectangle([px(cx - 9), py(cy + 7), px(cx + 9), py(cy - 7)],
+        d.rectangle([px(cx - 11), py(cy + 14), px(cx + 11), py(cy - 14)],
                     fill=(120, 80, 40))
-    for cx, cy in cfg.get("hightops", []):
-        d.ellipse([px(cx - 15), py(cy + 15), px(cx + 15), py(cy - 15)],
-                  fill=(90, 60, 100), outline=(60, 40, 70))
+    for cx, cy in cfg.get("hightops", []):     # standard 22x28 two-top
+        d.rectangle([px(cx - 11), py(cy + 14), px(cx + 11), py(cy - 14)],
+                    fill=(90, 60, 100), outline=(60, 40, 70))
     for x0, y0, x1, y1, _role in cfg.get("rails", []):
         d.line([px(x0), py(y0), px(x1), py(y1)], fill=(90, 60, 100), width=7)
 

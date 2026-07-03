@@ -25,40 +25,39 @@ MUTED = (110, 110, 118)
 # Digit-free names, taglines, and trade-off notes for presentation.
 CLEAN = {
     "league": ("League Hall",
-               "Player-max: wall-to-wall tables, rail drinks only, no food",
-               ["Every square foot goes to play; drinks live on wall rails.",
-                "Deliveries cross active tables; dining moves elsewhere."]),
+               "Player-first: the six tables at maximum elbow room, rail drinks",
+               ["The same six tables as every option, spread for the widest "
+                "aisles in the study.",
+                "Drinks live on the west rail; deliveries cross active play."]),
     "social": ("Social Hall (current)",
-               "The built layout: tables, classroom, and wall two-tops",
+               "The built layout: six tables, classroom, and wall two-tops",
                ["The room as built today — the baseline for every option.",
                 "Wall two-tops flex between drinking, dining, and watching."]),
     "tournament": ("Tournament House",
-                   "Feature table with bleacher sightlines; stage becomes VIP",
-                   ["Bleachers and the stage give the feature table an audience.",
+                   "A north gallery of bleachers and the stage face the feature row",
+                   ["The bench gives way to a bleacher gallery; the nearest "
+                    "table row becomes the feature row.",
                     "Food drops to handhelds while racks are in play."]),
     "lounge": ("Cocktail Lounge",
-               "Bar-forward: high-top lounge and drink rails at the entry end",
+               "Bar-forward: tables compress north, the entry end becomes lounge",
                ["The lounge meets guests at the door; trays barely travel.",
-                "Play capacity gives way to beverage turf."]),
+                "Bar-height two-tops and wall rails fill the south third."]),
     "bistro": ("Billiards Bistro",
-               "Dining-forward: rounds wrap the kitchen door for a hot carry",
-               ["Dinner arrives hot — the rounds sit beside the kitchen door.",
+               "Dining-forward: five-foot rounds fill the south third",
+               ["Dinner routes down the east lane; the rounds sit south of play.",
                 "Cocktails travel farthest; a mid-room drop station would help."]),
     "split": ("Split-House Flex",
-              "Beam line divides: fixed tables north, flex banquet south",
-              ["Service never crosses the play zone — both doors land in the flex half.",
-               "The south half flips between banquet, dining, and overflow."]),
+              "Fixed play north, folding flex zone at the entry end",
+              ["Service never crosses the play zone.",
+               "The rounds fold and stack — the south third flips between "
+               "banquet, dining, and overflow."]),
 }
 
 RENDERS = {
     c["key"]: (
         os.path.join(ROOT, "renders",
-                     "render_v15L3_persp_west_to_ME_5p5ft.png"
-                     if c["key"] == "social" else
                      f"render_v16_{c['key']}_persp_west_to_ME_5p5ft.png"),
-        os.path.join(ROOT, "renders",
-                     "render_v15L3_topdown.png" if c["key"] == "social" else
-                     f"render_v16_{c['key']}_topdown.png"),
+        os.path.join(ROOT, "renders", f"render_v16_{c['key']}_topdown.png"),
     )
     for c in CONFIGS
 }

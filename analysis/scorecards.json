@@ -9,77 +9,65 @@
     {
       "key": "league",
       "name": "1 \u00b7 League Hall",
-      "tagline": "Player-max: 8 tables, rail drinks only, no food",
+      "tagline": "Player-first: six tables at maximum elbow room, rail drinks",
       "capacity": {
-        "tables": 8,
-        "players": 32,
+        "tables": 6,
+        "players": 24,
         "dine": 0,
-        "drink": 12,
+        "drink": 22,
         "flex": 0,
         "spectators": 7
       },
       "cue": {
-        "full_pct": 94,
-        "tight_pct": 6,
+        "full_pct": 96,
+        "tight_pct": 4,
         "blocked_pct": 0,
-        "min_clearance_in": 57.2,
+        "min_clearance_in": 57.5,
         "per_table": {
           "T0L": {
             "W": 85.5,
             "E": 59.8,
-            "S": 61.2,
-            "N": 59.2
+            "S": 84.8,
+            "N": 89.2
           },
           "T0R": {
             "W": 59.8,
             "E": 85.5,
-            "S": 61.2,
-            "N": 89.2
+            "S": 84.8,
+            "N": 119.2
           },
           "T1L": {
             "W": 85.5,
             "E": 59.8,
-            "S": 61.2,
-            "N": 61.2
+            "S": 84.8,
+            "N": 84.8
           },
           "T1R": {
             "W": 59.8,
-            "E": 85.5,
-            "S": 61.2,
-            "N": 61.2
+            "E": 57.5,
+            "S": 84.8,
+            "N": 84.8
           },
           "T2L": {
             "W": 85.5,
             "E": 59.8,
-            "S": 61.2,
-            "N": 61.2
+            "S": 126.8,
+            "N": 84.8
           },
           "T2R": {
             "W": 59.8,
             "E": 85.5,
-            "S": 61.2,
-            "N": 61.2
-          },
-          "T3L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 57.2,
-            "N": 61.2
-          },
-          "T3R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 57.2,
-            "N": 61.2
+            "S": 126.8,
+            "N": 84.8
           }
         }
       },
       "service": {
         "cocktail": {
-          "seats": 12,
-          "max_run_ft": 49.9,
-          "avg_run_ft": 38.4,
-          "conflicted_seats": 12
+          "seats": 22,
+          "max_run_ft": 69.1,
+          "avg_run_ft": 47.6,
+          "conflicted_seats": 20
         },
         "food": {
           "seats": 0,
@@ -89,22 +77,22 @@
         }
       },
       "egress": {
-        "exit_corridor_in": 78.2,
+        "exit_corridor_in": 166.0,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 57.0
+        "worst_travel_ft": 66.8
       },
-      "revenue_proxy_hr": 266,
+      "revenue_proxy_hr": 320,
       "flip_minutes": 0,
       "notes": [
-        "Maximizes table-hours: 8 tables, 32 player positions.",
-        "The SE table narrows the exit approach to a ~54\" corridor shared with cue swing and the cocktail route.",
-        "Row gaps run tight (54\u201357\"); no in-room dining, and every west-rail drink delivery crosses active cue zones."
+        "The six tables spread across the full room \u2014 the widest aisles of any option.",
+        "Drinks live on the west rail; deliveries cross active play.",
+        "No in-room dining and nowhere to host a crowd."
       ]
     },
     {
       "key": "social",
       "name": "2 \u00b7 Social Hall (current)",
-      "tagline": "The built v15L3 balance: 6 tables + classroom + two-tops",
+      "tagline": "The built layout: six tables + classroom + wall two-tops",
       "capacity": {
         "tables": 6,
         "players": 24,
@@ -179,7 +167,7 @@
       "revenue_proxy_hr": 308,
       "flip_minutes": 0,
       "notes": [
-        "The layout as built \u2014 the baseline everything else is judged against.",
+        "The room as built \u2014 the baseline every option is judged against.",
         "Two-tops flex between drinkers, eaters, and spectators.",
         "Classroom block serves league meetings and lessons."
       ]
@@ -187,47 +175,65 @@
     {
       "key": "tournament",
       "name": "3 \u00b7 Tournament House",
-      "tagline": "Feature table + bleachers; spectators outnumber players",
+      "tagline": "North gallery: bleachers + stage face the feature row",
       "capacity": {
-        "tables": 3,
-        "players": 12,
+        "tables": 6,
+        "players": 24,
         "dine": 0,
         "drink": 4,
         "flex": 0,
-        "spectators": 51
+        "spectators": 29
       },
       "cue": {
-        "full_pct": 100,
+        "full_pct": 96,
         "tight_pct": 0,
-        "blocked_pct": 0,
-        "min_clearance_in": 59.8,
+        "blocked_pct": 4,
+        "min_clearance_in": 34.5,
         "per_table": {
-          "PracL": {
+          "T0L": {
             "W": 85.5,
             "E": 59.8,
-            "S": 363.2,
-            "N": 192.8
+            "S": 73.2,
+            "N": 166.8
           },
-          "PracR": {
+          "T0R": {
             "W": 59.8,
             "E": 85.5,
-            "S": 363.2,
-            "N": 222.8
+            "S": 73.2,
+            "N": 166.8
           },
-          "Feature": {
-            "W": 80.5,
-            "E": 87.5,
-            "S": 176.8,
-            "N": 409.2
+          "T1L": {
+            "W": 85.5,
+            "E": 59.8,
+            "S": 59.8,
+            "N": 73.2
+          },
+          "T1R": {
+            "W": 59.8,
+            "E": 34.5,
+            "S": 59.8,
+            "N": 73.2
+          },
+          "T2L": {
+            "W": 85.5,
+            "E": 59.8,
+            "S": 59.8,
+            "N": 59.8
+          },
+          "T2R": {
+            "W": 59.8,
+            "E": 85.5,
+            "S": 59.8,
+            "N": 59.8
           }
         }
       },
       "service": {
         "cocktail": {
           "seats": 2,
-          "max_run_ft": 26.8,
-          "avg_run_ft": 24.2,
-          "conflicted_seats": 1
+          "max_run_ft": 28.4,
+          "avg_run_ft": 25.9,
+          "conflicted_seats": 2
         },
         "food": {
           "seats": 0,
@@ -237,35 +243,35 @@
         }
       },
       "egress": {
-        "exit_corridor_in": 166.0,
+        "exit_corridor_in": 78.2,
         "exit_corridor_ok": true,
         "worst_travel_ft": 45.9
       },
-      "revenue_proxy_hr": 192,
+      "revenue_proxy_hr": 202,
       "flip_minutes": 45,
       "notes": [
-        "One feature table with protected sightlines from a 3-row west bleacher.",
-        "Food reduced to handhelds \u2014 trays cannot cross mid-rack sightlines.",
-        "Slowest to flip back (bleachers, 45 min)."
+        "The bench gives way to a three-row gallery; the back pair becomes the feature row under the audience's nose.",
+        "Food drops to handhelds while racks are in play.",
+        "Slowest to flip back (bleachers)."
       ]
     },
     {
       "key": "lounge",
       "name": "4 \u00b7 Cocktail Lounge",
-      "tagline": "Bar-forward: south third is high-tops, shortest tray runs",
+      "tagline": "Bar-forward: tables compress north, high-tops own the entry end",
       "capacity": {
-        "tables": 4,
-        "players": 16,
+        "tables": 6,
+        "players": 24,
         "dine": 0,
-        "drink": 37,
+        "drink": 22,
         "flex": 0,
-        "spectators": 13
+        "spectators": 11
       },
       "cue": {
-        "full_pct": 100,
+        "full_pct": 96,
         "tight_pct": 0,
-        "blocked_pct": 0,
-        "min_clearance_in": 59.2,
+        "blocked_pct": 4,
+        "min_clearance_in": 34.5,
         "per_table": {
           "T0L": {
             "W": 85.5,
@@ -282,23 +288,35 @@
           "T1L": {
             "W": 85.5,
             "E": 59.8,
-            "S": 146.2,
+            "S": 61.2,
             "N": 61.2
           },
           "T1R": {
             "W": 59.8,
             "E": 85.5,
-            "S": 146.2,
+            "S": 61.2,
+            "N": 61.2
+          },
+          "T2L": {
+            "W": 85.5,
+            "E": 59.8,
+            "S": 58.8,
+            "N": 61.2
+          },
+          "T2R": {
+            "W": 59.8,
+            "E": 34.5,
+            "S": 58.8,
             "N": 61.2
           }
         }
       },
       "service": {
         "cocktail": {
-          "seats": 19,
-          "max_run_ft": 40.7,
-          "avg_run_ft": 26.4,
-          "conflicted_seats": 0
+          "seats": 17,
+          "max_run_ft": 39.8,
+          "avg_run_ft": 25.4,
+          "conflicted_seats": 2
         },
         "food": {
           "seats": 0,
@@ -308,26 +326,26 @@
         }
       },
       "egress": {
-        "exit_corridor_in": 166.0,
+        "exit_corridor_in": 146,
         "exit_corridor_ok": true,
         "worst_travel_ft": 57.0
       },
-      "revenue_proxy_hr": 431,
+      "revenue_proxy_hr": 328,
       "flip_minutes": 15,
       "notes": [
         "Bar staff barely enter the room \u2014 the lounge zone is at the door.",
-        "37 drink positions; beverage revenue leader.",
-        "Player capacity halved vs league hall."
+        "Standard bar-height two-tops and wall rails fill the south third.",
+        "Same six tables, tighter aisles than league spacing."
       ]
     },
     {
       "key": "bistro",
       "name": "5 \u00b7 Billiards Bistro",
-      "tagline": "Dining-forward: rounds wrap the kitchen door, hot 10-step carry",
+      "tagline": "Dining-forward: five-foot rounds fill the south third",
       "capacity": {
-        "tables": 3,
-        "players": 12,
-        "dine": 30,
+        "tables": 6,
+        "players": 24,
+        "dine": 40,
         "drink": 7,
         "flex": 0,
         "spectators": 7
@@ -338,122 +356,152 @@
         "blocked_pct": 0,
         "min_clearance_in": 59.2,
         "per_table": {
-          "NL": {
+          "T0L": {
             "W": 85.5,
             "E": 59.8,
-            "S": 210.8,
+            "S": 61.2,
             "N": 59.2
           },
-          "NR": {
+          "T0R": {
             "W": 59.8,
             "E": 85.5,
-            "S": 210.8,
+            "S": 61.2,
             "N": 89.2
           },
-          "C": {
-            "W": 138.5,
-            "E": 138.5,
-            "S": 64.2,
-            "N": 235.8
+          "T1L": {
+            "W": 85.5,
+            "E": 59.8,
+            "S": 61.2,
+            "N": 61.2
+          },
+          "T1R": {
+            "W": 59.8,
+            "E": 85.5,
+            "S": 61.2,
+            "N": 61.2
+          },
+          "T2L": {
+            "W": 85.5,
+            "E": 59.8,
+            "S": 61.8,
+            "N": 61.2
+          },
+          "T2R": {
+            "W": 59.8,
+            "E": 85.5,
+            "S": 61.8,
+            "N": 61.2
           }
         }
       },
       "service": {
         "cocktail": {
           "seats": 7,
-          "max_run_ft": 43.2,
-          "avg_run_ft": 36.8,
-          "conflicted_seats": 0
+          "max_run_ft": 39.9,
+          "avg_run_ft": 33.8,
+          "conflicted_seats": 3
         },
         "food": {
-          "seats": 6,
-          "max_run_ft": 40.5,
-          "avg_run_ft": 28.4,
+          "seats": 5,
+          "max_run_ft": 48.7,
+          "avg_run_ft": 39.4,
           "conflicted_seats": 0
         }
       },
       "egress": {
-        "exit_corridor_in": 166.0,
-        "exit_corridor_ok": true,
+        "exit_corridor_in": 0.0,
+        "exit_corridor_ok": false,
         "worst_travel_ft": 57.0
       },
-      "revenue_proxy_hr": 551,
+      "revenue_proxy_hr": 745,
       "flip_minutes": 20,
       "notes": [
-        "30 covers within a short carry of the kitchen door.",
-        "Cocktails have the longest run \u2014 wants a mid-room drop station.",
-        "Only 12 player positions; pool becomes the amenity, not the anchor."
+        "Forty covers on five-foot rounds, all south of the play zone.",
+        "Food routes down the east lane past the kitchen door; cocktails have the longest run and want a drop station.",
+        "Pool keeps all six tables but loses its walking room to dining."
       ]
     },
     {
       "key": "split",
       "name": "6 \u00b7 Split-House Flex",
-      "tagline": "Beam line divides: 4 fixed tables north, flex banquet south",
+      "tagline": "Fixed play north, folding flex zone south of the aisle",
       "capacity": {
-        "tables": 4,
-        "players": 16,
+        "tables": 6,
+        "players": 24,
         "dine": 0,
         "drink": 0,
         "flex": 40,
         "spectators": 7
       },
       "cue": {
-        "full_pct": 81,
-        "tight_pct": 19,
+        "full_pct": 100,
+        "tight_pct": 0,
         "blocked_pct": 0,
-        "min_clearance_in": 56.2,
+        "min_clearance_in": 59.2,
         "per_table": {
           "T0L": {
             "W": 85.5,
             "E": 59.8,
             "S": 61.2,
-            "N": 57.2
+            "N": 59.2
           },
           "T0R": {
             "W": 59.8,
             "E": 85.5,
             "S": 61.2,
-            "N": 87.2
+            "N": 89.2
           },
           "T1L": {
             "W": 85.5,
             "E": 59.8,
-            "S": 56.2,
+            "S": 61.2,
             "N": 61.2
           },
           "T1R": {
             "W": 59.8,
             "E": 85.5,
-            "S": 56.2,
+            "S": 61.2,
+            "N": 61.2
+          },
+          "T2L": {
+            "W": 85.5,
+            "E": 59.8,
+            "S": 61.8,
+            "N": 61.2
+          },
+          "T2R": {
+            "W": 59.8,
+            "E": 85.5,
+            "S": 61.8,
             "N": 61.2
           }
         }
       },
       "service": {
         "cocktail": {
-          "seats": 8,
-          "max_run_ft": 39.6,
-          "avg_run_ft": 25.5,
+          "seats": 5,
+          "max_run_ft": 26.1,
+          "avg_run_ft": 18.0,
           "conflicted_seats": 0
         },
         "food": {
-          "seats": 8,
-          "max_run_ft": 47.3,
-          "avg_run_ft": 32.3,
+          "seats": 5,
+          "max_run_ft": 48.7,
+          "avg_run_ft": 39.4,
           "conflicted_seats": 0
         }
       },
       "egress": {
-        "exit_corridor_in": 134.0,
-        "exit_corridor_ok": true,
-        "worst_travel_ft": 57.2
+        "exit_corridor_in": 0.0,
+        "exit_corridor_ok": false,
+        "worst_travel_ft": 57.0
       },
-      "revenue_proxy_hr": 546,
+      "revenue_proxy_hr": 582,
       "flip_minutes": 20,
       "notes": [
-        "Service never crosses the play zone \u2014 both doors land in the flex half.",
-        "40 flex covers double as dining, drinking, or overflow spectating.",
-        "Most operationally clean; nothing is optimal, everything is possible."
+        "Same footprint as the bistro but the rounds fold and stack \u2014 the south third flips between banquet, dining, and overflow.",
+        "Service never crosses the play zone.",
+        "Nothing is purpose-built; everything is possible."
       ]
     }
   ]

@@ -51,7 +51,11 @@ with open(os.path.join(HERE, "build_pool_room.py")) as fh:
 src = open(os.path.join(HERE, "build_pool_room_furniture.py")).read()
 src, n = re.subn(r"POOL_TABLES = \[[^\]]*\]", tables_src, src, count=1)
 assert n == 1, "POOL_TABLES patch failed"
-DISABLE = ["build_classroom", "build_round_tables"]
+DISABLE = []
+if not cfg.get("classroom"):
+    DISABLE.append("build_classroom")
+if KEY != "social":          # the v15L north rounds are part of the current
+    DISABLE.append("build_round_tables")   # build only
 if not cfg.get("bench"):
     DISABLE.append("build_bench")
 for call in DISABLE:
@@ -64,9 +68,17 @@ exec(compile(src, "build_pool_room_furniture.py", "exec"), G2)
 # ---- config-specific additions -------------------------------------------
 coll = G2["get_or_create_collection"]("V16_Extras")
 for i, (cx, cy) in enumerate(cfg.get("rounds", [])):
-    G2["build_round_table"](f"v16_{KEY}_round{i}", cx, cy, 48, coll)
+    G2["build_round_table"](f"v16_{KEY}_round{i}", cx, cy, 60, coll)
+# Free-standing high-tops are the standard 22x28 bar-height two-top.
+ht_mat = G2["get_or_create_color_material"](
+    "MAT_v16_hightop", (0.35, 0.24, 0.16, 1.0), roughness=0.45)
 for i, (cx, cy) in enumerate(cfg.get("hightops", [])):
-    G2["build_round_table"](f"v16_{KEY}_hightop{i}", cx, cy, 30, coll)
+    G2["make_box"](f"v16_{KEY}_hightop{i}_top", cx - 11, cy - 14, 40.5,
+                   22, 28, 1.5, material=ht_mat, collection=coll)
+    G2["make_box"](f"v16_{KEY}_hightop{i}_post", cx - 2, cy - 2, 0,
+                   4, 4, 40.5, material=ht_mat, collection=coll)
+    G2["make_box"](f"v16_{KEY}_hightop{i}_foot", cx - 9, cy - 9, 0,
+                   18, 18, 1.5, material=ht_mat, collection=coll)
 rail_mat = G2["get_or_create_color_material"](
     "MAT_v16_rail", (0.45, 0.30, 0.18, 1.0), roughness=0.5)
 IN = 0.0254
@@ -105,16 +117,25 @@ for i, (x0, y0, x1, y1, _role) in enumerate(cfg.get("rails", [])):
         G2["make_box"](f"v16_{KEY}_rail{i}", x, y, 40, w, l, 2,
                        material=rail_mat, collection=coll)
 
-# Bleachers: 3 stepped rows rising toward the wall (tournament).
+# Bleachers: 3 stepped rows rising toward the nearest wall. Steps run
+# along the rect's SHORT axis; the back (tallest) row hugs the wall side.
 bl_mat = G2["get_or_create_color_material"](
     "MAT_v16_bleacher", (0.55, 0.48, 0.58, 1.0), roughness=0.6)
 for i, (bx0, by0, bx1, by1) in enumerate(cfg.get("bleachers", [])):
-    step = (bx1 - bx0) / 3
-    for r in range(3):
-        # back row (at the wall, low x) is tallest; audience faces the room
-        G2["make_box"](f"v16_{KEY}_bleacher{i}_r{r}",
-                       bx0 + r * step, by0, 0, step, by1 - by0, 40 - r * 12,
-                       material=bl_mat, collection=coll)
+    if (bx1 - bx0) < (by1 - by0):        # against W/E wall: step in x
+        step = (bx1 - bx0) / 3
+        for r in range(3):
+            G2["make_box"](f"v16_{KEY}_bleacher{i}_r{r}",
+                           bx0 + r * step, by0, 0,
+                           step, by1 - by0, 40 - r * 12,
+                           material=bl_mat, collection=coll)
+    else:                                 # against N/S wall: step in y
+        step = (by1 - by0) / 3
+        for r in range(3):
+            G2["make_box"](f"v16_{KEY}_bleacher{i}_r{r}",
+                           bx0, by0 + r * step, 0,
+                           bx1 - bx0, step, 40 - r * 12,
+                           material=bl_mat, collection=coll)
 
 # ---- lighting + look (matches the v15L3 drivers) --------------------------
 for o in bpy.data.objects:
