@@ -28,6 +28,8 @@ _stage() {
     cp "$REPO_DIR/build_pool_room.py"           "$STAGE_DIR/"
     cp "$REPO_DIR/build_pool_room_furniture.py" "$STAGE_DIR/"
     cp "$DRIVERS_DIR"/*.py                      "$STAGE_DIR/"
+    # v16 variant drivers read the config module from the stage dir:
+    cp "$REPO_DIR"/configs/v16_configs.py       "$STAGE_DIR/" 2>/dev/null || true
     # Texture PNGs: build_pool_room.py loads them from TEXTURE_DIR, which
     # resolves to /tmp for headless drivers (unsaved .blend). Prefer the
     # committed textures/ PNGs; a <1KB file is a git-lfs pointer, not an
