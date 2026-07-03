@@ -70,15 +70,51 @@ for i, (cx, cy) in enumerate(cfg.get("hightops", [])):
 rail_mat = G2["get_or_create_color_material"](
     "MAT_v16_rail", (0.45, 0.30, 0.18, 1.0), roughness=0.5)
 IN = 0.0254
+
+# Wall two-tops are auto-built per pool table (west wall for L tables, east
+# for R). A wall rail must skip those bands or it slices through them.
+TBL_L_ = 92.5
+west_tt = [yt + TBL_L_ / 2 for _n, cx, yt in tables if cx < 130]
+
+
+def _rail_spans(y0, y1, blocks, margin=26):
+    spans, cur = [], min(y0, y1)
+    end = max(y0, y1)
+    for b in sorted(blocks):
+        lo, hi = b - margin, b + margin
+        if hi < cur or lo > end:
+            continue
+        if lo - cur >= 18:
+            spans.append((cur, lo))
+        cur = max(cur, hi)
+    if end - cur >= 18:
+        spans.append((cur, end))
+    return spans
+
+
 for i, (x0, y0, x1, y1, _role) in enumerate(cfg.get("rails", [])):
     if x0 == x1:                       # rail along W or E wall
         x, w = (x0, 8) if x0 < 158 else (x0 - 8, 8)
-        y, l = min(y0, y1), abs(y1 - y0)
+        blocks = west_tt if x0 < 158 else []
+        for j, (sy, ey) in enumerate(_rail_spans(y0, y1, blocks)):
+            G2["make_box"](f"v16_{KEY}_rail{i}_{j}", x, sy, 40, w, ey - sy, 2,
+                           material=rail_mat, collection=coll)
     else:                              # rail along N or S wall
         y, l = (y0, 8) if y0 < 340 else (y0 - 8, 8)
         x, w = min(x0, x1), abs(x1 - x0)
-    G2["make_box"](f"v16_{KEY}_rail{i}", x, y, 40, w, l, 2,
-                   material=rail_mat, collection=coll)
+        G2["make_box"](f"v16_{KEY}_rail{i}", x, y, 40, w, l, 2,
+                       material=rail_mat, collection=coll)
+
+# Bleachers: 3 stepped rows rising toward the wall (tournament).
+bl_mat = G2["get_or_create_color_material"](
+    "MAT_v16_bleacher", (0.55, 0.48, 0.58, 1.0), roughness=0.6)
+for i, (bx0, by0, bx1, by1) in enumerate(cfg.get("bleachers", [])):
+    step = (bx1 - bx0) / 3
+    for r in range(3):
+        # back row (at the wall, low x) is tallest; audience faces the room
+        G2["make_box"](f"v16_{KEY}_bleacher{i}_r{r}",
+                       bx0 + r * step, by0, 0, step, by1 - by0, 40 - r * 12,
+                       material=bl_mat, collection=coll)
 
 # ---- lighting + look (matches the v15L3 drivers) --------------------------
 for o in bpy.data.objects:

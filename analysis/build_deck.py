@@ -6,8 +6,11 @@ makers weight sliders that re-rank the options live. Regenerate after any
 config/analyzer change:  python3 analysis/build_deck.py
 """
 import base64
+import io
 import json
 import os
+
+from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
@@ -17,6 +20,26 @@ imgs = {}
 for c in data["configs"]:
     p = os.path.join(ROOT, "renders", "plans", f"plan_v16_{c['key']}.png")
     imgs[c["key"]] = base64.b64encode(open(p, "rb").read()).decode()
+
+# Eye-level Blender render per config (downscaled JPEG keeps the deck lean).
+# Social is the built v15L3 model, so it uses the existing v15L3 render.
+PERSP_SRC = {
+    c["key"]: os.path.join(
+        ROOT, "renders",
+        "render_v15L3_persp_west_to_ME_5p5ft_annotated.png"
+        if c["key"] == "social" else
+        f"render_v16_{c['key']}_persp_west_to_ME_5p5ft_annotated.png")
+    for c in data["configs"]
+}
+persps = {}
+for key, p in PERSP_SRC.items():
+    if not os.path.isfile(p) or os.path.getsize(p) < 2048:  # LFS pointer/missing
+        continue
+    im = Image.open(p).convert("RGB")
+    im.thumbnail((1280, 720))
+    buf = io.BytesIO()
+    im.save(buf, "JPEG", quality=80)
+    persps[key] = base64.b64encode(buf.getvalue()).decode()
 
 HTML = r"""<title>Pool Room v16 — Configuration Decision Deck</title>
 <style>
@@ -130,6 +153,7 @@ ul.notes li { margin-bottom: 5px; max-width: 75ch; }
 <script>
 const DATA = __DATA_JSON__;
 const IMGS = __IMGS_JSON__;
+const PERSPS = __PERSPS_JSON__;
 
 const DIMS = [
   { key: "players",    label: "Pool players",   raw: c => c.capacity.players },
@@ -234,6 +258,8 @@ document.getElementById("matrix").innerHTML = thead + rows.map(([label, fn, cls]
 document.getElementById("cards").innerHTML = DATA.configs.map(c => `
   <div class="card" id="opt-${c.key}">
     <img src="data:image/png;base64,${IMGS[c.key]}" alt="Annotated floor plan: ${c.name}" loading="lazy">
+    ${PERSPS[c.key] ? `<img src="data:image/jpeg;base64,${PERSPS[c.key]}"
+      alt="Eye-level render: ${c.name} seen from the Main Entry sight line" loading="lazy">` : ""}
     <div class="body">
       <h3>${c.name}</h3>
       <div class="tag">${c.tagline}</div>
@@ -258,7 +284,8 @@ render();
 def main():
     html = (HTML
             .replace("__DATA_JSON__", json.dumps(data))
-            .replace("__IMGS_JSON__", json.dumps(imgs)))
+            .replace("__IMGS_JSON__", json.dumps(imgs))
+            .replace("__PERSPS_JSON__", json.dumps(persps)))
     out = os.path.join(ROOT, "docs", "decision_deck_v16.html")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w") as fh:
