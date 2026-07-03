@@ -65,15 +65,17 @@ def rect(d, r, **kw):
     d.rectangle([px(x0), py(y1), px(x1), py(y0)], **kw)
 
 
-def draw_plan(cfg, score):
-    img = Image.new("RGB", (W, H), (250, 250, 250))
+def draw_plan(cfg, score, clean=False, title=None, tagline=None):
+    """clean=True: plan only — no scorecard sidebar, no numeric commentary."""
+    width = MX * 2 + PLAN_W if clean else W
+    img = Image.new("RGB", (width, H), (250, 250, 250))
     d = ImageDraw.Draw(img, "RGBA")
 
     # title bar
-    d.rectangle([0, 0, W, 64], fill=(25, 25, 30))
-    d.text((20, 10), f"Pool Room v16 — {cfg['name']}", font=F_TITLE,
+    d.rectangle([0, 0, width, 64], fill=(25, 25, 30))
+    d.text((20, 10), title or f"Pool Room v16 — {cfg['name']}", font=F_TITLE,
            fill=(255, 255, 255))
-    d.text((20, 44), cfg["tagline"], font=F_S, fill=(200, 200, 200))
+    d.text((20, 44), tagline or cfg["tagline"], font=F_S, fill=(200, 200, 200))
 
     # floor + walls
     rect(d, (0, 0, ROOM_W, ROOM_L), fill=COL_FLOOR)
@@ -178,6 +180,18 @@ def draw_plan(cfg, score):
     d.text((cxp - 6, cyp + 12), "N", font=F_S, fill=(255, 255, 255))
     d.text((cxp + 14, cyp - 8), "E", font=F_S, fill=(255, 255, 255))
     d.text((cxp - 26, cyp - 8), "W", font=F_S, fill=(255, 255, 255))
+
+    if clean:
+        # legend only (no numbers anywhere)
+        ly = H - MBOT + 6
+        d.line([MX, ly + 10, MX + 30, ly + 10], fill=COL_COCKTAIL, width=5)
+        d.text((MX + 36, ly), "cocktail service", font=F_S, fill=(60, 60, 60))
+        d.line([MX + 190, ly + 10, MX + 220, ly + 10], fill=COL_FOOD, width=5)
+        d.text((MX + 226, ly), "food service", font=F_S, fill=(60, 60, 60))
+        d.rectangle([MX + 360, ly + 2, MX + 378, ly + 18],
+                    fill=COL_CUE + (60,), outline=COL_CUE)
+        d.text((MX + 384, ly), "cue-swing zone", font=F_S, fill=(60, 60, 60))
+        return img
 
     # sidebar scorecard
     sx = MX * 2 + PLAN_W - 10
