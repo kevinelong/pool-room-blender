@@ -168,15 +168,27 @@ scene.cycles.use_denoising = True
 
 ROOM_W, ROOM_L = 316, 682
 
-# ---- render 1: top-down ortho (ceiling hidden) ----------------------------
+# ---- render 1: top-down ortho --------------------------------------------
+# Hide the ceiling AND all light-fixture meshes (troffer frames/lenses,
+# pendant shades) so the floor plan reads clean — from above they overlay
+# every table, and the frame meshes render as black bars near the door
+# corners. The AREA lights themselves stay on, so illumination holds.
 if VIEW in ("topdown", "both"):
+    HIDE_COLLS = {"Ceiling_Troffers", "Pendant_Fixtures"}
     hidden = []
     for o in bpy.data.objects:
-        if o.type == 'MESH':
-            n = o.name.lower()
-            if 'ceiling' in n or n.startswith('ceil'):
-                o.hide_render = True
-                hidden.append(o)
+        if o.type != 'MESH':
+            continue
+        n = o.name.lower()
+        in_hidden_coll = any(c.name in HIDE_COLLS
+                             for c in o.users_collection)
+        # Entry_Step* are vestigial interior treads whose tops are coplanar
+        # with the floor slab — invisible in perspectives but they z-fight
+        # from directly above and render as a black bar at the Main Entry.
+        if ('ceiling' in n or n.startswith('ceil') or in_hidden_coll
+                or n.startswith('entry_step')):
+            o.hide_render = True
+            hidden.append(o)
     cd = bpy.data.cameras.new("CAM_v16_topdown")
     cd.type = 'ORTHO'
     cd.ortho_scale = (ROOM_L + 20) * IN
