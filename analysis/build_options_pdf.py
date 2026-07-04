@@ -114,7 +114,9 @@ def page_for(cfg):
         dd.text((tx, ty - (bbox[3] - bbox[1]) - 6), label, font=f,
                 fill=(255, 255, 255))
 
-    callout((1155, 800), "Main Entry door", (1420, 380))
+    callout((1130, 720), "Main Entry — two steps down, iron rails",
+            (1420, 380))
+    callout((1360, 640), "wood door standing open", (1620, 990))
     callout((955, 720), "Emergency Exit door (edge-on)", (480, 330))
 
     cap_y = py + persp.height + 8
