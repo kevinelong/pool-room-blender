@@ -88,12 +88,39 @@ def page_for(cfg):
     d.text((M, 18), f"Pool Room — {name}", font=fnt(38), fill=(255, 255, 255))
     d.text((M, 68), tagline, font=fnt(19, False), fill=(205, 205, 210))
 
-    # eye-level render, full width
+    # eye-level render, full width, with door callouts. All six pages share
+    # the same camera (SW end of the room, eye level, aimed east at the
+    # Main Entry), so the door pixel anchors are constant: the big dark
+    # slab is the Main Entry door in the east wall; the thin dark panel
+    # left of it is the Emergency Exit door (south wall) seen edge-on.
     persp = fit(Image.open(persp_p).convert("RGB"), PAGE_W - 2 * M, 700)
+    px0 = M + (PAGE_W - 2 * M - persp.width) // 2
     py = 128
-    page.paste(persp, (M + (PAGE_W - 2 * M - persp.width) // 2, py))
+    page.paste(persp, (px0, py))
+    s = persp.width / 2560.0
+    dd = ImageDraw.Draw(page)
+
+    def callout(anchor_2560, label, text_2560):
+        ax, ay = px0 + anchor_2560[0] * s, py + anchor_2560[1] * s
+        tx, ty = px0 + text_2560[0] * s, py + text_2560[1] * s
+        dd.line([tx, ty, ax, ay], fill=(255, 220, 80), width=3)
+        dd.ellipse([ax - 4, ay - 4, ax + 4, ay + 4], fill=(255, 220, 80))
+        f = fnt(16)
+        bbox = dd.textbbox((0, 0), label, font=f)
+        pad = 5
+        dd.rounded_rectangle([tx - pad, ty - pad - (bbox[3] - bbox[1]) - 6,
+                              tx + (bbox[2] - bbox[0]) + pad, ty + pad],
+                             radius=4, fill=(20, 20, 24))
+        dd.text((tx, ty - (bbox[3] - bbox[1]) - 6), label, font=f,
+                fill=(255, 255, 255))
+
+    callout((1155, 800), "Main Entry door", (1420, 380))
+    callout((955, 720), "Emergency Exit door (edge-on)", (480, 330))
+
     cap_y = py + persp.height + 8
-    d.text((M, cap_y), "Standing at the Main Entry sight line, eye level",
+    d.text((M, cap_y),
+           "Inside the room at the southwest end, eye level, looking east "
+           "toward the Main Entry",
            font=fnt(17, False), fill=MUTED)
 
     # bottom row: overhead render | clean diagram | notes
