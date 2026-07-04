@@ -273,9 +273,18 @@ mat_concrete = make_pbr_material("Concrete_Step", None, None, None,
                                  flat_color=(0.55, 0.54, 0.52, 1.0))
 
 # ---- floor ----------------------------------------------------------------
+# v17: the slab stops at the Main Entry well so the sunken landing and the
+# two treads (build_entry_alcove) are visible — previously the full-room
+# slab buried them (and z-fought with the top tread in top-down renders).
+ENTRY_WELL_X0 = ROOM_W - LANDING_DEPTH - 2 * STAIR_TREAD   # 276
+ENTRY_WELL_Y0 = ROOM_L - 70                                 # 612
 make_box("Floor",
          x=0, y=0, z=-1,
-         w=ROOM_W, l=ROOM_L, h=1,
+         w=ROOM_W, l=ENTRY_WELL_Y0, h=1,
+         material=mat_vct)
+make_box("Floor_S_strip",
+         x=0, y=ENTRY_WELL_Y0, z=-1,
+         w=ENTRY_WELL_X0, l=ROOM_L - ENTRY_WELL_Y0, h=1,
          material=mat_vct)
 
 # ---- ceiling --------------------------------------------------------------
@@ -424,30 +433,70 @@ def build_back_wall():
 
 
 def build_entry_alcove():
-    """v11: Main Entry now on RIGHT wall at top-right corner.
-    Stairs run east-west: landing flush with the east-wall door opening
-    (x=ROOM_W-LANDING_DEPTH..ROOM_W, y=ROOM_L-70..ROOM_L), treads project
-    WEST into the room one tread at a time, dropping to floor level."""
+    """v17: sunken Main Entry well, matching the reference video.
+    From the room floor two treads step DOWN to a landing at the door,
+    flanked by two wrought-iron rails, with a wood door leaf standing
+    open against the wall beside the opening. The floor slab stops at
+    the well edge (see Floor / Floor_S_strip) so all of it is visible.
+    Treads are solid to the well bottom — no floating 1\" slabs."""
     door_y0 = ROOM_L - 70
     door_y_span = 70
     landing_z = -2 * STAIR_RISE  # -15"
-    # Landing at east wall (door side)
+    x_step2 = ROOM_W - LANDING_DEPTH - 2 * STAIR_TREAD   # 276
+    x_step1 = ROOM_W - LANDING_DEPTH - STAIR_TREAD       # 287
+    x_landing = ROOM_W - LANDING_DEPTH                   # 298
+    # Landing at east wall (door side), the well bottom
     build_wall_segment("Entry_Landing",
-                       x=ROOM_W - LANDING_DEPTH, y=door_y0, z=landing_z,
+                       x=x_landing, y=door_y0, z=landing_z,
                        w=LANDING_DEPTH, l=door_y_span,
                        h=1, material=mat_concrete)
-    # step 1 (one tread further WEST into room, half-height up)
+    # step 1: solid riser+tread, top at -STAIR_RISE
     build_wall_segment("Entry_Step1",
-                       x=ROOM_W - LANDING_DEPTH - STAIR_TREAD, y=door_y0,
-                       z=-STAIR_RISE - 1,
+                       x=x_step1, y=door_y0, z=landing_z,
                        w=STAIR_TREAD, l=door_y_span,
-                       h=1, material=mat_concrete)
-    # step 2 (one more tread west, at room floor level)
+                       h=STAIR_RISE, material=mat_concrete)   # top -7.5
+    # step 2: solid, top flush with the room floor
     build_wall_segment("Entry_Step2",
-                       x=ROOM_W - LANDING_DEPTH - 2 * STAIR_TREAD, y=door_y0,
-                       z=-1,
+                       x=x_step2, y=door_y0, z=landing_z,
                        w=STAIR_TREAD, l=door_y_span,
+                       h=2 * STAIR_RISE, material=mat_concrete)  # top 0
+    # well cheeks: low curb on the room side, foundation under the S wall
+    build_wall_segment("Entry_Well_Curb_N",
+                       x=x_step2, y=door_y0 - 2, z=landing_z,
+                       w=ROOM_W - x_step2, l=2,
+                       h=2 * STAIR_RISE + 3, material=mat_concrete)
+    build_wall_segment("Entry_Well_Fnd_S",
+                       x=x_step2, y=ROOM_L, z=landing_z,
+                       w=ROOM_W - x_step2, l=WALL_THK,
+                       h=2 * STAIR_RISE, material=mat_concrete)
+    # exterior stoop seen through the open doorway
+    build_wall_segment("Entry_Stoop",
+                       x=ROOM_W, y=door_y0, z=landing_z,
+                       w=24, l=door_y_span,
                        h=1, material=mat_concrete)
+    # two wrought-iron rails flanking the stair run (v17: moved here from
+    # the removed west entry). Bases root in the solid treads/landing.
+    mat_iron = make_pbr_material("Wrought_Iron_Entry", None, None, None,
+                                 tile_size_m=1.0,
+                                 flat_color=(0.05, 0.05, 0.06, 1.0))
+    RAIL_T = 2
+    build_wall_segment("Entry_Rail_N",
+                       x=x_step2, y=door_y0 + 3, z=landing_z + 1,
+                       w=ROOM_W - x_step2, l=RAIL_T,
+                       h=50, material=mat_iron)   # top at +36
+    build_wall_segment("Entry_Rail_S",
+                       x=x_step2, y=ROOM_L - 3 - RAIL_T, z=landing_z + 1,
+                       w=ROOM_W - x_step2, l=RAIL_T,
+                       h=50, material=mat_iron)
+    # wood door leaf standing open, pinned back against the interior wall
+    # face just north of the opening
+    mat_wood_door = make_pbr_material("Wood_Door_Entry", None, None, None,
+                                      tile_size_m=1.0,
+                                      flat_color=(0.42, 0.26, 0.13, 1.0))
+    build_wall_segment("Entry_Door_Leaf_Open",
+                       x=ROOM_W - 2.5, y=door_y0 - 36, z=0,
+                       w=1.75, l=36,
+                       h=80, material=mat_wood_door)
 
 
 def build_beam():
@@ -488,6 +537,10 @@ def _door_slab_mat():
 def build_door_slabs():
     mat = _door_slab_mat()
     for wall, start, span, height, name in DOORS:
+        if name.startswith("Main Entry"):
+            # v17: the Main Entry is an open doorway with a wood leaf
+            # standing open beside it (build_entry_alcove) — no black slab.
+            continue
         if wall == 'R':
             # right wall, slab projects INTO room from x=ROOM_W inward
             make_box(f"DoorSlab_{name}",

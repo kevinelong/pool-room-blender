@@ -182,11 +182,9 @@ if VIEW in ("topdown", "both"):
         n = o.name.lower()
         in_hidden_coll = any(c.name in HIDE_COLLS
                              for c in o.users_collection)
-        # Entry_Step* are vestigial interior treads whose tops are coplanar
-        # with the floor slab — invisible in perspectives but they z-fight
-        # from directly above and render as a black bar at the Main Entry.
-        if ('ceiling' in n or n.startswith('ceil') or in_hidden_coll
-                or n.startswith('entry_step')):
+        # (v17: the Entry_Step hide is gone — the entry well is now real,
+        # exposed geometry with the floor slab cut around it.)
+        if 'ceiling' in n or n.startswith('ceil') or in_hidden_coll:
             o.hide_render = True
             hidden.append(o)
     cd = bpy.data.cameras.new("CAM_v16_topdown")

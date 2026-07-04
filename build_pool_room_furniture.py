@@ -1990,19 +1990,31 @@ def build_stow_column():
 
 
 def build_railing():
-    coll = get_or_create_collection("Wrought_Iron_Railing")
-    iron_mat = get_or_create_color_material(
-        "MAT_wrought_iron", (0.05, 0.05, 0.05, 1.0), roughness=0.45)
-    rail_x_start = 0
-    rail_x_end   = STAIR_RUN_X
-    make_box("Railing_N",
-             x=rail_x_start, y=ENTRY_Y0 - RAIL_T, z=0,
-             w=rail_x_end - rail_x_start, l=RAIL_T, h=RAIL_H,
-             material=iron_mat, collection=coll)
-    make_box("Railing_S",
-             x=rail_x_start, y=ENTRY_Y1, z=0,
-             w=rail_x_end - rail_x_start, l=RAIL_T, h=RAIL_H,
-             material=iron_mat, collection=coll)
+    """v17: retired. These rails served the REMOVED west-wall entry and sat
+    stranded at the SW corner. The wrought-iron rails now flank the Main
+    Entry stair well — built in build_pool_room.build_entry_alcove()."""
+    return
+
+
+def build_posters():
+    """v17: framed posters above the north-wall bench (reference video)."""
+    coll = get_or_create_collection("Posters")
+    frame_mat = get_or_create_color_material(
+        "MAT_poster_frame", (0.92, 0.92, 0.90, 1.0), roughness=0.4)
+    tones = [
+        ("MAT_poster_red",   (0.55, 0.12, 0.10, 1.0)),
+        ("MAT_poster_blue",  (0.10, 0.25, 0.45, 1.0)),
+        ("MAT_poster_green", (0.13, 0.35, 0.18, 1.0)),
+        ("MAT_poster_gold",  (0.45, 0.30, 0.08, 1.0)),
+    ]
+    x = 112   # bench spans 102..270; four posters spaced along it
+    for i, (mname, rgba) in enumerate(tones):
+        art_mat = get_or_create_color_material(mname, rgba, roughness=0.6)
+        make_box(f"Poster_{i}_frame", x=x - 1, y=0, z=46,
+                 w=26, l=1.0, h=32, material=frame_mat, collection=coll)
+        make_box(f"Poster_{i}_art", x=x, y=0, z=47,
+                 w=24, l=1.5, h=30, material=art_mat, collection=coll)
+        x += 40
 
 
 # ============================================================================
@@ -2229,6 +2241,7 @@ build_stage()
 build_hvac()
 build_stow_column()
 build_railing()
+build_posters()
 build_pendant_fixtures_and_lights()
 troffer_count = build_ceiling_troffers_and_lights()
 
