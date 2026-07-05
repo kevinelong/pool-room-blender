@@ -65,8 +65,10 @@ DISABLE = ["build_stage", "build_lockers", "build_buffet",
            "build_clearance_paths", "build_bench"]
 if not cfg.get("classroom"):
     DISABLE.append("build_classroom")
-if KEY != "social":          # the v15L north rounds are part of the current
-    DISABLE.append("build_round_tables")   # build only
+# v25: the auto-packer owns every round in every layout. Leaving the legacy
+# v15L north rounds in for social made them overlap the packed rounds
+# (visual QA: black ellipses across two north rounds) — disabled everywhere.
+DISABLE.append("build_round_tables")
 if ROT90:
     # wall two-tops are keyed to the column layout; a rotated line puts
     # them inside the tables' east swing — drop them (patrons pruned below)
@@ -237,23 +239,30 @@ scene.cycles.use_denoising = True
 
 ROOM_W, ROOM_L = 316, 682
 
+# ---- hide light-fixture meshes in EVERY view ------------------------------
+# v25: troffer frames/lenses and pendant shades are hidden in all renders
+# (user request: ceiling lights hidden in all views). From above they overlay
+# every table and render as black bars near the door corners; at eye level
+# they clutter the ceiling. The AREA lights themselves stay on, so the
+# illumination is unchanged.
+HIDE_COLLS = {"Ceiling_Troffers", "Pendant_Fixtures"}
+for o in bpy.data.objects:
+    if o.type == 'MESH' and any(c.name in HIDE_COLLS
+                                for c in o.users_collection):
+        o.hide_render = True
+
 # ---- render 1: top-down ortho --------------------------------------------
-# Hide the ceiling AND all light-fixture meshes (troffer frames/lenses,
-# pendant shades) so the floor plan reads clean — from above they overlay
-# every table, and the frame meshes render as black bars near the door
-# corners. The AREA lights themselves stay on, so illumination holds.
+# Additionally hide the ceiling surface itself so the ortho plan reads clean
+# (restored afterwards for the perspective pass).
 if VIEW in ("topdown", "both"):
-    HIDE_COLLS = {"Ceiling_Troffers", "Pendant_Fixtures"}
     hidden = []
     for o in bpy.data.objects:
-        if o.type != 'MESH':
+        if o.type != 'MESH' or o.hide_render:
             continue
         n = o.name.lower()
-        in_hidden_coll = any(c.name in HIDE_COLLS
-                             for c in o.users_collection)
         # (v17: the Entry_Step hide is gone — the entry well is now real,
         # exposed geometry with the floor slab cut around it.)
-        if 'ceiling' in n or n.startswith('ceil') or in_hidden_coll:
+        if 'ceiling' in n or n.startswith('ceil'):
             o.hide_render = True
             hidden.append(o)
     cd = bpy.data.cameras.new("CAM_v16_topdown")

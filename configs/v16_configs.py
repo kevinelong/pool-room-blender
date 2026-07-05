@@ -37,7 +37,10 @@ SERVICE_LANE_X = (265, 300)       # east service lane (green strip)
 DOOR_MAIN = (316, 612, 316, 682)   # E wall, south end (cocktail stream)
 DOOR_KITCHEN = (316, 290, 316, 330)  # E wall, mid (food stream)
 DOOR_EXIT = (30, 682, 95, 682)     # v18: S wall, WEST end (per video)
-EXIT_FRONTAGE = (24, 616, 101, 682)   # egress approach band
+# v25: egress approach band = the 44" maintained code corridor in front of
+# the door span (was 66" deep — deeper than code and inconsistent with the
+# packer's keep-out, so the two disagreed about the same layout)
+EXIT_FRONTAGE = (24, 638, 101, 682)
 
 SEATS_PER_TABLE = 4       # players per pool table
 N_TABLES = 6              # LOCKED: every option has exactly six tables
@@ -182,7 +185,10 @@ CONFIGS = [
         rot90=True,
         # v23: stage removed entirely (user) — the west file needs no
         # stage relocation any more
-        lane_x=298.0,   # v24: spine hugs the east wall; packer owns the strip
+        # v25: the spine threads BETWEEN the table swing and the wall rounds
+        # — an east-wall spine (298) forced the packer to pull every round
+        # 58" off the wall, defeating this layout's whole idea
+        lane_x=213.0,
         tables=[(f"Line{i}", 110.0, yt)
                 for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
         # v23: one round per table against the east wall, centered on its
@@ -308,18 +314,37 @@ def capacities(cfg):
 # ============================================================================
 # v24: round auto-packing + precise staff pathways (user 2026-07-05)
 # ============================================================================
-ROUND_RING = 40.0          # round + 4 hotel stacking chairs footprint radius
-ROUND_MIN_CC = 84.0        # min center-to-center between rounds
+# v25: chair-aware collision model. The 4 hotel stacking chairs (11x12")
+# sit at the cardinal points and reach 46" from the round's center (the
+# driver seats them at +/-46 on each axis, tucked 4" off the 60" top).
+# A single 46" circle over-blocks (diagonal neighbours interleave chairs
+# safely at 84" cc), so:
+#   ROUND_RING     bounding radius incl. chairs — walls, doors, path clips
+#   ROUND_BODY     disc + tucked-chair radius — furniture/table margins
+#   ROUND_MIN_CC   floor for any two rounds (diagonal packing OK)
+#   ROUND_AXIS_CC  floor when two rounds face chair-to-chair on an axis
+ROUND_RING = 46.0
+ROUND_BODY = 38.0          # chairs pushed in tuck to ~38" from center
+ROUND_MIN_CC = 84.0
+ROUND_AXIS_CC = 96.0       # 45+45 chair reach + 6" air
+ROUND_AXIS_BAND = 17.0     # facing-chair rule applies inside this offset
 
-# keep-out rects for hospitality placement (doors, wells, chases)
-KEEPOUTS = [
+# Two keep-out tiers. Life-safety egress is checked against the FULL chair
+# ring — a chair leg in an exit path is an egress obstruction (the EE band
+# depth is exactly the 44" code corridor). Service frontages and the HVAC
+# chase are checked against the tucked-chair body: a chair back grazing a
+# kitchen-door approach is v23-accepted practice, an exit path is not.
+KEEPOUTS_EGRESS = [
     (250, 596, 316, 682),   # Main Entry well + rails + approach
+    EXIT_FRONTAGE,          # Emergency Exit 44" egress corridor
+]
+KEEPOUTS_FRONTAGE = [
     (268, 282, 316, 338),   # kitchen door frontage
-    (24, 616, 101, 682),    # Emergency Exit approach band
     (268, 0, 316, 48),      # Storage A door frontage (N wall, east end)
     (272, 0, 316, 48),      # Storage B door frontage (E wall, north end)
     HVAC,
 ]
+KEEPOUTS = KEEPOUTS_EGRESS + KEEPOUTS_FRONTAGE   # for path clipping et al.
 
 
 def _rect_overlap(a, b):
@@ -327,67 +352,98 @@ def _rect_overlap(a, b):
             and min(a[3], b[3]) - max(a[1], b[1]) > 0)
 
 
-def _round_ok(cx, cy, cfg, placed, lane_x):
-    r = ROUND_RING
-    if not (r + 1 <= cx <= ROOM_W - r - 1 and r + 1 <= cy <= ROOM_L - r - 1):
+def _round_ok(cx, cy, cfg, placed, lane_x, aligned=False):
+    w = ROUND_RING + 1
+    if not (w <= cx <= ROOM_W - w and w <= cy <= ROOM_L - w):
         return False
-    ring = (cx - r, cy - r, cx + r, cy + r)
+    ring = (cx - ROUND_RING, cy - ROUND_RING, cx + ROUND_RING, cy + ROUND_RING)
+    body = (cx - ROUND_BODY, cy - ROUND_BODY, cx + ROUND_BODY, cy + ROUND_BODY)
     rot = cfg.get("rot90", False)
     for _n, tx, ty in cfg["tables"]:
         x0, y0, x1, y1 = table_rect(tx, ty, rot)
-        if _rect_overlap(ring, (x0 - 32, y0 - 32, x1 + 32, y1 + 32)):
+        if _rect_overlap(body, (x0 - 32, y0 - 32, x1 + 32, y1 + 32)):
             return False
-    for ko in KEEPOUTS:
+    for ko in KEEPOUTS_EGRESS:
         if _rect_overlap(ring, ko):
             return False
+    for ko in KEEPOUTS_FRONTAGE:
+        if _rect_overlap(body, ko):
+            return False
     for hx, hy in cfg.get("hightops", []):
-        if _rect_overlap(ring, (hx - 26, hy - 29, hx + 26, hy + 29)):
+        if _rect_overlap(body, (hx - 26, hy - 29, hx + 26, hy + 29)):
             return False
     for tx, ty in cfg.get("twotops", []):
-        if _rect_overlap(ring, (tx - 26, ty - 29, tx + 26, ty + 29)):
+        if _rect_overlap(body, (tx - 26, ty - 29, tx + 26, ty + 29)):
             return False
     for bl in cfg.get("bleachers", []):
-        if _rect_overlap(ring, bl):
+        if _rect_overlap(body, bl):
             return False
-    # reserved service spine
-    if lane_x - 16 < cx + r and cx - r < lane_x + 16:
-        pass_width = abs(cx - lane_x)
-        if pass_width < r + 16:
-            return False
+    # reserved service spine — the mandated per-table (aligned) rounds
+    # trump it; the paths clip around whatever lands there
+    if not aligned:
+        if lane_x - 16 < cx + ROUND_BODY and cx - ROUND_BODY < lane_x + 16:
+            if abs(cx - lane_x) < ROUND_BODY + 16:
+                return False
     for px_, py_ in placed:
-        if (cx - px_) ** 2 + (cy - py_) ** 2 < ROUND_MIN_CC ** 2:
+        dx, dy = abs(cx - px_), abs(cy - py_)
+        if dx * dx + dy * dy < ROUND_MIN_CC ** 2:
+            return False
+        # facing chairs collide long before the discs do
+        if dx < ROUND_AXIS_CC and dy < ROUND_AXIS_BAND:
+            return False
+        if dy < ROUND_AXIS_CC and dx < ROUND_AXIS_BAND:
             return False
     return True
 
 
+def _sweep(start, stop, step):
+    """Inclusive walk from start toward stop (step sign gives direction)."""
+    out, v = [], start
+    while (v >= stop) if step < 0 else (v <= stop):
+        out.append(v)
+        v += step
+    return out
+
+
 def pack_rounds(cfg):
-    """Fill every zone away from the tables with rounds. Rounds adjacent to
+    """Fill every zone away from the tables with rounds. Rounds at the
     table ends are seeded FIRST, centered on the table's long axis (the
-    user's alignment rule); a grid fill takes whatever space remains."""
+    user's alignment rule), preferring the wall-adjacent spot and sliding
+    inboard along the centerline only where a chase/door/well blocks it.
+    A greedy grid fill takes whatever space remains."""
     lane_x = cfg.get("lane_x", 298.0)
     rot = cfg.get("rot90", False)
     placed = []
-    # 1) alignment-seeded candidates at the table ends
+    # 1) alignment-seeded candidates on each table's centerline: sweep from
+    #    the wall inboard to table-adjacent; first legal spot per side wins
     for _n, tx, ty in cfg["tables"]:
         x0, y0, x1, y1 = table_rect(tx, ty, rot)
         if rot:
-            cands = [(x1 + 32 + ROUND_RING, (y0 + y1) / 2),
-                     (x0 - 32 - ROUND_RING, (y0 + y1) / 2)]
+            mid = (y0 + y1) / 2
+            sides = [[(x, mid) for x in
+                      _sweep(ROOM_W - ROUND_RING - 1, x1 + 32 + ROUND_BODY, -1)],
+                     [(x, mid) for x in
+                      _sweep(ROUND_RING + 1, x0 - 32 - ROUND_BODY, 1)]]
         else:
-            cands = [((x0 + x1) / 2, y0 - 32 - ROUND_RING),
-                     ((x0 + x1) / 2, y1 + 32 + ROUND_RING)]
-        for cx, cy in cands:
-            if _round_ok(cx, cy, cfg, placed, lane_x):
-                placed.append((round(cx, 1), round(cy, 1)))
+            mid = (x0 + x1) / 2
+            sides = [[(mid, y) for y in
+                      _sweep(ROUND_RING + 1, y0 - 32 - ROUND_BODY, 1)],
+                     [(mid, y) for y in
+                      _sweep(ROOM_L - ROUND_RING - 1, y1 + 32 + ROUND_BODY, -1)]]
+        for cands in sides:
+            for cx, cy in cands:
+                if _round_ok(cx, cy, cfg, placed, lane_x, aligned=True):
+                    placed.append((round(cx, 1), round(cy, 1)))
+                    break
     # 2) greedy grid fill of everything else
-    y = 41
-    while y <= ROOM_L - 41:
-        x = 41
-        while x <= ROOM_W - 41:
+    y = ROUND_RING + 1
+    while y <= ROOM_L - ROUND_RING - 1:
+        x = ROUND_RING + 1
+        while x <= ROOM_W - ROUND_RING - 1:
             if _round_ok(x, y, cfg, placed, lane_x):
                 placed.append((float(x), float(y)))
-            x += 8
-        y += 8
+            x += 4
+        y += 4
     return placed
 
 

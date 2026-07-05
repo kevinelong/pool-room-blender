@@ -15,26 +15,26 @@
         "players": 24,
         "dine": 0,
         "drink": 0,
-        "flex": 52,
+        "flex": 44,
         "spectators": 0
       },
       "cue": {
         "full_pct": 79,
-        "tight_pct": 0,
-        "blocked_pct": 21,
+        "tight_pct": 8,
+        "blocked_pct": 12,
         "min_clearance_in": 34.5,
         "per_table": {
           "T0L": {
             "W": 85.5,
             "E": 59.8,
             "S": 73.2,
-            "N": 39.2
+            "N": 57.8
           },
           "T0R": {
             "W": 59.8,
             "E": 34.5,
             "S": 73.2,
-            "N": 39.2
+            "N": 57.8
           },
           "T1L": {
             "W": 85.5,
@@ -64,24 +64,24 @@
       },
       "service": {
         "cocktail": {
-          "seats": 11,
-          "max_run_ft": 73.4,
-          "avg_run_ft": 37.7,
+          "seats": 10,
+          "max_run_ft": 67.6,
+          "avg_run_ft": 34.6,
           "conflicted_seats": 6
         },
         "food": {
-          "seats": 11,
-          "max_run_ft": 45.3,
-          "avg_run_ft": 23.5,
+          "seats": 10,
+          "max_run_ft": 39.5,
+          "avg_run_ft": 21.8,
           "conflicted_seats": 6
         }
       },
       "egress": {
-        "exit_corridor_in": 78.2,
+        "exit_corridor_in": 170.0,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 59.0
+        "worst_travel_ft": 58.8
       },
-      "revenue_proxy_hr": 706,
+      "revenue_proxy_hr": 614,
       "flip_minutes": 0,
       "notes": [
         "The room as built \u2014 the baseline every option is judged against.",
@@ -101,22 +101,22 @@
         "spectators": 21
       },
       "cue": {
-        "full_pct": 88,
+        "full_pct": 96,
         "tight_pct": 0,
-        "blocked_pct": 12,
+        "blocked_pct": 4,
         "min_clearance_in": 34.5,
         "per_table": {
           "T0L": {
             "W": 85.5,
             "E": 59.8,
             "S": 73.2,
-            "N": 39.2
+            "N": 88.8
           },
           "T0R": {
             "W": 59.8,
             "E": 85.5,
             "S": 73.2,
-            "N": 39.2
+            "N": 88.8
           },
           "T1L": {
             "W": 85.5,
@@ -147,21 +147,21 @@
       "service": {
         "cocktail": {
           "seats": 5,
-          "max_run_ft": 73.4,
-          "avg_run_ft": 46.5,
+          "max_run_ft": 72.4,
+          "avg_run_ft": 47.9,
           "conflicted_seats": 2
         },
         "food": {
           "seats": 3,
-          "max_run_ft": 45.3,
-          "avg_run_ft": 32.1,
+          "max_run_ft": 44.3,
+          "avg_run_ft": 34.6,
           "conflicted_seats": 0
         }
       },
       "egress": {
-        "exit_corridor_in": 78.2,
+        "exit_corridor_in": 170.0,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 55.2
+        "worst_travel_ft": 54.2
       },
       "revenue_proxy_hr": 462,
       "flip_minutes": 45,
@@ -242,7 +242,7 @@
         }
       },
       "egress": {
-        "exit_corridor_in": 111.8,
+        "exit_corridor_in": 170.0,
         "exit_corridor_ok": true,
         "worst_travel_ft": 56.6
       },
@@ -263,47 +263,47 @@
         "players": 24,
         "dine": 0,
         "drink": 0,
-        "flex": 40,
+        "flex": 48,
         "spectators": 0
       },
       "cue": {
-        "full_pct": 38,
+        "full_pct": 54,
         "tight_pct": 42,
-        "blocked_pct": 21,
-        "min_clearance_in": 39.2,
+        "blocked_pct": 4,
+        "min_clearance_in": 39.5,
         "per_table": {
           "Line0": {
-            "W": 39.2,
+            "W": 80.0,
             "E": 71.0,
             "S": 54.8,
             "N": 78.2
           },
           "Line1": {
-            "W": 39.2,
+            "W": 80.0,
             "E": 71.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line2": {
-            "W": 39.2,
+            "W": 80.0,
             "E": 71.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line3": {
-            "W": 39.2,
+            "W": 80.0,
             "E": 71.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line4": {
-            "W": 39.2,
+            "W": 80.0,
             "E": 71.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line5": {
-            "W": 146.5,
+            "W": 39.5,
             "E": 91.5,
             "S": 59.8,
             "N": 54.8
@@ -312,24 +312,24 @@
       },
       "service": {
         "cocktail": {
-          "seats": 5,
-          "max_run_ft": 64.8,
-          "avg_run_ft": 48.0,
-          "conflicted_seats": 5
+          "seats": 6,
+          "max_run_ft": 68.2,
+          "avg_run_ft": 47.1,
+          "conflicted_seats": 6
         },
         "food": {
-          "seats": 5,
-          "max_run_ft": 36.7,
-          "avg_run_ft": 29.3,
-          "conflicted_seats": 5
+          "seats": 6,
+          "max_run_ft": 43.8,
+          "avg_run_ft": 34.5,
+          "conflicted_seats": 6
         }
       },
       "egress": {
-        "exit_corridor_in": 139.2,
+        "exit_corridor_in": 170.0,
         "exit_corridor_ok": true,
         "worst_travel_ft": 54.9
       },
-      "revenue_proxy_hr": 568,
+      "revenue_proxy_hr": 660,
       "flip_minutes": 20,
       "notes": [
         "The west side becomes a 9-ft hospitality strip the full length of the room \u2014 folding rounds and a high-top under the windows-side wall, clear of the Emergency Exit approach.",
@@ -346,42 +346,42 @@
         "players": 24,
         "dine": 0,
         "drink": 0,
-        "flex": 32,
+        "flex": 40,
         "spectators": 0
       },
       "cue": {
-        "full_pct": 42,
+        "full_pct": 54,
         "tight_pct": 42,
-        "blocked_pct": 17,
-        "min_clearance_in": 39.2,
+        "blocked_pct": 4,
+        "min_clearance_in": 41.0,
         "per_table": {
           "Line0": {
             "W": 71.0,
-            "E": 39.2,
+            "E": 80.0,
             "S": 54.8,
             "N": 78.2
           },
           "Line1": {
             "W": 71.0,
-            "E": 39.2,
+            "E": 80.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line2": {
             "W": 71.0,
-            "E": 167.0,
+            "E": 41.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line3": {
             "W": 71.0,
-            "E": 39.2,
+            "E": 61.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line4": {
             "W": 71.0,
-            "E": 39.2,
+            "E": 80.0,
             "S": 54.8,
             "N": 54.8
           },
@@ -395,24 +395,24 @@
       },
       "service": {
         "cocktail": {
-          "seats": 4,
-          "max_run_ft": 53.1,
-          "avg_run_ft": 36.2,
+          "seats": 5,
+          "max_run_ft": 59.0,
+          "avg_run_ft": 41.2,
           "conflicted_seats": 0
         },
         "food": {
-          "seats": 4,
-          "max_run_ft": 25.0,
-          "avg_run_ft": 19.9,
+          "seats": 5,
+          "max_run_ft": 30.9,
+          "avg_run_ft": 22.6,
           "conflicted_seats": 0
         }
       },
       "egress": {
-        "exit_corridor_in": 63.8,
+        "exit_corridor_in": 170.0,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 53.1
+        "worst_travel_ft": 52.6
       },
-      "revenue_proxy_hr": 476,
+      "revenue_proxy_hr": 568,
       "flip_minutes": 25,
       "notes": [
         "Each table gets its own 5-ft round on the east wall at the same height \u2014 table service at arm's reach.",
