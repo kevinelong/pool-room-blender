@@ -127,8 +127,8 @@ def egress_metrics(cfg):
     corridor); anything under is a hard fail.
     """
     fx0, fy0, fx1, fy1 = EXIT_FRONTAGE
-    door_x0, door_x1 = 221.0, 286.0
-    scan_x0, scan_x1 = 150.0, ROOM_W
+    door_x0, door_x1 = 30.0, 95.0     # v18: EE at the west end of the S wall
+    scan_x0, scan_x1 = 0.0, 170.0
     ivals = []
     for _name, (ox0, oy0, ox1, oy1) in obstacles(cfg):
         if _overlap(oy0, oy1, fy0, fy1) > 0 and _overlap(ox0, ox1, scan_x0, scan_x1) > 0:
@@ -147,7 +147,7 @@ def egress_metrics(cfg):
     worst = 0.0
     for x, y in pts:
         d_main = abs(316 - x) + abs(647 - y)
-        d_exit = abs(253.5 - x) + abs(ROOM_L - y)
+        d_exit = abs(62.5 - x) + abs(ROOM_L - y)
         worst = max(worst, min(d_main, d_exit))
     return dict(exit_corridor_in=round(corridor, 1),
                 exit_corridor_ok=corridor >= 44.0,

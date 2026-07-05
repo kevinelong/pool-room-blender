@@ -20,3 +20,11 @@ Applied in:
   ROUND_D=60, ROUND_COVERS=8, HIGHTOP_SEATS=2)
 - `drivers/driver_v16_variant.py` (rounds at 60", high-tops built as
   22x28 bar-height two-tops)
+
+## v18 addendum (2026-07-04)
+
+5. **Emergency Exit: WEST end of the south wall** — DOORS entry
+   `('F', 30, 65)`, door span x 30..95, center (62.5, 682). The v15c
+   east-half position (ROOM_W-95) was wrong per the reference video and
+   is superseded. Egress checks, configs, and furniture placements all
+   updated to keep the west-end approach clear.

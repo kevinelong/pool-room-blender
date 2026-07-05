@@ -77,9 +77,9 @@
         }
       },
       "egress": {
-        "exit_corridor_in": 166.0,
+        "exit_corridor_in": 170.0,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 66.8
+        "worst_travel_ft": 50.9
       },
       "revenue_proxy_hr": 320,
       "flip_minutes": 0,
@@ -162,7 +162,7 @@
       "egress": {
         "exit_corridor_in": 78.2,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 45.9
+        "worst_travel_ft": 39.4
       },
       "revenue_proxy_hr": 308,
       "flip_minutes": 0,
@@ -245,7 +245,7 @@
       "egress": {
         "exit_corridor_in": 78.2,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 45.9
+        "worst_travel_ft": 39.4
       },
       "revenue_proxy_hr": 202,
       "flip_minutes": 45,
@@ -263,7 +263,7 @@
         "tables": 6,
         "players": 24,
         "dine": 0,
-        "drink": 22,
+        "drink": 20,
         "flex": 0,
         "spectators": 11
       },
@@ -313,10 +313,10 @@
       },
       "service": {
         "cocktail": {
-          "seats": 17,
+          "seats": 15,
           "max_run_ft": 39.8,
-          "avg_run_ft": 25.4,
-          "conflicted_seats": 2
+          "avg_run_ft": 22.2,
+          "conflicted_seats": 3
         },
         "food": {
           "seats": 0,
@@ -326,11 +326,11 @@
         }
       },
       "egress": {
-        "exit_corridor_in": 146,
+        "exit_corridor_in": 130.0,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 57.0
+        "worst_travel_ft": 50.5
       },
-      "revenue_proxy_hr": 328,
+      "revenue_proxy_hr": 310,
       "flip_minutes": 15,
       "notes": [
         "Bar staff barely enter the room \u2014 the lounge zone is at the door.",
@@ -346,15 +346,15 @@
         "tables": 6,
         "players": 24,
         "dine": 40,
-        "drink": 7,
+        "drink": 5,
         "flex": 0,
         "spectators": 7
       },
       "cue": {
-        "full_pct": 100,
+        "full_pct": 92,
         "tight_pct": 0,
-        "blocked_pct": 0,
-        "min_clearance_in": 59.2,
+        "blocked_pct": 8,
+        "min_clearance_in": 51.8,
         "per_table": {
           "T0L": {
             "W": 85.5,
@@ -383,37 +383,37 @@
           "T2L": {
             "W": 85.5,
             "E": 59.8,
-            "S": 61.8,
+            "S": 51.8,
             "N": 61.2
           },
           "T2R": {
             "W": 59.8,
             "E": 85.5,
-            "S": 61.8,
+            "S": 51.8,
             "N": 61.2
           }
         }
       },
       "service": {
         "cocktail": {
-          "seats": 7,
-          "max_run_ft": 39.9,
-          "avg_run_ft": 33.8,
+          "seats": 5,
+          "max_run_ft": 39.8,
+          "avg_run_ft": 35.5,
           "conflicted_seats": 3
         },
         "food": {
           "seats": 5,
-          "max_run_ft": 48.7,
-          "avg_run_ft": 39.4,
+          "max_run_ft": 42.4,
+          "avg_run_ft": 36.4,
           "conflicted_seats": 0
         }
       },
       "egress": {
-        "exit_corridor_in": 0.0,
-        "exit_corridor_ok": false,
-        "worst_travel_ft": 57.0
+        "exit_corridor_in": 105.0,
+        "exit_corridor_ok": true,
+        "worst_travel_ft": 50.5
       },
-      "revenue_proxy_hr": 745,
+      "revenue_proxy_hr": 727,
       "flip_minutes": 20,
       "notes": [
         "Forty covers on five-foot rounds, all south of the play zone.",
@@ -434,10 +434,10 @@
         "spectators": 7
       },
       "cue": {
-        "full_pct": 100,
+        "full_pct": 92,
         "tight_pct": 0,
-        "blocked_pct": 0,
-        "min_clearance_in": 59.2,
+        "blocked_pct": 8,
+        "min_clearance_in": 51.8,
         "per_table": {
           "T0L": {
             "W": 85.5,
@@ -466,13 +466,13 @@
           "T2L": {
             "W": 85.5,
             "E": 59.8,
-            "S": 61.8,
+            "S": 51.8,
             "N": 61.2
           },
           "T2R": {
             "W": 59.8,
             "E": 85.5,
-            "S": 61.8,
+            "S": 51.8,
             "N": 61.2
           }
         }
@@ -480,21 +480,21 @@
       "service": {
         "cocktail": {
           "seats": 5,
-          "max_run_ft": 26.1,
-          "avg_run_ft": 18.0,
+          "max_run_ft": 26.9,
+          "avg_run_ft": 16.1,
           "conflicted_seats": 0
         },
         "food": {
           "seats": 5,
-          "max_run_ft": 48.7,
-          "avg_run_ft": 39.4,
+          "max_run_ft": 42.4,
+          "avg_run_ft": 36.4,
           "conflicted_seats": 0
         }
       },
       "egress": {
-        "exit_corridor_in": 0.0,
-        "exit_corridor_ok": false,
-        "worst_travel_ft": 57.0
+        "exit_corridor_in": 105.0,
+        "exit_corridor_ok": true,
+        "worst_travel_ft": 50.5
       },
       "revenue_proxy_hr": 582,
       "flip_minutes": 20,

@@ -34,8 +34,8 @@ SERVICE_LANE_X = (265, 300)       # east service lane (green strip)
 
 DOOR_MAIN = (316, 612, 316, 682)   # E wall, south end (cocktail stream)
 DOOR_KITCHEN = (316, 290, 316, 330)  # E wall, mid (food stream)
-DOOR_EXIT = (221, 682, 286, 682)   # S wall, east half (egress only)
-EXIT_FRONTAGE = (215, 616, 292, 682)  # egress approach band
+DOOR_EXIT = (30, 682, 95, 682)     # v18: S wall, WEST end (per video)
+EXIT_FRONTAGE = (24, 616, 101, 682)   # egress approach band
 
 SEATS_PER_TABLE = 4       # players per pool table
 N_TABLES = 6              # LOCKED: every option has exactly six tables
@@ -133,8 +133,10 @@ CONFIGS = [
         rounds=[],
         twotops=[(282, 460), (282, 512)],
         twotop_role="spectate",
-        hightops=[(70, 560), (150, 560), (230, 560), (70, 630), (150, 630)],
-        rails=[(2, 470, 2, 660, "drink"), (40, 680, 180, 680, "drink")],
+        # v18: back row shifted east, S rail moved east — both clear the
+        # relocated Emergency Exit (west end of the S wall)
+        hightops=[(70, 560), (150, 560), (230, 560), (150, 630), (230, 630)],
+        rails=[(2, 470, 2, 600, "drink"), (115, 680, 255, 680, "drink")],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=15,
@@ -149,9 +151,11 @@ CONFIGS = [
         name="5 · Billiards Bistro",
         tagline="Dining-forward: five-foot rounds fill the south third",
         tables=_rows(ROWS_NORTH),
-        rounds=[(70, 580), (160, 580), (250, 580), (70, 648), (155, 648)],
+        # v18: rows pulled north/east of the relocated west-end Emergency
+        # Exit and its approach band
+        rounds=[(70, 570), (160, 570), (250, 570), (145, 648), (225, 648)],
         twotops=[], hightops=[],
-        rails=[(2, 470, 2, 640, "drink")],
+        rails=[(2, 470, 2, 600, "drink")],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=20,
@@ -167,7 +171,7 @@ CONFIGS = [
         name="6 · Split-House Flex",
         tagline="Fixed play north, folding flex zone south of the aisle",
         tables=_rows(ROWS_NORTH),
-        rounds=[(70, 580), (160, 580), (250, 580), (70, 648), (155, 648)],
+        rounds=[(70, 570), (160, 570), (250, 570), (145, 648), (225, 648)],
         round_role="flex",
         twotops=[], hightops=[],
         rails=[],

@@ -117,7 +117,8 @@ def page_for(cfg):
     callout((1130, 720), "Main Entry — two steps down, iron rails",
             (1420, 380))
     callout((1360, 640), "wood door standing open", (1620, 990))
-    callout((955, 720), "Emergency Exit door (edge-on)", (480, 330))
+    # (v18: the Emergency Exit moved to the west end of the S wall and is
+    # behind the camera in this view — no callout.)
 
     cap_y = py + persp.height + 8
     d.text((M, cap_y),

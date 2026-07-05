@@ -66,7 +66,9 @@ DOORS = [
     # Kitchen, RIGHT wall, north of HVAC chase.
     ('R', 290, 40, DOOR_H, "Kitchen (32\")"),
     # Emergency exit, FRONT (south) wall, right side.
-    ('F', ROOM_W - 95, 65, DOOR_H, "Emergency Exit (36\")"),
+    # v18: moved to the WEST end of the south wall per the reference video
+    # (was ROOM_W-95 = east half — supersedes the v15c position).
+    ('F', 30, 65, DOOR_H, "Emergency Exit (36\")"),
     # Storage door 1: BACK (north) wall, east end. 36" door, 4" gap to NE corner.
     ('B', ROOM_W - 40, 36, DOOR_H, "Storage A (36\")"),
     # Storage door 2: RIGHT (east) wall, north end. 36" door, 4" gap to NE corner.
@@ -475,19 +477,51 @@ def build_entry_alcove():
                        w=24, l=door_y_span,
                        h=1, material=mat_concrete)
     # two wrought-iron rails flanking the stair run (v17: moved here from
-    # the removed west entry). Bases root in the solid treads/landing.
+    # the removed west entry). Open ironwork: a level top bar on posts
+    # whose bases follow the stair profile — not solid panels.
     mat_iron = make_pbr_material("Wrought_Iron_Entry", None, None, None,
                                  tile_size_m=1.0,
                                  flat_color=(0.05, 0.05, 0.06, 1.0))
-    RAIL_T = 2
-    build_wall_segment("Entry_Rail_N",
-                       x=x_step2, y=door_y0 + 3, z=landing_z + 1,
-                       w=ROOM_W - x_step2, l=RAIL_T,
-                       h=50, material=mat_iron)   # top at +36
-    build_wall_segment("Entry_Rail_S",
-                       x=x_step2, y=ROOM_L - 3 - RAIL_T, z=landing_z + 1,
-                       w=ROOM_W - x_step2, l=RAIL_T,
-                       h=50, material=mat_iron)
+    RAIL_T = 1.5
+    RAIL_TOP = 36
+
+    def _tread_top(x):
+        if x >= x_landing:
+            return landing_z + 1        # -14 (landing surface)
+        if x >= x_step1:
+            return -STAIR_RISE          # -7.5
+        return 0.0                      # step2 top / floor level
+
+    for side, ry in (("N", door_y0 + 3), ("S", ROOM_L - 3 - RAIL_T)):
+        build_wall_segment(f"Entry_Rail_{side}_bar",
+                           x=x_step2, y=ry, z=RAIL_TOP - 2,
+                           w=ROOM_W - x_step2, l=RAIL_T,
+                           h=2, material=mat_iron)
+        for px_ in (x_step2 + 1, x_step1 + 2, x_landing + 2, ROOM_W - 3):
+            base = _tread_top(px_)
+            build_wall_segment(f"Entry_Rail_{side}_post_{px_:.0f}",
+                               x=px_, y=ry, z=base,
+                               w=RAIL_T, l=RAIL_T,
+                               h=RAIL_TOP - 2 - base, material=mat_iron)
+
+    # daylight beyond the open doorway: a light-grey exterior backdrop and
+    # a warm area light over the stoop, so the doorway reads as an exit
+    # instead of a black void
+    mat_ext = make_pbr_material("Entry_Exterior_Backdrop", None, None, None,
+                                tile_size_m=1.0,
+                                flat_color=(0.55, 0.55, 0.52, 1.0))
+    build_wall_segment("Entry_Backdrop",
+                       x=ROOM_W + 40, y=door_y0 - 20, z=landing_z,
+                       w=2, l=door_y_span + 40,
+                       h=CEIL_H, material=mat_ext)
+    ld = bpy.data.lights.new("Entry_Daylight", type='AREA')
+    ld.energy = 350.0
+    ld.size = 1.6
+    ld.color = (1.0, 0.96, 0.88)
+    lo = bpy.data.objects.new("Entry_Daylight", ld)
+    bpy.context.collection.objects.link(lo)
+    lo.location = (in2m(ROOM_W + 20), in2m(door_y0 + 35), in2m(70))
+    lo.rotation_euler = (0.0, math.radians(-115.0), 0.0)
     # wood door leaf standing open, pinned back against the interior wall
     # face just north of the opening
     mat_wood_door = make_pbr_material("Wood_Door_Entry", None, None, None,
