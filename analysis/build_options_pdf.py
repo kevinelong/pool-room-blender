@@ -25,31 +25,41 @@ MUTED = (110, 110, 118)
 # Digit-free names, taglines, and trade-off notes for presentation.
 CLEAN = {
     "social": ("Social Hall (current)",
-               "The built layout: six tables and wall two-tops",
+               "Six tables, two-tops at every row end, a north round cluster",
                ["The room as built today — the baseline for every option.",
-                "Wall two-tops flex between drinking, dining, and watching."]),
+                "Wall two-tops flank every table row on both walls; the "
+                "north end seats a five-round social cluster around a "
+                "center round.",
+                "The cluster runs deliberately tight, and the two-top by "
+                "the kitchen door partially fronts it — both accepted."]),
     "tournament": ("Tournament House",
-                   "A north gallery of bleachers and the stage face the feature row",
-                   ["The bench gives way to a bleacher gallery; the nearest "
-                    "table row becomes the feature row.",
+                   "A north gallery of rounds faces the feature row",
+                   ["The bleachers give way to a gallery of five rounds; "
+                    "the nearest table row becomes the feature row.",
                     "Food drops to handhelds while racks are in play."]),
     "centerline": ("Center Line",
                    "Six tables turned sideways, end-to-end down the middle",
                    ["Every table on display from the full-length side aisles.",
+                    "The service lane runs inboard, between the table ends "
+                    "and the east wall tops — the wall lane pinched.",
                     "Side-to-side swings between neighbours run tight; the "
                     "table ends get full room."]),
     "eastline": ("East Line + West Lounge",
-                 "Tables single-file on the east; hospitality strip west",
-                 ["The west side hosts folding rounds and a high-top the "
-                  "full length of the room.",
+                 "Tables single-file on the east; six aligned rounds west",
+                 ["Six rounds in one line down the west side, each on its "
+                  "table's centerline.",
+                  "FLAG: the southernmost round narrows the Emergency Exit "
+                  "approach — the walk bends around its chairs.",
                   "Every delivery crosses the table line — hospitality sits "
                   "opposite the doors."]),
     "westline": ("West Line + Wall Rounds",
-                 "Tables single-file west; a round beside each table east",
-                 ["Every table gets its own five-foot round on the east "
-                  "wall at matching height.",
-                  "Rounds pull inboard where the kitchen, chase, and entry "
-                  "well need room."]),
+                 "Tables single-file west; a round beside every table east",
+                 ["Every table gets its own five-foot round at matching "
+                  "height — all six, per the brief.",
+                  "FLAG: the southernmost round crowds the Main Entry "
+                  "approach beside the stair rail.",
+                  "FLAG: one round sits partially in front of the kitchen "
+                  "door — accepted to keep its table paired."]),
 }
 
 RENDERS = {

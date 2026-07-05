@@ -157,6 +157,88 @@ def egress_metrics(cfg):
                 worst_travel_ft=round(worst / 12, 1))
 
 
+def path_audit(cfg):
+    """v26: measure every painted walking path's REAL clear width — the
+    span between the obstacles flanking it — and call out anomalies.
+    < 36" is a pinch (single server, no passing); < 24" is a fail."""
+    from configs.v16_configs import ROUND_RING, HVAC, ENTRY_WELL, KITCHEN_FRONT
+    rot = cfg.get("rot90", False)
+    named = [("a pool table", table_rect(tx, ty, rot))
+             for _n, tx, ty in cfg["tables"]]
+    named += [("a round's chairs",
+               (cx - 40, cy - 40, cx + 40, cy + 40))
+              for cx, cy in cfg.get("rounds", [])]
+    named += [("a wall two-top", (hx - 13, hy - 25, hx + 13, hy + 25))
+              for hx, hy in
+              list(cfg.get("hightops", [])) + list(cfg.get("twotops", []))]
+    named += [("the HVAC chase", HVAC), ("the Main Entry well", ENTRY_WELL)]
+    named += [("a bleacher", b) for b in cfg.get("bleachers", [])]
+
+    def zone(x, y):
+        ns = "north" if y < 227 else ("center" if y < 455 else "south")
+        we = "west" if x < 105 else ("center" if x < 211 else "east")
+        return f"{ns}-{we}"
+
+    worst = 1e9
+    seen = set()
+    anomalies = []
+    # The painted strips PLUS the three door approaches — a strip clipped
+    # short of an obstacle hides the pinch at its seam, so the approaches
+    # are audited as corridors in their own right.
+    corridors = [(30.0, 650.0, 276.0, 680.0),    # EE / south-wall walk
+                 (250.0, 588.0, 316.0, 612.0),   # Main Entry approach
+                 (262.0, 298.0, 316.0, 322.0)]   # kitchen door approach
+    for (x0, y0, x1, y1) in list(cfg.get("paths", [])) + corridors:
+        horiz = (x1 - x0) >= (y1 - y0)
+        length = (x1 - x0) if horiz else (y1 - y0)
+        n = max(2, int(length / 8))
+        for i in range(n + 1):
+            t = i / n
+            px = x0 + t * (x1 - x0) if horiz else (x0 + x1) / 2
+            py = (y0 + y1) / 2 if horiz else y0 + t * (y1 - y0)
+            inside = next((nm for nm, (ox0, oy0, ox1, oy1) in named
+                           if ox0 < px < ox1 and oy0 < py < oy1), None)
+            if inside:
+                key = ("blocked", inside, zone(px, py))
+                if key not in seen:
+                    seen.add(key)
+                    anomalies.append(dict(
+                        severity="blocked", width_in=0.0,
+                        where=f"{zone(px, py)}: walk crosses {inside}"))
+                continue
+            if horiz:      # clear span measured in y
+                lo, lo_n = 0.0, "the north wall"
+                hi, hi_n = ROOM_L, "the south wall"
+                for nm, (ox0, oy0, ox1, oy1) in named:
+                    if ox0 < px < ox1:
+                        if oy1 <= py and oy1 > lo:
+                            lo, lo_n = oy1, nm
+                        if oy0 >= py and oy0 < hi:
+                            hi, hi_n = oy0, nm
+            else:          # clear span measured in x
+                lo, lo_n = 0.0, "the west wall"
+                hi, hi_n = ROOM_W, "the east wall"
+                for nm, (ox0, oy0, ox1, oy1) in named:
+                    if oy0 < py < oy1:
+                        if ox1 <= px and ox1 > lo:
+                            lo, lo_n = ox1, nm
+                        if ox0 >= px and ox0 < hi:
+                            hi, hi_n = ox0, nm
+            w = hi - lo
+            worst = min(worst, w)
+            if w < 36:
+                key = (lo_n, hi_n, zone(px, py))
+                if key not in seen:
+                    seen.add(key)
+                    sev = "FAIL" if w < 24 else "pinch"
+                    anomalies.append(dict(
+                        severity=sev, width_in=round(w, 1),
+                        where=f"{zone(px, py)}: between {lo_n} and {hi_n}"))
+    anomalies.sort(key=lambda a: a["width_in"])
+    return dict(min_width_in=(round(worst, 1) if worst < 1e9 else None),
+                anomalies=anomalies)
+
+
 def analyze(cfg):
     caps = capacities(cfg)
     tables = {}
@@ -194,6 +276,7 @@ def analyze(cfg):
                  per_table=tables),
         service=svc,
         egress=egr,
+        paths=path_audit(cfg),
         revenue_proxy_hr=round(revenue),
         flip_minutes=cfg["flip_minutes"],
         notes=cfg["notes"],
@@ -208,8 +291,10 @@ def main():
     lines = ["# v16 configuration scorecards\n",
              "| Config | Tables | Players | Spect. | Drink | Dine | Flex | "
              "Cue full% | Min clr\" | Cocktail max run | Food max run | "
-             "Svc conflicts | Egress worst | $/hr proxy | Flip min |",
-             "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+             "Svc conflicts | Egress worst | Path min\" | $/hr proxy | "
+             "Flip min |",
+             "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"
+             "---|"]
     for r in out:
         c, s = r["capacity"], r["service"]
         conf = s["cocktail"]["conflicted_seats"] + s["food"]["conflicted_seats"]
@@ -219,7 +304,21 @@ def main():
             f"{r['cue']['full_pct']}% | {r['cue']['min_clearance_in']} | "
             f"{s['cocktail']['max_run_ft']} ft | {s['food']['max_run_ft']} ft | "
             f"{conf} | {r['egress']['worst_travel_ft']} ft | "
+            f"{r['paths']['min_width_in']} | "
             f"${r['revenue_proxy_hr']} | {r['flip_minutes']} |")
+    # v26: walking-path width anomalies, called out per config
+    lines.append("\n## Walking-path anomalies (clear width < 36\")\n")
+    for r in out:
+        an = r["paths"]["anomalies"]
+        if not an:
+            lines.append(f"- **{r['name']}** — none; narrowest walk "
+                         f"{r['paths']['min_width_in']}\"")
+        else:
+            lines.append(f"- **{r['name']}** — narrowest walk "
+                         f"{r['paths']['min_width_in']}\":")
+            for a in an:
+                lines.append(f"    - {a['severity']}: {a['width_in']}\" "
+                             f"({a['where']})")
     with open(os.path.join(here, "scorecards.md"), "w") as fh:
         fh.write("\n".join(lines) + "\n")
     print("\n".join(lines))

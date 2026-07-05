@@ -37,3 +37,27 @@ Applied in:
    rounds), Center Line (+end two-tops), East Line (6 rounds, top table
    centered between round and entry rail), West Line (per-table wall
    rounds).
+
+## v26 addendum (2026-07-05, evening review)
+
+7. **Round chairs sit on the DIAGONALS (X shape, not +).** Only Social /
+   Tournament's forced CENTER round keeps the cardinal (+) orientation.
+8. **Door frontage hierarchy: kitchen door gets the deepest clearance;**
+   the Emergency Exit and storage doors need less. A round or two-top may
+   PARTIALLY front the kitchen door where a mandated placement needs it —
+   allowed, but always called out in the notes.
+9. **Staff paths never cross a pool table** — they turn down an aisle and
+   cross between tables. Every walking path is width-audited; anomalies
+   (<36" pinches, blocked walks) are called out in scorecards.md.
+10. **Main Entry door leaf opens LEFT, exactly 90 degrees,** stopping flat
+    against the south wall.
+11. **2x3 layouts (Social, Tournament): a bar two-top at every table-row
+    END on BOTH walls,** pushed to the wall, stools north/south facing
+    their top. The row-3 south end on the east wall is skipped (entry
+    well); the HVAC-adjacent one nudges south.
+12. **Tournament: NO bleachers** — a five-round gallery instead. Social:
+    four aligned north rounds + a forced center fifth (quincunx).
+13. **East Line: the sixth round sits IN LINE with the column** (flagged:
+    narrows the EE approach). **West Line: all SIX rounds present** —
+    the sixth beside the entry well (flagged: crowds the Main Entry
+    approach).

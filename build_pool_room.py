@@ -522,14 +522,15 @@ def build_entry_alcove():
     bpy.context.collection.objects.link(lo)
     lo.location = (in2m(ROOM_W + 20), in2m(door_y0 + 35), in2m(70))
     lo.rotation_euler = (0.0, math.radians(-115.0), 0.0)
-    # wood door leaf standing open, pinned back against the interior wall
-    # face just north of the opening
+    # v26: the wood door leaf hinges on the SOUTH jamb and opens to the
+    # LEFT (as you enter) — it swings exactly 90 degrees and stops flat
+    # against the south (top) wall face beside the opening
     mat_wood_door = make_pbr_material("Wood_Door_Entry", None, None, None,
                                       tile_size_m=1.0,
                                       flat_color=(0.42, 0.26, 0.13, 1.0))
     build_wall_segment("Entry_Door_Leaf_Open",
-                       x=ROOM_W - 2.5, y=door_y0 - 36, z=0,
-                       w=1.75, l=36,
+                       x=ROOM_W - 36 - 1, y=ROOM_L - 2.5, z=0,
+                       w=36, l=1.75,
                        h=80, material=mat_wood_door)
 
 

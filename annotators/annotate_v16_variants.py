@@ -12,15 +12,15 @@ SRC_DIR = "/tmp/blender_test"
 
 META = {
     "social": ("1 · Social Hall",
-               "six tables · wall two-tops · packed north rounds — the built baseline"),
+               "six tables · two-tops at every row end · north round cluster"),
     "centerline": ("3 · Center Line",
                    "six tables turned 90°, end-to-end down the middle · wall two-tops both sides"),
     "eastline": ("4 · East Line + West Lounge",
                  "six tables single-file east · six aligned rounds down the west"),
     "westline": ("5 · West Line + Wall Rounds",
-                 "six tables single-file west · a round beside each table on the east wall"),
+                 "six tables single-file west · a round beside every table east"),
     "tournament": ("2 · Tournament House",
-                   "six tables · north bleacher gallery faces the feature row"),
+                   "six tables · a north gallery of rounds faces the feature row"),
 }
 
 

@@ -69,10 +69,10 @@ if not cfg.get("classroom"):
 # v15L north rounds in for social made them overlap the packed rounds
 # (visual QA: black ellipses across two north rounds) — disabled everywhere.
 DISABLE.append("build_round_tables")
-if ROT90:
-    # wall two-tops are keyed to the column layout; a rotated line puts
-    # them inside the tables' east swing — drop them (patrons pruned below)
-    DISABLE.append("build_two_tops")
+# v26: the config now owns every two-top (both-wall sets per row end) —
+# the furniture module's fixed east-wall six are retired everywhere, and
+# their seated patrons are pruned below
+DISABLE.append("build_two_tops")
 for call in DISABLE:
     src, n = re.subn(rf"^{call}\(\)", f"# v16:{KEY} disabled: {call}()",
                      src, count=1, flags=re.M)
@@ -80,10 +80,10 @@ for call in DISABLE:
 G2 = {"__name__": "__main__"}
 exec(compile(src, "build_pool_room_furniture.py", "exec"), G2)
 
+# v26: prune seated patrons in every layout (their wall two-tops are gone)
+for o in [o for o in bpy.data.objects if o.name.startswith("P_patron_")]:
+    bpy.data.objects.remove(o, do_unlink=True)
 if ROT90:
-    # prune seated patrons (their wall two-tops were disabled)
-    for o in [o for o in bpy.data.objects if o.name.startswith("P_patron_")]:
-        bpy.data.objects.remove(o, do_unlink=True)
     # rotate each table's object group 90° about its cabinet center
     from mathutils import Matrix
     IN_ = 0.0254
@@ -117,23 +117,41 @@ if stage_rect and tuple(stage_rect) != STAGE_DEFAULT:
 
 # ---- config-specific additions -------------------------------------------
 coll = G2["get_or_create_collection"]("V16_Extras")
+from mathutils import Matrix as _Mtx
+_IN = 0.0254
+_PLUS = {(round(px, 1), round(py, 1))
+         for px, py in cfg.get("rounds_plus", [])}
 for i, (cx, cy) in enumerate(cfg.get("rounds", [])):
     G2["build_round_table"](f"v16_{KEY}_round{i}", cx, cy, 60, coll)
-    # v24: four hotel stacking chairs around every round
+    # v24: four hotel stacking chairs around every round.
+    # v26: chairs sit on the DIAGONALS (X shape) — built at the cardinal
+    # points, then the whole set rotates 45° about the round's center.
+    # Rounds listed in rounds_plus (social's center round) stay cardinal.
     for k, (chx, chy) in enumerate([(cx - 5.5, cy - 46), (cx - 5.5, cy + 34),
                                     (cx - 45, cy - 6), (cx + 34, cy - 6)]):
-        G2["build_chair"](f"v16_{KEY}_r{i}_ch{k}", chx, chy, coll)
-# Free-standing high-tops are the standard 22x28 bar-height two-top.
+        nm = f"v16_{KEY}_r{i}_ch{k}"
+        G2["build_chair"](nm, chx, chy, coll)
+        if (round(cx, 1), round(cy, 1)) not in _PLUS:
+            piv = Vector((cx * _IN, cy * _IN, 0.0))
+            R45 = (_Mtx.Translation(piv)
+                   @ _Mtx.Rotation(3.14159265 / 4, 4, 'Z')
+                   @ _Mtx.Translation(-piv))
+            for o in bpy.data.objects:
+                if o.name.startswith(f"Chair_{nm}_"):
+                    o.matrix_world = R45 @ o.matrix_world
+# Free-standing high-tops AND the config's wall two-tops are the same
+# standard 22x28 bar-height top; stools sit north and south, facing it.
 ht_mat = G2["get_or_create_color_material"](
     "MAT_v16_hightop", (0.35, 0.24, 0.16, 1.0), roughness=0.45)
-for i, (cx, cy) in enumerate(cfg.get("hightops", [])):
+_bar_tops = list(cfg.get("hightops", [])) + list(cfg.get("twotops", []))
+for i, (cx, cy) in enumerate(_bar_tops):
     G2["make_box"](f"v16_{KEY}_hightop{i}_top", cx - 11, cy - 14, 40.5,
                    22, 28, 1.5, material=ht_mat, collection=coll)
     G2["make_box"](f"v16_{KEY}_hightop{i}_post", cx - 2, cy - 2, 0,
                    4, 4, 40.5, material=ht_mat, collection=coll)
     G2["make_box"](f"v16_{KEY}_hightop{i}_foot", cx - 9, cy - 9, 0,
                    18, 18, 1.5, material=ht_mat, collection=coll)
-    # v24: two barstools per free-standing two-top
+    # two barstools per top, north and south, facing it
     for j, sy in enumerate((cy - 23, cy + 9)):
         G2["make_box"](f"v16_{KEY}_ht{i}_stool{j}_seat", cx - 7, sy, 28,
                        14, 14, 2, material=ht_mat, collection=coll)
