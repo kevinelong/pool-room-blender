@@ -181,11 +181,20 @@ for i, (x0, y0, x1, y1, _role) in enumerate(cfg.get("rails", [])):
                        material=rail_mat, collection=coll)
 
 # v24: precise green staff pathways (visible floor strips)
+# v25.2: strips overlap where the spine meets stubs/feeders (and two
+# feeders can be clipped to the same fragment) — coplanar tops z-fight
+# and render as black quads. Dedupe exact repeats and stagger each
+# strip's height by a hundredth so no two tops are ever coplanar.
 path_mat = G2["get_or_create_color_material"](
     "MAT_v16_path", (0.55, 0.85, 0.55, 1.0), roughness=0.9)
+seen_strips = set()
 for j, (px0, py0, px1, py1) in enumerate(cfg.get("paths", [])):
+    key = (round(px0, 1), round(py0, 1), round(px1, 1), round(py1, 1))
+    if key in seen_strips:
+        continue
+    seen_strips.add(key)
     G2["make_box"](f"v16_path_{j}", px0, py0, 0.02,
-                   px1 - px0, py1 - py0, 0.25,
+                   px1 - px0, py1 - py0, 0.25 + 0.01 * j,
                    material=path_mat, collection=coll)
 
 # Bleachers: 3 stepped rows rising toward the nearest wall. Steps run
