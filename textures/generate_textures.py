@@ -77,7 +77,7 @@ def save(img, name, outdir):
 
 def make_felt(outdir):
     # Diamond blue felt (matches committed v15L3 renders' light-blue beds)
-    alb = noisy(Image.new("RGB", (SIZE, SIZE), (100, 165, 215)), 5)
+    alb = noisy(Image.new("RGB", (SIZE, SIZE), (25, 120, 205)), 5)
     save(alb, "felt_albedo", outdir)
     save(flat_normal(3), "felt_normal", outdir)
     save(flat_rough(220), "felt_roughness", outdir)
@@ -85,7 +85,7 @@ def make_felt(outdir):
 
 def make_vct_floor(outdir):
     # Tile covers 48"; 4x4 grid of 12" VCT tiles, cream with seams.
-    alb = Image.new("RGB", (SIZE, SIZE), (228, 222, 210))
+    alb = Image.new("RGB", (SIZE, SIZE), (150, 118, 88))
     d = ImageDraw.Draw(alb)
     cell = SIZE // 4
     for ty in range(4):
@@ -93,12 +93,17 @@ def make_vct_floor(outdir):
             dv = random.randint(-6, 6)
             d.rectangle([tx * cell, ty * cell,
                          (tx + 1) * cell - 1, (ty + 1) * cell - 1],
-                        fill=(228 + dv, 222 + dv, 210 + dv))
+                        fill=(150 + dv, 118 + dv, 88 + dv))
     for i in range(5):
         p = min(i * cell, SIZE - 1)
-        d.line([(p, 0), (p, SIZE)], fill=(200, 195, 185), width=2)
-        d.line([(0, p), (SIZE, p)], fill=(200, 195, 185), width=2)
-    save(noisy(alb, 3), "vct_floor_albedo", outdir)
+        d.line([(p, 0), (p, SIZE)], fill=(118, 92, 68), width=2)
+        d.line([(0, p), (SIZE, p)], fill=(118, 92, 68), width=2)
+    d2 = ImageDraw.Draw(alb)
+    for _ in range(4000):                       # dark speckle per video
+        x, y = random.randrange(SIZE), random.randrange(SIZE)
+        v = random.randint(-45, -15)
+        d2.point((x, y), fill=(150 + v, 118 + v, 88 + v))
+    save(noisy(alb, 4), "vct_floor_albedo", outdir)
     save(flat_normal(2), "vct_floor_normal", outdir)
     save(flat_rough(90), "vct_floor_roughness", outdir)
 

@@ -966,13 +966,13 @@ def build_two_top(name, y, wall_side, coll):
     # v15j: pub-table + ladder-back bar stool per user SketchUp reference.
     # Palette: cherry wood tops & seat pads on matte-black metal frames.
     top_mat = get_or_create_color_material(
-        "MAT_twotop_top", (0.28, 0.10, 0.045, 1.0), roughness=0.45)   # cherry wood
+        "MAT_twotop_top", (0.05, 0.22, 0.10, 1.0), roughness=0.35)   # v19: green laminate per video
     bullnose_mat = get_or_create_color_material(
-        "MAT_twotop_bullnose", (0.22, 0.08, 0.035, 1.0), roughness=0.40)  # cherry, slightly darker edge
+        "MAT_twotop_bullnose", (0.035, 0.16, 0.075, 1.0), roughness=0.35)  # v19: green edge
     pedestal_mat = get_or_create_color_material(
         "MAT_twotop_pedestal", (0.020, 0.020, 0.022, 1.0), roughness=0.35)  # matte black metal
     chair_mat = get_or_create_color_material(
-        "MAT_twotop_chair", (0.28, 0.10, 0.045, 1.0), roughness=0.50)  # cherry seat pad (matches top)
+        "MAT_twotop_chair", (0.03, 0.03, 0.035, 1.0), roughness=0.50)  # v19: black seat pad per video
     chair_leg_mat = get_or_create_color_material(
         "MAT_twotop_chair_leg", (0.020, 0.020, 0.022, 1.0), roughness=0.35)  # matte black frame
 
@@ -1176,7 +1176,7 @@ def build_bench():
     coll = get_or_create_collection("Bench_Seating")
     # Plain matte black vinyl (matches original room photo bench).
     vinyl_mat = get_or_create_color_material(
-        "MAT_booth_black_vinyl", (0.03, 0.03, 0.035, 1.0), roughness=0.35)
+        "MAT_booth_black_vinyl", (0.028, 0.075, 0.045, 1.0), roughness=0.35)  # v19: dark green
     # Slightly darker gap between tuft channels (fake shadow line).
     tuft_shadow_mat = get_or_create_color_material(
         "MAT_booth_tuft_shadow", (0.01, 0.01, 0.012, 1.0), roughness=0.6)
@@ -2007,14 +2007,64 @@ def build_posters():
         ("MAT_poster_green", (0.13, 0.35, 0.18, 1.0)),
         ("MAT_poster_gold",  (0.45, 0.30, 0.08, 1.0)),
     ]
-    x = 112   # bench spans 102..270; four posters spaced along it
-    for i, (mname, rgba) in enumerate(tones):
+    # v19: two posters at the east end of the bench; the projection screen
+    # (build_signage) takes the center of the north wall per the video.
+    x = 216
+    for i, (mname, rgba) in enumerate(tones[:2]):
         art_mat = get_or_create_color_material(mname, rgba, roughness=0.6)
         make_box(f"Poster_{i}_frame", x=x - 1, y=0, z=46,
                  w=26, l=1.0, h=32, material=frame_mat, collection=coll)
         make_box(f"Poster_{i}_art", x=x, y=0, z=47,
                  w=24, l=1.5, h=30, material=art_mat, collection=coll)
-        x += 40
+        x += 30
+
+
+def build_led_strips():
+    """v19: red LED accent strips along wall bases (reference video shows
+    them under the bench run and along the baseboards)."""
+    coll = get_or_create_collection("LED_Strips")
+    led_mat = get_or_create_color_material(
+        "MAT_led_red", (1.0, 0.05, 0.05, 1.0), roughness=0.4,
+        emission=(1.0, 0.04, 0.04, 1.0), emission_strength=6.0)
+    runs = [
+        # under the north bench front edge
+        ("LED_bench", 102, BENCH_DEPTH, 168, 0.75),
+        # south wall base, between the EE door and the entry well
+        ("LED_south", 100, ROOM_L - 1.75, 170, 0.75),
+        # east wall base, south of the kitchen door to the HVAC chase
+        ("LED_east", ROOM_W - 1.75, 340, 0.75, 250),
+    ]
+    for name, x, y, w, l in runs:
+        make_box(name, x=x, y=y, z=0.5, w=w, l=l, h=1.0,
+                 material=led_mat, collection=coll)
+
+
+def build_signage():
+    """v19: hanging lightbox beer sign + wall projection screen (video)."""
+    coll = get_or_create_collection("Signage")
+    box_mat = get_or_create_color_material(
+        "MAT_lightbox_face", (0.95, 0.95, 0.92, 1.0), roughness=0.5,
+        emission=(1.0, 0.98, 0.92, 1.0), emission_strength=3.0)
+    band_mat = get_or_create_color_material(
+        "MAT_lightbox_band", (0.75, 0.06, 0.05, 1.0), roughness=0.5,
+        emission=(0.9, 0.05, 0.04, 1.0), emission_strength=2.0)
+    # Coors-style hanging lightbox over the east service lane
+    make_box("Lightbox_east", x=270, y=440, z=78,
+             w=14, l=48, h=14, material=box_mat, collection=coll)
+    make_box("Lightbox_east_band", x=269.5, y=452, z=82,
+             w=15, l=24, h=6, material=band_mat, collection=coll)
+    # small neon-ish lightbox over the Main Entry (inside face)
+    make_box("Lightbox_entry", x=ROOM_W - 3, y=622, z=86,
+             w=2, l=50, h=10, material=band_mat, collection=coll)
+    # projection screen centered on the north wall above the classroom zone
+    case_mat = get_or_create_color_material(
+        "MAT_screen_case", (0.92, 0.92, 0.90, 1.0), roughness=0.5)
+    screen_mat = get_or_create_color_material(
+        "MAT_screen_face", (0.96, 0.96, 0.95, 1.0), roughness=0.7)
+    make_box("Screen_case", x=108, y=0, z=94,
+             w=100, l=2.5, h=4, material=case_mat, collection=coll)
+    make_box("Screen_face", x=112, y=0, z=44,
+             w=92, l=1.5, h=52, material=screen_mat, collection=coll)
 
 
 # ============================================================================
@@ -2242,6 +2292,8 @@ build_hvac()
 build_stow_column()
 build_railing()
 build_posters()
+build_led_strips()
+build_signage()
 build_pendant_fixtures_and_lights()
 troffer_count = build_ceiling_troffers_and_lights()
 
