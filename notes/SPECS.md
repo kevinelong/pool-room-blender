@@ -77,3 +77,13 @@ Applied in:
     rotated table ends. West/center end swings ~47" (practical maximum,
     flagged); the east aisle carries the service spine clear of the HVAC
     chase; N/S-wall two-tops turn 90° with stools east/west.
+
+16. **v28: shifted line variants.** "East Line — Shifted Down" and "West
+    Line — Shifted Down": the six-table line slides 33.5" toward the
+    bottom (north) wall so the top table's cabinet exactly clears the
+    Main Entry approach — the east line's top table returns to the
+    straight line and its round clears the EE corridor entirely; the
+    west line's sixth round reaches the wall (chairs still graze the
+    approach corner, noted). Costs, flagged: the bottom table's end swing
+    runs ~45", and the west line's first round pulls inboard of the
+    storage-door frontage.

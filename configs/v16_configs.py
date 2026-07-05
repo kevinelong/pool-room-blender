@@ -235,8 +235,40 @@ CONFIGS = [
         ],
     ),
     dict(
+        key="eastshift",
+        name="5 · East Line — Shifted Down",
+        tagline="The east line slid down-wall: the top table rejoins the line",
+        rot90=True,
+        # v28 (user): slide the whole six-table line 33.5" toward the
+        # bottom (north) wall so the TOP table's cabinet clears the Main
+        # Entry approach keep-out exactly — it returns to the straight
+        # line at cx=206 (no westward shift) and its round no longer
+        # fights the Emergency Exit corridor. The cost: the bottom
+        # table's end swing runs ~45" against the bottom wall.
+        tables=[(f"Line{i}", 206.0, yt)
+                for i, yt in enumerate(
+                    [37.5, 138.5, 239.5, 340.5, 441.5, 542.5])],
+        aisle_x=110.0,
+        rounds=[],   # auto-packed: all six align at the west wall
+        round_role="flex",
+        twotops=[], hightops=[],
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=20,
+        notes=[
+            "The whole line slides toward the bottom wall: the top table "
+            "rejoins the straight line and every compromise at the entry "
+            "end dissolves.",
+            "All six rounds sit on their tables' centerlines at the west "
+            "wall, fully clear of the Emergency Exit approach.",
+            "FLAG: the bottom table's end swing runs tight against the "
+            "bottom wall — the cost of the slide.",
+        ],
+    ),
+    dict(
         key="westline",
-        name="5 · West Line + Wall Rounds",
+        name="6 · West Line + Wall Rounds",
         tagline="Tables single-file west; a round beside each table on the east wall",
         rot90=True,
         # v23: stage removed entirely (user) — the west file needs no
@@ -268,6 +300,47 @@ CONFIGS = [
             "FLAG: the third round sits partially in front of the kitchen "
             "door (user-accepted).",
             "The fourth round pulls inboard of the HVAC chase.",
+        ],
+    ),
+    dict(
+        key="westshift",
+        name="7 · West Line — Shifted Down",
+        tagline="The west line slid down-wall: the sixth round reaches the wall",
+        rot90=True,
+        lane_x=213.0,
+        # v28 (user): same 33.5" slide as the shifted east line. The top
+        # table clears the entry approach, and its round now sits AT the
+        # east wall like the others (the base layout had to pull it far
+        # inboard) — its chair ring still grazes the approach corner,
+        # which is accepted and noted.
+        tables=[(f"Line{i}", 110.0, yt)
+                for i, yt in enumerate(
+                    [37.5, 138.5, 239.5, 340.5, 441.5, 542.5])],
+        rounds=[],   # auto-packed below
+        # round 3 is forced INBOARD (not at the wall): that keeps a clear
+        # 40" wall approach to the kitchen door from the north — at the
+        # wall it would blanket the door's frontage entirely
+        rounds_forced=[(230.0, 266.25), (269.0, 569.25)],
+        round_role="flex",
+        twotops=[], hightops=[],
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=25,
+        notes=[
+            "The whole line slides toward the bottom wall, freeing the "
+            "entry end: the sixth round reaches the east wall like the "
+            "rest instead of pulling far inboard.",
+            "FLAG: the sixth round's chairs still graze the Main Entry "
+            "approach corner (accepted).",
+            "The third round pulls inboard, keeping a clear wall approach "
+            "to the kitchen door from the north.",
+            "FLAG: kitchen service still threads a tight squeeze between "
+            "the third and fourth rounds' chairs.",
+            "The fourth round pulls inboard of the HVAC chase; the first "
+            "pulls inboard of the storage-door frontage.",
+            "FLAG: the bottom table's end swing runs tight against the "
+            "bottom wall — the cost of the slide.",
         ],
     ),
 ]

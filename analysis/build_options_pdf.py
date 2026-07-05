@@ -56,6 +56,14 @@ CLEAN = {
                   "approach — the walk bends around its chairs.",
                   "Every delivery crosses the table line — hospitality sits "
                   "opposite the doors."]),
+    "eastshift": ("East Line — Shifted Down",
+                  "The east line slid toward the bottom wall",
+                  ["The top table rejoins the straight line and every "
+                   "compromise at the entry end dissolves — all six rounds "
+                   "sit on their centerlines at the wall, clear of the "
+                   "exit approach.",
+                   "FLAG: the bottom table's end swing runs tight against "
+                   "the bottom wall — the cost of the slide."]),
     "westline": ("West Line + Wall Rounds",
                  "Tables single-file west; a round beside every table east",
                  ["Every table gets its own five-foot round at matching "
@@ -64,6 +72,16 @@ CLEAN = {
                   "approach beside the stair rail.",
                   "FLAG: one round sits partially in front of the kitchen "
                   "door — accepted to keep its table paired."]),
+    "westshift": ("West Line — Shifted Down",
+                  "The west line slid toward the bottom wall",
+                  ["The entry end frees up: the sixth round reaches the "
+                   "east wall like the rest instead of pulling far "
+                   "inboard (its chairs still graze the approach corner).",
+                   "The third round pulls inboard to keep the kitchen "
+                   "door's wall approach clear; kitchen service still "
+                   "threads a squeeze between two rounds' chairs.",
+                   "FLAG: the bottom table's end swing runs tight against "
+                   "the bottom wall — the cost of the slide."]),
 }
 
 RENDERS = {

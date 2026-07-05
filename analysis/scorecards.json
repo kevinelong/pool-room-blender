@@ -379,8 +379,96 @@
       ]
     },
     {
+      "key": "eastshift",
+      "name": "5 \u00b7 East Line \u2014 Shifted Down",
+      "tagline": "The east line slid down-wall: the top table rejoins the line",
+      "capacity": {
+        "tables": 6,
+        "players": 24,
+        "dine": 0,
+        "drink": 0,
+        "flex": 48,
+        "spectators": 0
+      },
+      "cue": {
+        "full_pct": 50,
+        "tight_pct": 42,
+        "blocked_pct": 8,
+        "min_clearance_in": 43.0,
+        "per_table": {
+          "Line0": {
+            "W": 80.0,
+            "E": 71.0,
+            "S": 54.8,
+            "N": 44.8
+          },
+          "Line1": {
+            "W": 80.0,
+            "E": 71.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line2": {
+            "W": 80.0,
+            "E": 71.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line3": {
+            "W": 80.0,
+            "E": 43.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line4": {
+            "W": 80.0,
+            "E": 71.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line5": {
+            "W": 80.0,
+            "E": 71.0,
+            "S": 93.2,
+            "N": 54.8
+          }
+        }
+      },
+      "service": {
+        "cocktail": {
+          "seats": 6,
+          "max_run_ft": 71.0,
+          "avg_run_ft": 49.9,
+          "conflicted_seats": 6
+        },
+        "food": {
+          "seats": 6,
+          "max_run_ft": 44.0,
+          "avg_run_ft": 35.0,
+          "conflicted_seats": 6
+        }
+      },
+      "egress": {
+        "exit_corridor_in": 170.0,
+        "exit_corridor_ok": true,
+        "worst_travel_ft": 57.7
+      },
+      "paths": {
+        "min_width_in": 47.5,
+        "anomalies": []
+      },
+      "revenue_proxy_hr": 660,
+      "flip_minutes": 20,
+      "notes": [
+        "The whole line slides toward the bottom wall: the top table rejoins the straight line and every compromise at the entry end dissolves.",
+        "All six rounds sit on their tables' centerlines at the west wall, fully clear of the Emergency Exit approach.",
+        "FLAG: the bottom table's end swing runs tight against the bottom wall \u2014 the cost of the slide.",
+        "Cue room around the tables: most sides get about 55\"; the shortest clearance is 43.0\"."
+      ]
+    },
+    {
       "key": "westline",
-      "name": "5 \u00b7 West Line + Wall Rounds",
+      "name": "6 \u00b7 West Line + Wall Rounds",
       "tagline": "Tables single-file west; a round beside each table on the east wall",
       "capacity": {
         "tables": 6,
@@ -476,6 +564,108 @@
         "FLAG: the third round sits partially in front of the kitchen door (user-accepted).",
         "The fourth round pulls inboard of the HVAC chase.",
         "Cue room around the tables: most sides get about 55\"; the shortest clearance is 39.3\"."
+      ]
+    },
+    {
+      "key": "westshift",
+      "name": "7 \u00b7 West Line \u2014 Shifted Down",
+      "tagline": "The west line slid down-wall: the sixth round reaches the wall",
+      "capacity": {
+        "tables": 6,
+        "players": 24,
+        "dine": 0,
+        "drink": 0,
+        "flex": 48,
+        "spectators": 0
+      },
+      "cue": {
+        "full_pct": 46,
+        "tight_pct": 42,
+        "blocked_pct": 12,
+        "min_clearance_in": 41.0,
+        "per_table": {
+          "Line0": {
+            "W": 71.0,
+            "E": 41.0,
+            "S": 54.8,
+            "N": 44.8
+          },
+          "Line1": {
+            "W": 71.0,
+            "E": 80.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line2": {
+            "W": 71.0,
+            "E": 41.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line3": {
+            "W": 71.0,
+            "E": 61.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line4": {
+            "W": 71.0,
+            "E": 80.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line5": {
+            "W": 71.0,
+            "E": 80.0,
+            "S": 93.2,
+            "N": 54.8
+          }
+        }
+      },
+      "service": {
+        "cocktail": {
+          "seats": 6,
+          "max_run_ft": 58.6,
+          "avg_run_ft": 39.4,
+          "conflicted_seats": 0
+        },
+        "food": {
+          "seats": 6,
+          "max_run_ft": 34.9,
+          "avg_run_ft": 24.5,
+          "conflicted_seats": 0
+        }
+      },
+      "egress": {
+        "exit_corridor_in": 170.0,
+        "exit_corridor_ok": true,
+        "worst_travel_ft": 55.7
+      },
+      "paths": {
+        "min_width_in": 20.9,
+        "anomalies": [
+          {
+            "severity": "blocked",
+            "width_in": 0.0,
+            "where": "south-east: walk crosses a round's chairs"
+          },
+          {
+            "severity": "FAIL",
+            "width_in": 20.9,
+            "where": "center-east: between a round's chairs and a round's chairs"
+          }
+        ]
+      },
+      "revenue_proxy_hr": 660,
+      "flip_minutes": 25,
+      "notes": [
+        "The whole line slides toward the bottom wall, freeing the entry end: the sixth round reaches the east wall like the rest instead of pulling far inboard.",
+        "FLAG: the sixth round's chairs still graze the Main Entry approach corner (accepted).",
+        "The third round pulls inboard, keeping a clear wall approach to the kitchen door from the north.",
+        "FLAG: kitchen service still threads a tight squeeze between the third and fourth rounds' chairs.",
+        "The fourth round pulls inboard of the HVAC chase; the first pulls inboard of the storage-door frontage.",
+        "FLAG: the bottom table's end swing runs tight against the bottom wall \u2014 the cost of the slide.",
+        "Cue room around the tables: most sides get about 55\"; the shortest clearance is 41.0\"."
       ]
     }
   ]

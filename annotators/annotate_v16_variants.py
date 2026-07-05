@@ -19,8 +19,12 @@ META = {
                    "six tables turned 90°, end-to-end down the middle · wall two-tops both sides"),
     "eastline": ("4 · East Line + West Lounge",
                  "six tables single-file east · six aligned rounds down the west"),
-    "westline": ("5 · West Line + Wall Rounds",
+    "eastshift": ("5 · East Line — Shifted Down",
+                  "the east line slid down-wall · top table rejoins the line · all rounds clear"),
+    "westline": ("6 · West Line + Wall Rounds",
                  "six tables single-file west · a round beside every table east"),
+    "westshift": ("7 · West Line — Shifted Down",
+                  "the west line slid down-wall · the sixth round reaches the wall"),
 }
 
 
