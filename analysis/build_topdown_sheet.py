@@ -19,7 +19,10 @@ from configs.v16_configs import CONFIGS                     # noqa: E402
 
 DPI = 300
 PAGE_W, PAGE_H = int(8.5 * DPI), 11 * DPI      # 2550 x 3300
-COLS, ROWS = 3, 2
+# v27: four options after the Social/Tournament merge — 2x2 tiles beat
+# 3x2 for per-tile area; fall back to 3 columns for five or six options
+COLS = 2 if len(CONFIGS) <= 4 else 3
+ROWS = (len(CONFIGS) + COLS - 1) // COLS
 GAP = 20
 
 

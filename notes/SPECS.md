@@ -61,3 +61,11 @@ Applied in:
     narrows the EE approach). **West Line: all SIX rounds present** —
     the sixth beside the entry well (flagged: crowds the Main Entry
     approach).
+
+## v27 addendum (2026-07-05)
+
+14. **Social Hall + Tournament House MERGED into "Four On Top".** Once the
+    bleachers left, the two were geometrically identical (same tables,
+    same five-round quincunx, same wall two-tops) — only seat-role labels
+    differed. One option remains (key `social` kept for file continuity);
+    the set renumbers to four options.

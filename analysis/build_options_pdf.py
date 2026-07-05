@@ -24,19 +24,14 @@ MUTED = (110, 110, 118)
 
 # Digit-free names, taglines, and trade-off notes for presentation.
 CLEAN = {
-    "social": ("Social Hall (current)",
-               "Six tables, two-tops at every row end, a north round cluster",
-               ["The room as built today — the baseline for every option.",
-                "Wall two-tops flank every table row on both walls; the "
-                "north end seats a five-round social cluster around a "
-                "center round.",
+    "social": ("Four On Top",
+               "Six tables; four rounds and a center fifth on the north end",
+               ["Four aligned rounds around a center fifth — one big "
+                "social cluster that doubles as a tournament gallery "
+                "facing the nearest table row.",
+                "Wall two-tops flank every table row on both walls.",
                 "The cluster runs deliberately tight, and the two-top by "
                 "the kitchen door partially fronts it — both accepted."]),
-    "tournament": ("Tournament House",
-                   "A north gallery of rounds faces the feature row",
-                   ["The bleachers give way to a gallery of five rounds; "
-                    "the nearest table row becomes the feature row.",
-                    "Food drops to handhelds while racks are in play."]),
     "centerline": ("Center Line",
                    "Six tables turned sideways, end-to-end down the middle",
                    ["Every table on display from the full-length side aisles.",

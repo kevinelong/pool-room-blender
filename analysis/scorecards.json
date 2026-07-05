@@ -8,8 +8,8 @@
   "configs": [
     {
       "key": "social",
-      "name": "1 \u00b7 Social Hall",
-      "tagline": "The built layout: six tables, wall two-tops, north quincunx",
+      "name": "1 \u00b7 Four On Top",
+      "tagline": "Six tables; four rounds + a center fifth on the north end",
       "capacity": {
         "tables": 6,
         "players": 24,
@@ -94,7 +94,7 @@
       "revenue_proxy_hr": 821,
       "flip_minutes": 0,
       "notes": [
-        "The room as built \u2014 the baseline every option is judged against.",
+        "The four aligned rounds and center fifth double as a tournament gallery \u2014 they face the nearest table row.",
         "Wall two-tops at every table end flex between drinkers, eaters, and spectators; stools face the tops.",
         "The center round of the north quincunx runs tight to its four neighbours \u2014 deliberate, for one big social cluster.",
         "The two-top by the kitchen door partially fronts it (accepted).",
@@ -102,102 +102,8 @@
       ]
     },
     {
-      "key": "tournament",
-      "name": "2 \u00b7 Tournament House",
-      "tagline": "North gallery of five rounds faces the feature row",
-      "capacity": {
-        "tables": 6,
-        "players": 24,
-        "dine": 0,
-        "drink": 22,
-        "flex": 40,
-        "spectators": 0
-      },
-      "cue": {
-        "full_pct": 67,
-        "tight_pct": 33,
-        "blocked_pct": 0,
-        "min_clearance_in": 56.5,
-        "per_table": {
-          "T0L": {
-            "W": 56.5,
-            "E": 59.8,
-            "S": 73.2,
-            "N": 57.8
-          },
-          "T0R": {
-            "W": 59.8,
-            "E": 56.5,
-            "S": 73.2,
-            "N": 57.8
-          },
-          "T1L": {
-            "W": 56.5,
-            "E": 59.8,
-            "S": 59.8,
-            "N": 73.2
-          },
-          "T1R": {
-            "W": 59.8,
-            "E": 56.5,
-            "S": 59.8,
-            "N": 73.2
-          },
-          "T2L": {
-            "W": 56.5,
-            "E": 59.8,
-            "S": 59.8,
-            "N": 59.8
-          },
-          "T2R": {
-            "W": 59.8,
-            "E": 56.5,
-            "S": 59.8,
-            "N": 59.8
-          }
-        }
-      },
-      "service": {
-        "cocktail": {
-          "seats": 16,
-          "max_run_ft": 67.6,
-          "avg_run_ft": 41.8,
-          "conflicted_seats": 6
-        },
-        "food": {
-          "seats": 5,
-          "max_run_ft": 39.5,
-          "avg_run_ft": 31.1,
-          "conflicted_seats": 0
-        }
-      },
-      "egress": {
-        "exit_corridor_in": 141.0,
-        "exit_corridor_ok": true,
-        "worst_travel_ft": 58.8
-      },
-      "paths": {
-        "min_width_in": 38.2,
-        "anomalies": [
-          {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "center-east: walk crosses a wall two-top"
-          }
-        ]
-      },
-      "revenue_proxy_hr": 766,
-      "flip_minutes": 10,
-      "notes": [
-        "Five rounds pack the cleared north end and face the feature row \u2014 gallery seating without bleachers.",
-        "Food drops to handhelds while racks are in play.",
-        "The two-top by the kitchen door partially fronts it (accepted).",
-        "Cue room around the tables: most sides get about 60\"; the shortest clearance is 56.5\"."
-      ]
-    },
-    {
       "key": "centerline",
-      "name": "3 \u00b7 Center Line",
+      "name": "2 \u00b7 Center Line",
       "tagline": "Six tables turned 90\u00b0, end-to-end down the middle",
       "capacity": {
         "tables": 6,
@@ -285,7 +191,7 @@
     },
     {
       "key": "eastline",
-      "name": "4 \u00b7 East Line + West Lounge",
+      "name": "3 \u00b7 East Line + West Lounge",
       "tagline": "Tables single-file on the east; full-length hospitality strip west",
       "capacity": {
         "tables": 6,
@@ -374,7 +280,7 @@
     },
     {
       "key": "westline",
-      "name": "5 \u00b7 West Line + Wall Rounds",
+      "name": "4 \u00b7 West Line + Wall Rounds",
       "tagline": "Tables single-file west; a round beside each table on the east wall",
       "capacity": {
         "tables": 6,

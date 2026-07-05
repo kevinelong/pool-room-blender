@@ -85,9 +85,11 @@ TWOTOPS_2X3 = ([(12.0, y) for y in TT_ROW_ENDS]
 
 CONFIGS = [
     dict(
-        key="social",
-        name="1 · Social Hall",
-        tagline="The built layout: six tables, wall two-tops, north quincunx",
+        key="social",   # key kept for render-file continuity
+        # v27: Social Hall and Tournament House became geometrically
+        # identical once the bleachers left — merged into one option
+        name="1 · Four On Top",
+        tagline="Six tables; four rounds + a center fifth on the north end",
         tables=_rows(ROWS_CURRENT),
         # v26: four aligned north rounds + a central fifth in PLUS chair
         # orientation (user) — the quincunx is deliberately tight, so the
@@ -105,7 +107,8 @@ CONFIGS = [
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=0,
         notes=[
-            "The room as built — the baseline every option is judged against.",
+            "The four aligned rounds and center fifth double as a "
+            "tournament gallery — they face the nearest table row.",
             "Wall two-tops at every table end flex between drinkers, "
             "eaters, and spectators; stools face the tops.",
             "The center round of the north quincunx runs tight to its four "
@@ -114,36 +117,8 @@ CONFIGS = [
         ],
     ),
     dict(
-        key="tournament",
-        name="2 · Tournament House",
-        tagline="North gallery of five rounds faces the feature row",
-        tables=_rows(ROWS_CURRENT),
-        # v26: bleachers removed (user) — the gallery is five 5-ft rounds:
-        # four aligned + the same forced center round as Social
-        rounds=[],   # auto-packed below
-        rounds_forced=[(105.0, 47.0), (211.0, 47.0), (105.0, 143.0),
-                       (211.0, 143.0), (158.0, 95.0)],
-        rounds_plus=[(158.0, 95.0)],
-        round_role="flex",
-        hightops=[],
-        twotops=TWOTOPS_2X3,
-        twotop_role="drink",
-        rails=[],
-        bench=False, bench_role=None,
-        classroom=False,
-        bleachers=[],
-        stage_seats=0,
-        flip_minutes=10,
-        notes=[
-            "Five rounds pack the cleared north end and face the feature "
-            "row — gallery seating without bleachers.",
-            "Food drops to handhelds while racks are in play.",
-            "The two-top by the kitchen door partially fronts it (accepted).",
-        ],
-    ),
-    dict(
         key="centerline",
-        name="3 · Center Line",
+        name="2 · Center Line",
         tagline="Six tables turned 90°, end-to-end down the middle",
         rot90=True,
         # single file: cabinet gaps ~47.5" -> side swings land at the
@@ -180,7 +155,7 @@ CONFIGS = [
     ),
     dict(
         key="eastline",
-        name="4 · East Line + West Lounge",
+        name="3 · East Line + West Lounge",
         tagline="Tables single-file on the east; full-length hospitality strip west",
         rot90=True,
         # cx=206 keeps the playfield clear of the NW stage (which blocks a
@@ -216,7 +191,7 @@ CONFIGS = [
     ),
     dict(
         key="westline",
-        name="5 · West Line + Wall Rounds",
+        name="4 · West Line + Wall Rounds",
         tagline="Tables single-file west; a round beside each table on the east wall",
         rot90=True,
         # v23: stage removed entirely (user) — the west file needs no
