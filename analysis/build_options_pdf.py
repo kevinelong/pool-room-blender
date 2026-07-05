@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, ".."))
 sys.path.insert(0, ROOT)
-from configs.v16_configs import CONFIGS                     # noqa: E402
+from configs.v16_configs import CONFIGS, cue_clearance_stats  # noqa: E402
 from analysis.draw_v16_plans import draw_plan               # noqa: E402
 
 PAGE_W, PAGE_H = 1275, 1650          # US letter @ 150 dpi
@@ -87,6 +87,12 @@ def fit(img, w, h):
 def page_for(cfg):
     key = cfg["key"]
     name, tagline, notes = CLEAN[key]
+    # v26: cue-clearance stats on every page (user request) — the one
+    # place numbers are allowed in the In-brief column
+    mode, mn = cue_clearance_stats(cfg)
+    notes = list(notes) + [
+        f'Cue room around the tables: most sides get about {mode}"; '
+        f'the shortest clearance is {mn:.0f}".']
     persp_p, top_p = RENDERS[key]
 
     page = Image.new("RGB", (PAGE_W, PAGE_H), PAPER)

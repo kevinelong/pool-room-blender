@@ -611,8 +611,40 @@ def compute_paths(cfg):
     return paths
 
 
+def cue_clearance_stats(cfg):
+    """v26: (most-common, shortest) clearance from a playfield edge to the
+    nearest obstruction or wall, across all table sides — same geometry as
+    the analyzer's side_clearances. Values in inches."""
+    from collections import Counter
+    rot = cfg.get("rot90", False)
+    vals = []
+    for name, cx, yt in cfg["tables"]:
+        px0, py0, px1, py1 = playfield_rect(cx, yt, rot)
+        obs = obstacles(cfg, exclude_table=name)
+        best = {"W": px0, "E": ROOM_W - px1, "N": py0, "S": ROOM_L - py1}
+        for _n, (ox0, oy0, ox1, oy1) in obs:
+            if min(oy1, py1) - max(oy0, py0) > 0:
+                if ox1 <= px0 + 1e-6:
+                    best["W"] = min(best["W"], px0 - ox1)
+                if ox0 >= px1 - 1e-6:
+                    best["E"] = min(best["E"], ox0 - px1)
+            if min(ox1, px1) - max(ox0, px0) > 0:
+                if oy1 <= py0 + 1e-6:
+                    best["N"] = min(best["N"], py0 - oy1)
+                if oy0 >= py1 - 1e-6:
+                    best["S"] = min(best["S"], oy0 - py1)
+        vals += best.values()
+    mode = Counter(round(v) for v in vals).most_common(1)[0][0]
+    return mode, min(vals)
+
+
 # post-process: pack rounds into every config, then freeze
 for _cfg in CONFIGS:
     _cfg["rounds"] = pack_rounds(_cfg)
     _cfg.setdefault("round_role", "flex")
     _cfg["paths"] = compute_paths(_cfg)
+    # v26: cue-clearance stats appended to every layout's notes (user)
+    _mode, _mn = cue_clearance_stats(_cfg)
+    _cfg["notes"] = list(_cfg["notes"]) + [
+        f'Cue room around the tables: most sides get about {_mode}"; '
+        f'the shortest clearance is {_mn:.1f}".']
