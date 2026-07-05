@@ -32,6 +32,15 @@ CLEAN = {
                 "Wall two-tops flank every table row on both walls.",
                 "The cluster runs deliberately tight, and the two-top by "
                 "the kitchen door partially fronts it — both accepted."]),
+    "fourturned": ("Four On Top — Turned",
+                   "The same pattern with every table rotated sideways",
+                   ["Four tables in a block at the top, two at the bottom, "
+                    "all turned ninety degrees.",
+                    "Two-top bands ride the top wall, the seam between the "
+                    "clusters, and the bottom wall — every table has "
+                    "seating at arm's reach.",
+                    "FLAG: the rotated ends run tight side-to-side; the "
+                    "west and center aisles are the practical maximum."]),
     "centerline": ("Center Line",
                    "Six tables turned sideways, end-to-end down the middle",
                    ["Every table on display from the full-length side aisles.",

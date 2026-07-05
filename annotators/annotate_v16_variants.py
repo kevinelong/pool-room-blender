@@ -13,11 +13,13 @@ SRC_DIR = "/tmp/blender_test"
 META = {
     "social": ("1 · Four On Top",
                "six tables · four rounds + a center fifth on the north end · two-tops at every row end"),
-    "centerline": ("2 · Center Line",
+    "fourturned": ("2 · Four On Top — Turned",
+                   "six tables rotated 90° · four on top, two below · two-top bands top, middle, bottom"),
+    "centerline": ("3 · Center Line",
                    "six tables turned 90°, end-to-end down the middle · wall two-tops both sides"),
-    "eastline": ("3 · East Line + West Lounge",
+    "eastline": ("4 · East Line + West Lounge",
                  "six tables single-file east · six aligned rounds down the west"),
-    "westline": ("4 · West Line + Wall Rounds",
+    "westline": ("5 · West Line + Wall Rounds",
                  "six tables single-file west · a round beside every table east"),
 }
 

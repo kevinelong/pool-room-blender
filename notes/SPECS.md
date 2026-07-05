@@ -69,3 +69,11 @@ Applied in:
     same five-round quincunx, same wall two-tops) — only seat-role labels
     differed. One option remains (key `social` kept for file continuity);
     the set renumbers to four options.
+
+15. **v27b: second Four On Top variant ("Four On Top — Turned").** All six
+    tables rotated 90°: four in a 2x2 block at the top (south), two at the
+    bottom (north). Two-top bands on the top wall, between the clusters,
+    and below the bottom pair (north wall) — side walls stay clear for the
+    rotated table ends. West/center end swings ~47" (practical maximum,
+    flagged); the east aisle carries the service spine clear of the HVAC
+    chase; N/S-wall two-tops turn 90° with stools east/west.

@@ -145,18 +145,28 @@ ht_mat = G2["get_or_create_color_material"](
     "MAT_v16_hightop", (0.35, 0.24, 0.16, 1.0), roughness=0.45)
 _bar_tops = list(cfg.get("hightops", [])) + list(cfg.get("twotops", []))
 for i, (cx, cy) in enumerate(_bar_tops):
-    G2["make_box"](f"v16_{KEY}_hightop{i}_top", cx - 11, cy - 14, 40.5,
-                   22, 28, 1.5, material=ht_mat, collection=coll)
+    # v27: tops on the NORTH/SOUTH walls turn 90° — 28" along the wall,
+    # stools east/west facing the top; everywhere else stools sit N/S
+    ns_wall = cy < 40 or cy > V16.ROOM_L - 40
+    if ns_wall:
+        G2["make_box"](f"v16_{KEY}_hightop{i}_top", cx - 14, cy - 11, 40.5,
+                       28, 22, 1.5, material=ht_mat, collection=coll)
+    else:
+        G2["make_box"](f"v16_{KEY}_hightop{i}_top", cx - 11, cy - 14, 40.5,
+                       22, 28, 1.5, material=ht_mat, collection=coll)
     G2["make_box"](f"v16_{KEY}_hightop{i}_post", cx - 2, cy - 2, 0,
                    4, 4, 40.5, material=ht_mat, collection=coll)
     G2["make_box"](f"v16_{KEY}_hightop{i}_foot", cx - 9, cy - 9, 0,
                    18, 18, 1.5, material=ht_mat, collection=coll)
-    # two barstools per top, north and south, facing it
-    for j, sy in enumerate((cy - 23, cy + 9)):
-        G2["make_box"](f"v16_{KEY}_ht{i}_stool{j}_seat", cx - 7, sy, 28,
+    if ns_wall:
+        stools = [(sx, cy - 7) for sx in (cx - 23, cx + 9)]
+    else:
+        stools = [(cx - 7, sy) for sy in (cy - 23, cy + 9)]
+    for j, (sx, sy) in enumerate(stools):
+        G2["make_box"](f"v16_{KEY}_ht{i}_stool{j}_seat", sx, sy, 28,
                        14, 14, 2, material=ht_mat, collection=coll)
-        for lx, ly in ((cx - 7, sy), (cx + 5, sy),
-                       (cx - 7, sy + 12), (cx + 5, sy + 12)):
+        for lx, ly in ((sx, sy), (sx + 12, sy),
+                       (sx, sy + 12), (sx + 12, sy + 12)):
             G2["make_box"](f"v16_{KEY}_ht{i}_stool{j}_leg{lx:.0f}{ly:.0f}",
                            lx, ly, 0, 1.5, 1.5, 28,
                            material=ht_mat, collection=coll)

@@ -117,8 +117,53 @@ CONFIGS = [
         ],
     ),
     dict(
+        key="fourturned",
+        name="2 · Four On Top — Turned",
+        tagline="The Four On Top pattern with all six tables rotated 90°",
+        rot90=True,
+        # v27 second Four On Top (user): four tables 2x2 at the top (south)
+        # and two at the bottom (north), every table rotated 90°. Two
+        # rotated columns plus three aisles want 337" of width against the
+        # room's 316", so the end swings run tight (~47") west and center;
+        # the east aisle takes the balance so the service spine clears the
+        # HVAC chase entirely, and every row dodges the chase in y.
+        lane_x=276.0,
+        tables=[("TurnA_L", 85.75, 96), ("TurnA_R", 217.75, 96),
+                ("TurnB_L", 85.75, 396), ("TurnB_R", 217.75, 396),
+                ("TurnC_L", 85.75, 512), ("TurnC_R", 217.75, 512)],
+        # no rounds: the aisles left over are far narrower than a 60"
+        # round with chairs — seating is the two-top bands instead
+        rounds=[], pack_grid=False,
+        round_role="flex",
+        hightops=[],
+        # side tables move OFF the side walls (the rotated ends need that
+        # room): a band on the north wall below the bottom two, a mid band
+        # between the clusters, and a south-wall band — the southwest one
+        # slides east clear of the Emergency Exit corridor
+        twotops=[(86.0, 13.0), (218.0, 13.0),
+                 (82.0, 250.0), (152.0, 250.0), (222.0, 250.0),
+                 (130.0, 671.0), (218.0, 671.0)],
+        twotop_role="flex",
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=15,
+        notes=[
+            "The Four On Top pattern turned sideways: four tables in a "
+            "block at the top, two at the bottom, every table rotated.",
+            "Each cluster gets its own two-top band — top wall, between "
+            "the clusters, and below the bottom pair — so every table "
+            "has seating at arm's reach.",
+            "FLAG: the rotated ends run tight side-to-side — the west "
+            "and center aisles are the practical maximum, not the cue "
+            "standard.",
+            "The south-wall tops narrow the along-wall walk; servers "
+            "pass north of them.",
+        ],
+    ),
+    dict(
         key="centerline",
-        name="2 · Center Line",
+        name="3 · Center Line",
         tagline="Six tables turned 90°, end-to-end down the middle",
         rot90=True,
         # single file: cabinet gaps ~47.5" -> side swings land at the
@@ -155,7 +200,7 @@ CONFIGS = [
     ),
     dict(
         key="eastline",
-        name="3 · East Line + West Lounge",
+        name="4 · East Line + West Lounge",
         tagline="Tables single-file on the east; full-length hospitality strip west",
         rot90=True,
         # cx=206 keeps the playfield clear of the NW stage (which blocks a
@@ -191,7 +236,7 @@ CONFIGS = [
     ),
     dict(
         key="westline",
-        name="4 · West Line + Wall Rounds",
+        name="5 · West Line + Wall Rounds",
         tagline="Tables single-file west; a round beside each table on the east wall",
         rot90=True,
         # v23: stage removed entirely (user) — the west file needs no
