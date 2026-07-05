@@ -79,9 +79,9 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
 
     # floor + walls
     rect(d, (0, 0, ROOM_W, ROOM_L), fill=COL_FLOOR)
-    # east service lane
-    rect(d, (SERVICE_LANE_X[0], 60, SERVICE_LANE_X[1], ROOM_L - 60),
-         fill=COL_LANE)
+    # v24: precise staff pathways, clipped between obstacles
+    for pr in cfg.get("paths", []):
+        rect(d, pr, fill=COL_LANE)
     # beam line
     d.line([px(0), py(BEAM_Y), px(ROOM_W), py(BEAM_Y)],
            fill=(150, 120, 90), width=3)

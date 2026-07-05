@@ -79,7 +79,7 @@ CONFIGS = [
         twotops=[(282, y) for y in (335, 386, 437, 488, 539, 590)],
         twotop_role="flex",
         rails=[],
-        bench=True, bench_role="spectate",
+        bench=False, bench_role=None,
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=0,
         notes=[
@@ -94,7 +94,7 @@ CONFIGS = [
         tables=_rows(ROWS_CURRENT),
         # v23: with the stage and lockers gone, the north end packs four
         # 5-ft rounds around the gallery
-        rounds=[(52, 45), (60, 135), (158, 135), (256, 135)],
+        rounds=[],   # v24: auto-packed below
         round_role="flex",
         hightops=[],
         twotops=[(282, 340), (282, 400)],
@@ -133,7 +133,7 @@ CONFIGS = [
         twotops=[],
         twotop_role=None,
         rails=[],
-        bench=True, bench_role="spectate",
+        bench=False, bench_role=None,
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=0,
         notes=[
@@ -158,12 +158,11 @@ CONFIGS = [
                 + [("Line5", 185.5, 576)]),
         # v23: six rounds at an even 90" pitch — the sixth at the south top
         # of the column, clear of the Emergency Exit approach
-        rounds=[(55, 110), (55, 200), (55, 290), (55, 380), (55, 470),
-                (55, 560)],
+        rounds=[],   # v24: auto-packed below
         round_role="flex",
         twotops=[], hightops=[],
         rails=[],
-        bench=True, bench_role="spectate",
+        bench=False, bench_role=None,
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=20,
         notes=[
@@ -183,18 +182,17 @@ CONFIGS = [
         rot90=True,
         # v23: stage removed entirely (user) — the west file needs no
         # stage relocation any more
-        lane_x=224.0,   # service spine threads between table swing and rounds
+        lane_x=298.0,   # v24: spine hugs the east wall; packer owns the strip
         tables=[(f"Line{i}", 110.0, yt)
                 for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
         # v23: one round per table against the east wall, centered on its
         # table where possible — pulled inboard/nudged only where the
         # kitchen frontage, HVAC chase, or entry well forces it
-        rounds=[(274, 97.75), (274, 198.75), (228, 299.75), (246, 400.75),
-                (274, 501.75), (236, 602.75)],
+        rounds=[],   # v24: auto-packed below
         round_role="flex",
         twotops=[], hightops=[],
         rails=[],
-        bench=True, bench_role="spectate",
+        bench=False, bench_role=None,
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=25,
         notes=[
@@ -305,3 +303,148 @@ def capacities(cfg):
     spectators += cfg.get("stage_seats", 0)
     return dict(tables=n_tables, players=players, dine=dine, drink=drink,
                 flex=flex, spectators=spectators)
+
+
+# ============================================================================
+# v24: round auto-packing + precise staff pathways (user 2026-07-05)
+# ============================================================================
+ROUND_RING = 40.0          # round + 4 hotel stacking chairs footprint radius
+ROUND_MIN_CC = 84.0        # min center-to-center between rounds
+
+# keep-out rects for hospitality placement (doors, wells, chases)
+KEEPOUTS = [
+    (250, 596, 316, 682),   # Main Entry well + rails + approach
+    (268, 282, 316, 338),   # kitchen door frontage
+    (24, 616, 101, 682),    # Emergency Exit approach band
+    (268, 0, 316, 48),      # Storage A door frontage (N wall, east end)
+    (272, 0, 316, 48),      # Storage B door frontage (E wall, north end)
+    HVAC,
+]
+
+
+def _rect_overlap(a, b):
+    return (min(a[2], b[2]) - max(a[0], b[0]) > 0
+            and min(a[3], b[3]) - max(a[1], b[1]) > 0)
+
+
+def _round_ok(cx, cy, cfg, placed, lane_x):
+    r = ROUND_RING
+    if not (r + 1 <= cx <= ROOM_W - r - 1 and r + 1 <= cy <= ROOM_L - r - 1):
+        return False
+    ring = (cx - r, cy - r, cx + r, cy + r)
+    rot = cfg.get("rot90", False)
+    for _n, tx, ty in cfg["tables"]:
+        x0, y0, x1, y1 = table_rect(tx, ty, rot)
+        if _rect_overlap(ring, (x0 - 32, y0 - 32, x1 + 32, y1 + 32)):
+            return False
+    for ko in KEEPOUTS:
+        if _rect_overlap(ring, ko):
+            return False
+    for hx, hy in cfg.get("hightops", []):
+        if _rect_overlap(ring, (hx - 26, hy - 29, hx + 26, hy + 29)):
+            return False
+    for tx, ty in cfg.get("twotops", []):
+        if _rect_overlap(ring, (tx - 26, ty - 29, tx + 26, ty + 29)):
+            return False
+    for bl in cfg.get("bleachers", []):
+        if _rect_overlap(ring, bl):
+            return False
+    # reserved service spine
+    if lane_x - 16 < cx + r and cx - r < lane_x + 16:
+        pass_width = abs(cx - lane_x)
+        if pass_width < r + 16:
+            return False
+    for px_, py_ in placed:
+        if (cx - px_) ** 2 + (cy - py_) ** 2 < ROUND_MIN_CC ** 2:
+            return False
+    return True
+
+
+def pack_rounds(cfg):
+    """Fill every zone away from the tables with rounds. Rounds adjacent to
+    table ends are seeded FIRST, centered on the table's long axis (the
+    user's alignment rule); a grid fill takes whatever space remains."""
+    lane_x = cfg.get("lane_x", 298.0)
+    rot = cfg.get("rot90", False)
+    placed = []
+    # 1) alignment-seeded candidates at the table ends
+    for _n, tx, ty in cfg["tables"]:
+        x0, y0, x1, y1 = table_rect(tx, ty, rot)
+        if rot:
+            cands = [(x1 + 32 + ROUND_RING, (y0 + y1) / 2),
+                     (x0 - 32 - ROUND_RING, (y0 + y1) / 2)]
+        else:
+            cands = [((x0 + x1) / 2, y0 - 32 - ROUND_RING),
+                     ((x0 + x1) / 2, y1 + 32 + ROUND_RING)]
+        for cx, cy in cands:
+            if _round_ok(cx, cy, cfg, placed, lane_x):
+                placed.append((round(cx, 1), round(cy, 1)))
+    # 2) greedy grid fill of everything else
+    y = 41
+    while y <= ROOM_L - 41:
+        x = 41
+        while x <= ROOM_W - 41:
+            if _round_ok(x, y, cfg, placed, lane_x):
+                placed.append((float(x), float(y)))
+            x += 8
+        y += 8
+    return placed
+
+
+def compute_paths(cfg):
+    """Green staff pathways, clipped precisely between obstacles: a service
+    spine plus door stubs and per-seat feeders. Returns floor rects."""
+    lane_x = cfg.get("lane_x", 298.0)
+    rot = cfg.get("rot90", False)
+    obs = [table_rect(tx, ty, rot) for _n, tx, ty in cfg["tables"]]
+    obs += [(cx - ROUND_RING, cy - ROUND_RING, cx + ROUND_RING, cy + ROUND_RING)
+            for cx, cy in cfg.get("rounds", [])]
+    obs += [(hx - 26, hy - 29, hx + 26, hy + 29)
+            for hx, hy in list(cfg.get("hightops", [])) + list(cfg.get("twotops", []))]
+    obs += [HVAC] + list(cfg.get("bleachers", []))
+
+    def clip_strip(x0, y0, x1, y1):
+        """Axis-aligned strip minus obstacle intervals along its long axis."""
+        out = []
+        if x1 - x0 >= y1 - y0:            # horizontal strip
+            cuts = sorted((max(o[0], x0), min(o[2], x1)) for o in obs
+                          if _rect_overlap((x0, y0, x1, y1), o))
+            cur = x0
+            for a, b in cuts:
+                if a > cur:
+                    out.append((cur, y0, a, y1))
+                cur = max(cur, b)
+            if cur < x1:
+                out.append((cur, y0, x1, y1))
+        else:                              # vertical strip
+            cuts = sorted((max(o[1], y0), min(o[3], y1)) for o in obs
+                          if _rect_overlap((x0, y0, x1, y1), o))
+            cur = y0
+            for a, b in cuts:
+                if a > cur:
+                    out.append((x0, cur, x0 + (x1 - x0), a))
+                cur = max(cur, b)
+            if cur < y1:
+                out.append((x0, cur, x1, y1))
+        return [r for r in out if r[2] - r[0] > 6 and r[3] - r[1] > 6]
+
+    paths = []
+    paths += clip_strip(lane_x - 12, 30, lane_x + 12, 660)      # spine
+    paths += clip_strip(min(lane_x, 276), 624, 316, 648)        # ME stub
+    paths += clip_strip(min(lane_x, 290), 298, 316, 322)        # kitchen stub
+    paths += clip_strip(50, 600, 74, 682)                        # EE stub
+    paths += clip_strip(50, 600, lane_x, 624)                    # EE link
+    for cx, cy in cfg.get("rounds", []):
+        a, b = sorted((cx + ROUND_RING, lane_x))
+        paths += clip_strip(a, cy - 10, b, cy + 10)
+    for hx, hy in list(cfg.get("hightops", [])) + list(cfg.get("twotops", [])):
+        a, b = sorted((hx + 26, lane_x))
+        paths += clip_strip(a, hy - 10, b, hy + 10)
+    return paths
+
+
+# post-process: pack rounds into every config, then freeze
+for _cfg in CONFIGS:
+    _cfg["rounds"] = pack_rounds(_cfg)
+    _cfg.setdefault("round_role", "flex")
+    _cfg["paths"] = compute_paths(_cfg)

@@ -61,13 +61,12 @@ src = open(os.path.join(HERE, "build_pool_room_furniture.py")).read()
 src, n = re.subn(r"POOL_TABLES = \[[^\]]*\]", tables_src, src, count=1)
 assert n == 1, "POOL_TABLES patch failed"
 # v23: stage and storage lockers are removed from every layout
-DISABLE = ["build_stage", "build_lockers"]
+DISABLE = ["build_stage", "build_lockers", "build_buffet",
+           "build_clearance_paths", "build_bench"]
 if not cfg.get("classroom"):
     DISABLE.append("build_classroom")
 if KEY != "social":          # the v15L north rounds are part of the current
     DISABLE.append("build_round_tables")   # build only
-if not cfg.get("bench"):
-    DISABLE.append("build_bench")
 if ROT90:
     # wall two-tops are keyed to the column layout; a rotated line puts
     # them inside the tables' east swing — drop them (patrons pruned below)
@@ -118,6 +117,10 @@ if stage_rect and tuple(stage_rect) != STAGE_DEFAULT:
 coll = G2["get_or_create_collection"]("V16_Extras")
 for i, (cx, cy) in enumerate(cfg.get("rounds", [])):
     G2["build_round_table"](f"v16_{KEY}_round{i}", cx, cy, 60, coll)
+    # v24: four hotel stacking chairs around every round
+    for k, (chx, chy) in enumerate([(cx - 5.5, cy - 46), (cx - 5.5, cy + 34),
+                                    (cx - 45, cy - 6), (cx + 34, cy - 6)]):
+        G2["build_chair"](f"v16_{KEY}_r{i}_ch{k}", chx, chy, coll)
 # Free-standing high-tops are the standard 22x28 bar-height two-top.
 ht_mat = G2["get_or_create_color_material"](
     "MAT_v16_hightop", (0.35, 0.24, 0.16, 1.0), roughness=0.45)
@@ -128,6 +131,15 @@ for i, (cx, cy) in enumerate(cfg.get("hightops", [])):
                    4, 4, 40.5, material=ht_mat, collection=coll)
     G2["make_box"](f"v16_{KEY}_hightop{i}_foot", cx - 9, cy - 9, 0,
                    18, 18, 1.5, material=ht_mat, collection=coll)
+    # v24: two barstools per free-standing two-top
+    for j, sy in enumerate((cy - 23, cy + 9)):
+        G2["make_box"](f"v16_{KEY}_ht{i}_stool{j}_seat", cx - 7, sy, 28,
+                       14, 14, 2, material=ht_mat, collection=coll)
+        for lx, ly in ((cx - 7, sy), (cx + 5, sy),
+                       (cx - 7, sy + 12), (cx + 5, sy + 12)):
+            G2["make_box"](f"v16_{KEY}_ht{i}_stool{j}_leg{lx:.0f}{ly:.0f}",
+                           lx, ly, 0, 1.5, 1.5, 28,
+                           material=ht_mat, collection=coll)
 rail_mat = G2["get_or_create_color_material"](
     "MAT_v16_rail", (0.45, 0.30, 0.18, 1.0), roughness=0.5)
 IN = 0.0254
@@ -165,6 +177,14 @@ for i, (x0, y0, x1, y1, _role) in enumerate(cfg.get("rails", [])):
         x, w = min(x0, x1), abs(x1 - x0)
         G2["make_box"](f"v16_{KEY}_rail{i}", x, y, 40, w, l, 2,
                        material=rail_mat, collection=coll)
+
+# v24: precise green staff pathways (visible floor strips)
+path_mat = G2["get_or_create_color_material"](
+    "MAT_v16_path", (0.55, 0.85, 0.55, 1.0), roughness=0.9)
+for j, (px0, py0, px1, py1) in enumerate(cfg.get("paths", [])):
+    G2["make_box"](f"v16_path_{j}", px0, py0, 0.02,
+                   px1 - px0, py1 - py0, 0.25,
+                   material=path_mat, collection=coll)
 
 # Bleachers: 3 stepped rows rising toward the nearest wall. Steps run
 # along the rect's SHORT axis; the back (tallest) row hugs the wall side.
