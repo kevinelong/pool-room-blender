@@ -24,13 +24,8 @@ MUTED = (110, 110, 118)
 
 # Digit-free names, taglines, and trade-off notes for presentation.
 CLEAN = {
-    "league": ("League Hall",
-               "Player-first: the six tables at maximum elbow room, rail drinks",
-               ["The same six tables as every option, spread for the widest "
-                "aisles in the study.",
-                "Drinks live on the west rail; deliveries cross active play."]),
     "social": ("Social Hall (current)",
-               "The built layout: six tables, classroom, and wall two-tops",
+               "The built layout: six tables and wall two-tops",
                ["The room as built today — the baseline for every option.",
                 "Wall two-tops flex between drinking, dining, and watching."]),
     "tournament": ("Tournament House",
@@ -49,12 +44,12 @@ CLEAN = {
                   "full length of the room.",
                   "Every delivery crosses the table line — hospitality sits "
                   "opposite the doors."]),
-    "westline": ("West Line + Moved Stage",
-                 "Tables single-file west; the stage rotates to the east wall",
-                 ["Relocating the stage beside the HVAC chase is what makes "
-                  "a west-hugging file possible.",
-                  "Hospitality fills the east wall around the stage; "
-                  "service never crosses play."]),
+    "westline": ("West Line + Wall Rounds",
+                 "Tables single-file west; a round beside each table east",
+                 ["Every table gets its own five-foot round on the east "
+                  "wall at matching height.",
+                  "Rounds pull inboard where the kitchen, chase, and entry "
+                  "well need room."]),
 }
 
 RENDERS = {

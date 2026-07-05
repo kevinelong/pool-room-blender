@@ -39,12 +39,14 @@ def main():
         else:
             h = tile_h
         tiles.append(im.resize((w, h), Image.LANCZOS))
-    x_gap = (PAGE_W - sum(t.width for t in tiles[:COLS])) // (COLS + 1)
-    for i, t in enumerate(tiles):
-        col, row = i % COLS, i // COLS
-        x = x_gap + col * (t.width + x_gap)
-        y = GAP + row * (tile_h + GAP)
-        page.paste(t, (x, y + (tile_h - t.height) // 2))
+    rows = [tiles[i:i + COLS] for i in range(0, len(tiles), COLS)]
+    for r, row_tiles in enumerate(rows):
+        x_gap = (PAGE_W - sum(t.width for t in row_tiles)) // (len(row_tiles) + 1)
+        x = x_gap
+        for t in row_tiles:
+            y = GAP + r * (tile_h + GAP)
+            page.paste(t, (x, y + (tile_h - t.height) // 2))
+            x += t.width + x_gap
     out = os.path.join(ROOT, "docs", "pool_room_topdowns.pdf")
     page.save(out, resolution=float(DPI))
     print(f"wrote {out} ({os.path.getsize(out) / 1e6:.1f} MB, "

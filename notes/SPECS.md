@@ -28,3 +28,12 @@ Applied in:
    east-half position (ROOM_W-95) was wrong per the reference video and
    is superseded. Egress checks, configs, and furniture placements all
    updated to keep the west-end approach clear.
+
+## v23 addendum (2026-07-05)
+
+6. **Stage and storage lockers: REMOVED from every layout.** The classroom
+   seating is also removed from all layouts. The League layout (tables
+   under the beam) is retired. Option set: Social, Tournament (+north
+   rounds), Center Line (+end two-tops), East Line (6 rounds, top table
+   centered between round and entry rail), West Line (per-table wall
+   rounds).

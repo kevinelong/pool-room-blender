@@ -60,7 +60,8 @@ with open(os.path.join(HERE, "build_pool_room.py")) as fh:
 src = open(os.path.join(HERE, "build_pool_room_furniture.py")).read()
 src, n = re.subn(r"POOL_TABLES = \[[^\]]*\]", tables_src, src, count=1)
 assert n == 1, "POOL_TABLES patch failed"
-DISABLE = []
+# v23: stage and storage lockers are removed from every layout
+DISABLE = ["build_stage", "build_lockers"]
 if not cfg.get("classroom"):
     DISABLE.append("build_classroom")
 if KEY != "social":          # the v15L north rounds are part of the current

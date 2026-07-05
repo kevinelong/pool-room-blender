@@ -7,117 +7,34 @@
   },
   "configs": [
     {
-      "key": "league",
-      "name": "1 \u00b7 League Hall",
-      "tagline": "Player-first: six tables at maximum elbow room, rail drinks",
-      "capacity": {
-        "tables": 6,
-        "players": 24,
-        "dine": 0,
-        "drink": 22,
-        "flex": 0,
-        "spectators": 7
-      },
-      "cue": {
-        "full_pct": 96,
-        "tight_pct": 4,
-        "blocked_pct": 0,
-        "min_clearance_in": 57.5,
-        "per_table": {
-          "T0L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 84.8,
-            "N": 89.2
-          },
-          "T0R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 84.8,
-            "N": 119.2
-          },
-          "T1L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 84.8,
-            "N": 84.8
-          },
-          "T1R": {
-            "W": 59.8,
-            "E": 57.5,
-            "S": 84.8,
-            "N": 84.8
-          },
-          "T2L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 126.8,
-            "N": 84.8
-          },
-          "T2R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 126.8,
-            "N": 84.8
-          }
-        }
-      },
-      "service": {
-        "cocktail": {
-          "seats": 22,
-          "max_run_ft": 69.1,
-          "avg_run_ft": 47.6,
-          "conflicted_seats": 20
-        },
-        "food": {
-          "seats": 0,
-          "max_run_ft": 0.0,
-          "avg_run_ft": 0.0,
-          "conflicted_seats": 0
-        }
-      },
-      "egress": {
-        "exit_corridor_in": 170.0,
-        "exit_corridor_ok": true,
-        "worst_travel_ft": 50.9
-      },
-      "revenue_proxy_hr": 320,
-      "flip_minutes": 0,
-      "notes": [
-        "The six tables spread across the full room \u2014 the widest aisles of any option.",
-        "Drinks live on the west rail; deliveries cross active play.",
-        "No in-room dining and nowhere to host a crowd."
-      ]
-    },
-    {
       "key": "social",
-      "name": "2 \u00b7 Social Hall (current)",
-      "tagline": "The built layout: six tables + classroom + wall two-tops",
+      "name": "1 \u00b7 Social Hall",
+      "tagline": "The built layout: six tables + wall two-tops",
       "capacity": {
         "tables": 6,
         "players": 24,
         "dine": 0,
         "drink": 0,
         "flex": 12,
-        "spectators": 31
+        "spectators": 7
       },
       "cue": {
-        "full_pct": 79,
+        "full_pct": 88,
         "tight_pct": 0,
-        "blocked_pct": 21,
+        "blocked_pct": 12,
         "min_clearance_in": 34.5,
         "per_table": {
           "T0L": {
             "W": 85.5,
             "E": 59.8,
             "S": 73.2,
-            "N": 43.2
+            "N": 222.8
           },
           "T0R": {
             "W": 59.8,
             "E": 34.5,
             "S": 73.2,
-            "N": 43.2
+            "N": 222.8
           },
           "T1L": {
             "W": 85.5,
@@ -164,25 +81,24 @@
         "exit_corridor_ok": true,
         "worst_travel_ft": 39.4
       },
-      "revenue_proxy_hr": 308,
+      "revenue_proxy_hr": 260,
       "flip_minutes": 0,
       "notes": [
         "The room as built \u2014 the baseline every option is judged against.",
-        "Two-tops flex between drinkers, eaters, and spectators.",
-        "Classroom block serves league meetings and lessons."
+        "Two-tops flex between drinkers, eaters, and spectators."
       ]
     },
     {
       "key": "tournament",
-      "name": "3 \u00b7 Tournament House",
+      "name": "2 \u00b7 Tournament House",
       "tagline": "North gallery: bleachers + stage face the feature row",
       "capacity": {
         "tables": 6,
         "players": 24,
         "dine": 0,
         "drink": 4,
-        "flex": 0,
-        "spectators": 29
+        "flex": 32,
+        "spectators": 21
       },
       "cue": {
         "full_pct": 96,
@@ -194,13 +110,13 @@
             "W": 85.5,
             "E": 59.8,
             "S": 73.2,
-            "N": 166.8
+            "N": 65.8
           },
           "T0R": {
             "W": 59.8,
             "E": 85.5,
             "S": 73.2,
-            "N": 166.8
+            "N": 65.8
           },
           "T1L": {
             "W": 85.5,
@@ -230,42 +146,42 @@
       },
       "service": {
         "cocktail": {
-          "seats": 2,
-          "max_run_ft": 28.4,
-          "avg_run_ft": 25.9,
+          "seats": 6,
+          "max_run_ft": 72.2,
+          "avg_run_ft": 48.6,
           "conflicted_seats": 2
         },
         "food": {
-          "seats": 0,
-          "max_run_ft": 0.0,
-          "avg_run_ft": 0.0,
+          "seats": 4,
+          "max_run_ft": 44.1,
+          "avg_run_ft": 31.8,
           "conflicted_seats": 0
         }
       },
       "egress": {
         "exit_corridor_in": 78.2,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 39.4
+        "worst_travel_ft": 54.0
       },
-      "revenue_proxy_hr": 202,
+      "revenue_proxy_hr": 554,
       "flip_minutes": 45,
       "notes": [
-        "The bench gives way to a three-row gallery; the back pair becomes the feature row under the audience's nose.",
+        "A three-row gallery faces the feature row; four rounds pack the cleared north end around it.",
         "Food drops to handhelds while racks are in play.",
         "Slowest to flip back (bleachers)."
       ]
     },
     {
       "key": "centerline",
-      "name": "4 \u00b7 Center Line",
+      "name": "3 \u00b7 Center Line",
       "tagline": "Six tables turned 90\u00b0, end-to-end down the middle",
       "capacity": {
         "tables": 6,
         "players": 24,
         "dine": 0,
-        "drink": 27,
+        "drink": 24,
         "flex": 0,
-        "spectators": 13
+        "spectators": 7
       },
       "cue": {
         "full_pct": 58,
@@ -274,38 +190,38 @@
         "min_clearance_in": 54.8,
         "per_table": {
           "Line0": {
-            "W": 119.0,
-            "E": 68.0,
+            "W": 74.0,
+            "E": 74.0,
             "S": 54.8,
             "N": 60.2
           },
           "Line1": {
-            "W": 119.0,
-            "E": 119.0,
+            "W": 74.0,
+            "E": 74.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line2": {
-            "W": 69.0,
-            "E": 68.0,
+            "W": 74.0,
+            "E": 74.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line3": {
-            "W": 119.0,
-            "E": 119.0,
+            "W": 74.0,
+            "E": 74.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line4": {
-            "W": 69.0,
-            "E": 68.0,
+            "W": 74.0,
+            "E": 74.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line5": {
-            "W": 119.0,
-            "E": 119.0,
+            "W": 74.0,
+            "E": 74.0,
             "S": 59.8,
             "N": 54.8
           }
@@ -313,10 +229,10 @@
       },
       "service": {
         "cocktail": {
-          "seats": 24,
-          "max_run_ft": 72.4,
-          "avg_run_ft": 51.8,
-          "conflicted_seats": 24
+          "seats": 12,
+          "max_run_ft": 70.0,
+          "avg_run_ft": 38.3,
+          "conflicted_seats": 6
         },
         "food": {
           "seats": 0,
@@ -330,7 +246,7 @@
         "exit_corridor_ok": true,
         "worst_travel_ft": 56.6
       },
-      "revenue_proxy_hr": 377,
+      "revenue_proxy_hr": 338,
       "flip_minutes": 0,
       "notes": [
         "Every table on display: the side aisles run the full length, so one walk covers all six tables.",
@@ -340,21 +256,21 @@
     },
     {
       "key": "eastline",
-      "name": "5 \u00b7 East Line + West Lounge",
+      "name": "4 \u00b7 East Line + West Lounge",
       "tagline": "Tables single-file on the east; full-length hospitality strip west",
       "capacity": {
         "tables": 6,
         "players": 24,
         "dine": 0,
-        "drink": 4,
-        "flex": 40,
+        "drink": 0,
+        "flex": 48,
         "spectators": 7
       },
       "cue": {
-        "full_pct": 58,
+        "full_pct": 54,
         "tight_pct": 42,
-        "blocked_pct": 0,
-        "min_clearance_in": 54.8,
+        "blocked_pct": 4,
+        "min_clearance_in": 51.5,
         "per_table": {
           "Line0": {
             "W": 72.0,
@@ -387,8 +303,8 @@
             "N": 54.8
           },
           "Line5": {
-            "W": 95.0,
-            "E": 71.0,
+            "W": 51.5,
+            "E": 91.5,
             "S": 59.8,
             "N": 54.8
           }
@@ -396,24 +312,24 @@
       },
       "service": {
         "cocktail": {
-          "seats": 7,
+          "seats": 6,
           "max_run_ft": 66.5,
-          "avg_run_ft": 46.2,
-          "conflicted_seats": 7
+          "avg_run_ft": 47.8,
+          "conflicted_seats": 6
         },
         "food": {
-          "seats": 5,
-          "max_run_ft": 38.8,
-          "avg_run_ft": 32.6,
-          "conflicted_seats": 5
+          "seats": 6,
+          "max_run_ft": 42.6,
+          "avg_run_ft": 33.0,
+          "conflicted_seats": 6
         }
       },
       "egress": {
-        "exit_corridor_in": 159.8,
+        "exit_corridor_in": 139.2,
         "exit_corridor_ok": true,
         "worst_travel_ft": 54.9
       },
-      "revenue_proxy_hr": 618,
+      "revenue_proxy_hr": 674,
       "flip_minutes": 20,
       "notes": [
         "The west side becomes a 9-ft hospitality strip the full length of the room \u2014 folding rounds and a high-top under the windows-side wall, clear of the Emergency Exit approach.",
@@ -423,55 +339,55 @@
     },
     {
       "key": "westline",
-      "name": "6 \u00b7 West Line + Moved Stage",
-      "tagline": "Tables single-file on the west; stage rotates to the east wall",
+      "name": "5 \u00b7 West Line + Wall Rounds",
+      "tagline": "Tables single-file west; a round beside each table on the east wall",
       "capacity": {
         "tables": 6,
         "players": 24,
         "dine": 0,
-        "drink": 4,
-        "flex": 24,
+        "drink": 0,
+        "flex": 48,
         "spectators": 7
       },
       "cue": {
-        "full_pct": 58,
-        "tight_pct": 42,
-        "blocked_pct": 0,
-        "min_clearance_in": 54.8,
+        "full_pct": 46,
+        "tight_pct": 46,
+        "blocked_pct": 8,
+        "min_clearance_in": 39.0,
         "per_table": {
           "Line0": {
             "W": 71.0,
-            "E": 69.0,
+            "E": 85.0,
             "S": 54.8,
             "N": 60.2
           },
           "Line1": {
             "W": 71.0,
-            "E": 69.0,
+            "E": 85.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line2": {
             "W": 71.0,
-            "E": 167.0,
+            "E": 39.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line3": {
             "W": 71.0,
-            "E": 119.0,
+            "E": 57.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line4": {
             "W": 71.0,
-            "E": 69.0,
+            "E": 85.0,
             "S": 54.8,
             "N": 54.8
           },
           "Line5": {
             "W": 71.0,
-            "E": 79.0,
+            "E": 47.0,
             "S": 59.8,
             "N": 54.8
           }
@@ -479,15 +395,15 @@
       },
       "service": {
         "cocktail": {
-          "seats": 5,
-          "max_run_ft": 51.8,
-          "avg_run_ft": 32.8,
+          "seats": 6,
+          "max_run_ft": 57.6,
+          "avg_run_ft": 35.0,
           "conflicted_seats": 0
         },
         "food": {
-          "seats": 3,
-          "max_run_ft": 25.3,
-          "avg_run_ft": 21.2,
+          "seats": 6,
+          "max_run_ft": 33.1,
+          "avg_run_ft": 22.9,
           "conflicted_seats": 0
         }
       },
@@ -496,12 +412,12 @@
         "exit_corridor_ok": true,
         "worst_travel_ft": 52.6
       },
-      "revenue_proxy_hr": 434,
+      "revenue_proxy_hr": 674,
       "flip_minutes": 25,
       "notes": [
-        "The stage moves to the east wall between the HVAC chase and the entry rails, opening the west wall for the table file.",
-        "Hospitality fills the east segments north and south of the relocated stage; the service lane detours around it.",
-        "The last table clips the exit approach band \u2014 the corridor to the Emergency Exit passes west of the file and stays legal."
+        "Each table gets its own 5-ft round on the east wall at the same height \u2014 table service at arm's reach.",
+        "Three rounds pull inboard where the kitchen door, HVAC chase, and entry well need clearance.",
+        "The aisle between play and rounds runs narrow; servers thread it."
       ]
     }
   ]

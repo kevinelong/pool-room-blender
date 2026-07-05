@@ -94,13 +94,7 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
         rect(d, cue_zone(cx, yt, rot), fill=COL_CUE + (28,),
              outline=COL_CUE + (90,), width=1)
 
-    # fixed elements
-    stage_r = cfg.get("stage_rect", STAGE)
-    rect(d, stage_r, fill=COL_STAGE)
-    d.text((px(stage_r[0] + 12), py((stage_r[1] + stage_r[3]) / 2)),
-           "stage", font=F_S, fill=(60, 40, 60))
-    rect(d, LOCKERS, fill=(150, 150, 158))
-    d.text((px(272), py(4) - 14), "lockers", font=F_S, fill=(70, 70, 78))
+    # fixed elements (v23: stage and lockers removed from all layouts)
     rect(d, HVAC, fill=(190, 190, 196))
     d.text((px(289), py(366)), "hvac", font=F_S, fill=(90, 90, 96))
     if cfg.get("bench"):

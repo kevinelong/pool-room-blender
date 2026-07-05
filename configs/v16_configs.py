@@ -71,65 +71,50 @@ def _rows(y_tops, cols=(XL, XR)):
 
 CONFIGS = [
     dict(
-        key="league",
-        name="1 · League Hall",
-        tagline="Player-first: six tables at maximum elbow room, rail drinks",
-        tables=_rows(ROWS_SPREAD),
-        rounds=[], twotops=[], hightops=[],
-        rails=[(2, 120, 2, 660, "drink")],          # west-wall drink rail
-        bench=True, bench_role="spectate",
-        classroom=False, bleachers=[], stage_seats=0,
-        twotop_role=None,
-        flip_minutes=0,
-        notes=[
-            "The six tables spread across the full room — the widest aisles "
-            "of any option.",
-            "Drinks live on the west rail; deliveries cross active play.",
-            "No in-room dining and nowhere to host a crowd.",
-        ],
-    ),
-    dict(
         key="social",
-        name="2 · Social Hall (current)",
-        tagline="The built layout: six tables + classroom + wall two-tops",
+        name="1 · Social Hall",
+        tagline="The built layout: six tables + wall two-tops",
         tables=_rows(ROWS_CURRENT),
         rounds=[], hightops=[],
         twotops=[(282, y) for y in (335, 386, 437, 488, 539, 590)],
         twotop_role="flex",
         rails=[],
         bench=True, bench_role="spectate",
-        classroom=True, bleachers=[], stage_seats=0,
+        classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=0,
         notes=[
             "The room as built — the baseline every option is judged against.",
             "Two-tops flex between drinkers, eaters, and spectators.",
-            "Classroom block serves league meetings and lessons.",
         ],
     ),
     dict(
         key="tournament",
-        name="3 · Tournament House",
+        name="2 · Tournament House",
         tagline="North gallery: bleachers + stage face the feature row",
         tables=_rows(ROWS_CURRENT),
-        rounds=[], hightops=[],
+        # v23: with the stage and lockers gone, the north end packs four
+        # 5-ft rounds around the gallery
+        rounds=[(52, 45), (60, 135), (158, 135), (256, 135)],
+        round_role="flex",
+        hightops=[],
         twotops=[(282, 340), (282, 400)],
         twotop_role="drink",
         rails=[],
         bench=False, bench_role=None,
         classroom=False,
         bleachers=[(102, 20, 270, 74)],   # 3-row gallery on the north wall
-        stage_seats=8,                     # stage = VIP/commentary
+        stage_seats=0,
         flip_minutes=45,
         notes=[
-            "The bench gives way to a three-row gallery; the back pair "
-            "becomes the feature row under the audience's nose.",
+            "A three-row gallery faces the feature row; four rounds pack "
+            "the cleared north end around it.",
             "Food drops to handhelds while racks are in play.",
             "Slowest to flip back (bleachers).",
         ],
     ),
     dict(
         key="centerline",
-        name="4 · Center Line",
+        name="3 · Center Line",
         tagline="Six tables turned 90°, end-to-end down the middle",
         rot90=True,
         # single file: cabinet gaps ~47.5" -> side swings land at the
@@ -137,10 +122,17 @@ CONFIGS = [
         tables=[(f"Line{i}", 158.0, yt)
                 for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
         rounds=[],
-        hightops=[(30, 150), (30, 310), (30, 470)],   # v22: west-wall two-tops
-        twotops=[(282, 120), (282, 322), (282, 524)],
-        twotop_role="spectate",
-        rails=[(2, 80, 2, 600, "drink")],
+        # v23: a bar two-top at BOTH ends of every table, against the west
+        # and east walls (the table-end swings stop 61" short of the walls,
+        # so the wall seats sit outside them). East-side y-nudges clear the
+        # kitchen frontage, HVAC chase, and entry well.
+        hightops=([(25, cy) for cy in
+                   (97.75, 198.75, 299.75, 400.75, 501.75, 590)]
+                  + [(291, cy) for cy in
+                     (97.75, 198.75, 265, 410, 501.75, 585)]),
+        twotops=[],
+        twotop_role=None,
+        rails=[],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=0,
@@ -154,17 +146,22 @@ CONFIGS = [
     ),
     dict(
         key="eastline",
-        name="5 · East Line + West Lounge",
+        name="4 · East Line + West Lounge",
         tagline="Tables single-file on the east; full-length hospitality strip west",
         rot90=True,
         # cx=206 keeps the playfield clear of the NW stage (which blocks a
         # west-hugging file) and clear of the east service lane and entry well
-        tables=[(f"Line{i}", 206.0, yt)
-                for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
-        # v22: strip packed properly — 5 rounds + 2 bar two-tops
-        rounds=[(55, 110), (55, 200), (55, 290), (55, 425), (55, 515)],
+        # v23: the top (south) table shifts west, centered between the
+        # sixth round and the entry-stair railing (well edge x=276)
+        tables=([(f"Line{i}", 206.0, yt)
+                 for i, yt in enumerate([71, 172, 273, 374, 475])]
+                + [("Line5", 185.5, 576)]),
+        # v23: six rounds at an even 90" pitch — the sixth at the south top
+        # of the column, clear of the Emergency Exit approach
+        rounds=[(55, 110), (55, 200), (55, 290), (55, 380), (55, 470),
+                (55, 560)],
         round_role="flex",
-        twotops=[], hightops=[(52, 350), (52, 588)],
+        twotops=[], hightops=[],
         rails=[],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
@@ -181,32 +178,32 @@ CONFIGS = [
     ),
     dict(
         key="westline",
-        name="6 · West Line + Moved Stage",
-        tagline="Tables single-file on the west; stage rotates to the east wall",
+        name="5 · West Line + Wall Rounds",
+        tagline="Tables single-file west; a round beside each table on the east wall",
         rot90=True,
-        # v21: the NW stage relocates — rotated 90° against the east wall,
-        # slid north to meet the HVAC chase — which unblocks a west-hugging
-        # file (the fixed stage left only 28" at the first table).
-        stage_rect=(268, 380, 316, 476),
-        lane_x=240.0,   # service spine detours west of the relocated stage
+        # v23: stage removed entirely (user) — the west file needs no
+        # stage relocation any more
+        lane_x=224.0,   # service spine threads between table swing and rounds
         tables=[(f"Line{i}", 110.0, yt)
                 for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
-        # v22: 3 rounds is the band max (kitchen/HVAC/stage/well chop the
-        # strip); two bar two-tops fill the leftover bands
-        rounds=[(258, 120), (258, 230), (258, 520)],
+        # v23: one round per table against the east wall, centered on its
+        # table where possible — pulled inboard/nudged only where the
+        # kitchen frontage, HVAC chase, or entry well forces it
+        rounds=[(274, 97.75), (274, 198.75), (228, 299.75), (246, 400.75),
+                (274, 501.75), (236, 602.75)],
         round_role="flex",
-        twotops=[], hightops=[(246, 256), (248, 592)],
+        twotops=[], hightops=[],
         rails=[],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=25,
         notes=[
-            "The stage moves to the east wall between the HVAC chase and "
-            "the entry rails, opening the west wall for the table file.",
-            "Hospitality fills the east segments north and south of the "
-            "relocated stage; the service lane detours around it.",
-            "The last table clips the exit approach band — the corridor "
-            "to the Emergency Exit passes west of the file and stays legal.",
+            "Each table gets its own 5-ft round on the east wall at the "
+            "same height — table service at arm's reach.",
+            "Three rounds pull inboard where the kitchen door, HVAC chase, "
+            "and entry well need clearance.",
+            "The aisle between play and rounds runs narrow; servers "
+            "thread it.",
         ],
     ),
 ]
@@ -232,8 +229,8 @@ def cue_zone(cx, y_top, rot90=False):
 
 def obstacles(cfg, exclude_table=None):
     """Static furniture rects for clearance/egress checks."""
-    obs = [("stage", cfg.get("stage_rect", STAGE)),
-           ("lockers", LOCKERS), ("hvac", HVAC)]
+    # v23: stage and storage lockers removed from ALL layouts (user)
+    obs = [("hvac", HVAC)]
     if cfg.get("bench"):
         obs.append(("bench", BENCH))
     if cfg.get("classroom"):

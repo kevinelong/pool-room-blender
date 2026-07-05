@@ -11,17 +11,15 @@ import sys
 SRC_DIR = "/tmp/blender_test"
 
 META = {
-    "social": ("2 · Social Hall (current)",
+    "social": ("1 · Social Hall",
                "six tables · classroom · wall two-tops — the built baseline"),
-    "centerline": ("4 · Center Line",
+    "centerline": ("3 · Center Line",
                    "six tables turned 90°, end-to-end down the middle"),
-    "eastline": ("5 · East Line + West Lounge",
+    "eastline": ("4 · East Line + West Lounge",
                  "six tables single-file east · full-length hospitality strip west"),
-    "westline": ("6 · West Line + Moved Stage",
-                 "six tables single-file west · stage rotated to the east wall at the HVAC"),
-    "league": ("1 · League Hall",
-               "six tables at maximum elbow room · rail drinks only · no dining"),
-    "tournament": ("3 · Tournament House",
+    "westline": ("5 · West Line + Wall Rounds",
+                 "six tables single-file west · a round beside each table on the east wall"),
+    "tournament": ("2 · Tournament House",
                    "six tables · north bleacher gallery faces the feature row · stage VIP"),
 }
 
