@@ -458,6 +458,10 @@ def compute_paths(cfg):
     obs += [(hx - 26, hy - 29, hx + 26, hy + 29)
             for hx, hy in list(cfg.get("hightops", [])) + list(cfg.get("twotops", []))]
     obs += [HVAC] + list(cfg.get("bleachers", []))
+    # v25: the Main Entry well is a real floor cut (two treads down to the
+    # landing) — painted path must stop at the top step, not float over it
+    ENTRY_WELL = (276, 612, 316, 682)
+    obs += [ENTRY_WELL]
 
     def clip_strip(x0, y0, x1, y1):
         """Axis-aligned strip minus obstacle intervals along its long axis."""
@@ -486,7 +490,9 @@ def compute_paths(cfg):
 
     paths = []
     paths += clip_strip(lane_x - 12, 30, lane_x + 12, 660)      # spine
-    paths += clip_strip(min(lane_x, 276), 624, 316, 648)        # ME stub
+    # ME approach runs along the well's NORTH curb to the top step — the
+    # old stub (y 624..648 out to the east wall) painted across the treads
+    paths += clip_strip(min(lane_x - 12, 250), 588, 316, 612)   # ME stub
     paths += clip_strip(min(lane_x, 290), 298, 316, 322)        # kitchen stub
     paths += clip_strip(50, 600, 74, 682)                        # EE stub
     paths += clip_strip(50, 600, lane_x, 624)                    # EE link
