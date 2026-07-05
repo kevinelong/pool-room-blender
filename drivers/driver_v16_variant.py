@@ -96,6 +96,23 @@ if ROT90:
                 o.matrix_world = R @ o.matrix_world
     print(f"[v16:{KEY}] rotated {len(cfg['tables'])} tables 90°")
 
+STAGE_DEFAULT = (0, 0, 96, 48)
+stage_rect = cfg.get("stage_rect")
+if stage_rect and tuple(stage_rect) != STAGE_DEFAULT:
+    # v21: relocate the stage — rotate 90° about origin ((x,y)->(-y,x))
+    # then translate so the footprint lands on stage_rect.
+    from mathutils import Matrix
+    IN_ = 0.0254
+    sx0, sy0, sx1, sy1 = stage_rect
+    R = (Matrix.Translation(Vector((sx1 * IN_, sy0 * IN_, 0)))
+         @ Matrix.Rotation(3.14159265 / 2, 4, 'Z'))
+    coll = bpy.data.collections.get("Stage")
+    moved = 0
+    for o in (coll.objects if coll else []):
+        o.matrix_world = R @ o.matrix_world
+        moved += 1
+    print(f"[v16:{KEY}] relocated stage ({moved} objects) -> {stage_rect}")
+
 # ---- config-specific additions -------------------------------------------
 coll = G2["get_or_create_collection"]("V16_Extras")
 for i, (cx, cy) in enumerate(cfg.get("rounds", [])):

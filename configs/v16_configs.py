@@ -177,6 +177,34 @@ CONFIGS = [
             "all hospitality opposite the doors.",
         ],
     ),
+    dict(
+        key="westline",
+        name="6 · West Line + Moved Stage",
+        tagline="Tables single-file on the west; stage rotates to the east wall",
+        rot90=True,
+        # v21: the NW stage relocates — rotated 90° against the east wall,
+        # slid north to meet the HVAC chase — which unblocks a west-hugging
+        # file (the fixed stage left only 28" at the first table).
+        stage_rect=(268, 380, 316, 476),
+        lane_x=240.0,   # service spine detours west of the relocated stage
+        tables=[(f"Line{i}", 110.0, yt)
+                for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
+        rounds=[(258, 120), (258, 230), (258, 520)],
+        round_role="flex",
+        twotops=[], hightops=[(254, 585)],
+        rails=[],
+        bench=True, bench_role="spectate",
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=25,
+        notes=[
+            "The stage moves to the east wall between the HVAC chase and "
+            "the entry rails, opening the west wall for the table file.",
+            "Hospitality fills the east segments north and south of the "
+            "relocated stage; the service lane detours around it.",
+            "The last table clips the exit approach band — the corridor "
+            "to the Emergency Exit passes west of the file and stays legal.",
+        ],
+    ),
 ]
 
 
@@ -200,7 +228,8 @@ def cue_zone(cx, y_top, rot90=False):
 
 def obstacles(cfg, exclude_table=None):
     """Static furniture rects for clearance/egress checks."""
-    obs = [("stage", STAGE), ("lockers", LOCKERS), ("hvac", HVAC)]
+    obs = [("stage", cfg.get("stage_rect", STAGE)),
+           ("lockers", LOCKERS), ("hvac", HVAC)]
     if cfg.get("bench"):
         obs.append(("bench", BENCH))
     if cfg.get("classroom"):

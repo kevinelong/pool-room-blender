@@ -67,11 +67,11 @@ def side_clearances(cfg, name, cx, yt):
     return out
 
 
-def route(door, seat):
+def route(door, seat, lane_x=LANE_X):
     """Manhattan route door -> east-lane spine -> row aisle -> seat."""
     dx, dy = (door[0] + door[2]) / 2, (door[1] + door[3]) / 2
     sx, sy = seat
-    pts = [(dx, dy), (LANE_X, dy), (LANE_X, sy), (sx, sy)]
+    pts = [(dx, dy), (lane_x, dy), (lane_x, sy), (sx, sy)]
     length = sum(abs(pts[i + 1][0] - pts[i][0]) + abs(pts[i + 1][1] - pts[i][1])
                  for i in range(len(pts) - 1))
     return pts, length
@@ -106,8 +106,9 @@ def service_metrics(cfg):
                                conflicted_seats=0)
             continue
         runs, conflicts = [], 0
+        lane_x = cfg.get("lane_x", LANE_X)
         for t in targets:
-            pts, length = route(door, t)
+            pts, length = route(door, t, lane_x)
             runs.append(length)
             hit = any(seg_hits_rect(pts[i], pts[i + 1], z)
                       for i in range(len(pts) - 1) for z in zones)

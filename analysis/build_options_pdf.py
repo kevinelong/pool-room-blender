@@ -49,6 +49,12 @@ CLEAN = {
                   "full length of the room.",
                   "Every delivery crosses the table line — hospitality sits "
                   "opposite the doors."]),
+    "westline": ("West Line + Moved Stage",
+                 "Tables single-file west; the stage rotates to the east wall",
+                 ["Relocating the stage beside the HVAC chase is what makes "
+                  "a west-hugging file possible.",
+                  "Hospitality fills the east wall around the stage; "
+                  "service never crosses play."]),
 }
 
 RENDERS = {

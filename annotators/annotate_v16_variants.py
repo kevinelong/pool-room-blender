@@ -17,6 +17,8 @@ META = {
                    "six tables turned 90°, end-to-end down the middle"),
     "eastline": ("5 · East Line + West Lounge",
                  "six tables single-file east · full-length hospitality strip west"),
+    "westline": ("6 · West Line + Moved Stage",
+                 "six tables single-file west · stage rotated to the east wall at the HVAC"),
     "league": ("1 · League Hall",
                "six tables at maximum elbow room · rail drinks only · no dining"),
     "tournament": ("3 · Tournament House",

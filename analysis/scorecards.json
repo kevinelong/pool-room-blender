@@ -420,6 +420,89 @@
         "Same tight side-to-side swings as the center line; table ends get full room.",
         "Every delivery crosses the table line \u2014 the price of putting all hospitality opposite the doors."
       ]
+    },
+    {
+      "key": "westline",
+      "name": "6 \u00b7 West Line + Moved Stage",
+      "tagline": "Tables single-file on the west; stage rotates to the east wall",
+      "capacity": {
+        "tables": 6,
+        "players": 24,
+        "dine": 0,
+        "drink": 2,
+        "flex": 24,
+        "spectators": 7
+      },
+      "cue": {
+        "full_pct": 58,
+        "tight_pct": 42,
+        "blocked_pct": 0,
+        "min_clearance_in": 54.8,
+        "per_table": {
+          "Line0": {
+            "W": 71.0,
+            "E": 69.0,
+            "S": 54.8,
+            "N": 60.2
+          },
+          "Line1": {
+            "W": 71.0,
+            "E": 69.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line2": {
+            "W": 71.0,
+            "E": 167.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line3": {
+            "W": 71.0,
+            "E": 119.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line4": {
+            "W": 71.0,
+            "E": 69.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line5": {
+            "W": 71.0,
+            "E": 85.0,
+            "S": 59.8,
+            "N": 54.8
+          }
+        }
+      },
+      "service": {
+        "cocktail": {
+          "seats": 4,
+          "max_run_ft": 51.8,
+          "avg_run_ft": 31.4,
+          "conflicted_seats": 0
+        },
+        "food": {
+          "seats": 3,
+          "max_run_ft": 25.3,
+          "avg_run_ft": 21.2,
+          "conflicted_seats": 0
+        }
+      },
+      "egress": {
+        "exit_corridor_in": 63.8,
+        "exit_corridor_ok": true,
+        "worst_travel_ft": 52.6
+      },
+      "revenue_proxy_hr": 416,
+      "flip_minutes": 25,
+      "notes": [
+        "The stage moves to the east wall between the HVAC chase and the entry rails, opening the west wall for the table file.",
+        "Hospitality fills the east segments north and south of the relocated stage; the service lane detours around it.",
+        "The last table clips the exit approach band \u2014 the corridor to the Emergency Exit passes west of the file and stays legal."
+      ]
     }
   ]
 }

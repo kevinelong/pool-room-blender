@@ -95,8 +95,10 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
              outline=COL_CUE + (90,), width=1)
 
     # fixed elements
-    rect(d, STAGE, fill=COL_STAGE)
-    d.text((px(14), py(30)), "stage", font=F_S, fill=(60, 40, 60))
+    stage_r = cfg.get("stage_rect", STAGE)
+    rect(d, stage_r, fill=COL_STAGE)
+    d.text((px(stage_r[0] + 12), py((stage_r[1] + stage_r[3]) / 2)),
+           "stage", font=F_S, fill=(60, 40, 60))
     rect(d, LOCKERS, fill=(150, 150, 158))
     d.text((px(272), py(4) - 14), "lockers", font=F_S, fill=(70, 70, 78))
     rect(d, HVAC, fill=(190, 190, 196))
@@ -155,9 +157,11 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
         targets = [(x, y) for k, x, y in seats if k in kinds]
         if not targets:
             continue
-        far = max(targets, key=lambda t: route(door, t)[1])
+        lane_x = cfg.get("lane_x")
+        kw = {"lane_x": lane_x} if lane_x else {}
+        far = max(targets, key=lambda t: route(door, t, **kw)[1])
         for t in targets:
-            pts, _ = route(door, t)
+            pts, _ = route(door, t, **kw)
             xy = [c for p in pts for c in (px(p[0]), py(p[1]))]
             bold = (t == far)
             d.line(xy, fill=col + (255 if bold else 60,),
