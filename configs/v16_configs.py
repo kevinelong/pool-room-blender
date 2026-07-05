@@ -136,7 +136,8 @@ CONFIGS = [
         # playable-but-tight 54.75"; both row ends get full clearance
         tables=[(f"Line{i}", 158.0, yt)
                 for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
-        rounds=[], hightops=[],
+        rounds=[],
+        hightops=[(30, 150), (30, 310), (30, 470)],   # v22: west-wall two-tops
         twotops=[(282, 120), (282, 322), (282, 524)],
         twotop_role="spectate",
         rails=[(2, 80, 2, 600, "drink")],
@@ -160,9 +161,10 @@ CONFIGS = [
         # west-hugging file) and clear of the east service lane and entry well
         tables=[(f"Line{i}", 206.0, yt)
                 for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
-        rounds=[(55, 120), (55, 240), (55, 460), (55, 560)],
+        # v22: strip packed properly — 5 rounds + 2 bar two-tops
+        rounds=[(55, 110), (55, 200), (55, 290), (55, 425), (55, 515)],
         round_role="flex",
-        twotops=[], hightops=[(55, 350)],
+        twotops=[], hightops=[(52, 350), (52, 588)],
         rails=[],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
@@ -189,9 +191,11 @@ CONFIGS = [
         lane_x=240.0,   # service spine detours west of the relocated stage
         tables=[(f"Line{i}", 110.0, yt)
                 for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
+        # v22: 3 rounds is the band max (kitchen/HVAC/stage/well chop the
+        # strip); two bar two-tops fill the leftover bands
         rounds=[(258, 120), (258, 230), (258, 520)],
         round_role="flex",
-        twotops=[], hightops=[(254, 585)],
+        twotops=[], hightops=[(246, 256), (248, 592)],
         rails=[],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
