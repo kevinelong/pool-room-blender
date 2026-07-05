@@ -8,8 +8,10 @@ FIXED SPECS (user-locked, 2026-07-03 — do not change):
 
 With the table count fixed, the options differ in where the six tables sit
 and what fills the freed floor: rail drinking (league), classroom (social),
-a north spectator gallery (tournament), an entry-end high-top lounge
-(lounge), permanent dining rounds (bistro), or a folding flex zone (split).
+a north spectator gallery (tournament), or — v20 — the tables turn 90°
+into a single file (rot90 layouts): down the middle (centerline) or hugging
+the west wall with a full-length hospitality strip east (westline). The
+north-compressed 4-tables-at-one-end layouts were removed per user review.
 
 Coordinates are room inches: x 0..316 (west->east), y 0..682 (north->south,
 y=0 north). Table tuples are (name, cabinet_center_x, cabinet_top_y).
@@ -126,79 +128,73 @@ CONFIGS = [
         ],
     ),
     dict(
-        key="lounge",
-        name="4 · Cocktail Lounge",
-        tagline="Bar-forward: tables compress north, high-tops own the entry end",
-        tables=_rows(ROWS_NORTH),
-        rounds=[],
-        twotops=[(282, 460), (282, 512)],
+        key="centerline",
+        name="4 · Center Line",
+        tagline="Six tables turned 90°, end-to-end down the middle",
+        rot90=True,
+        # single file: cabinet gaps ~47.5" -> side swings land at the
+        # playable-but-tight 54.75"; both row ends get full clearance
+        tables=[(f"Line{i}", 158.0, yt)
+                for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
+        rounds=[], hightops=[],
+        twotops=[(282, 120), (282, 322), (282, 524)],
         twotop_role="spectate",
-        # v18: back row shifted east, S rail moved east — both clear the
-        # relocated Emergency Exit (west end of the S wall)
-        hightops=[(70, 560), (150, 560), (230, 560), (150, 630), (230, 630)],
-        rails=[(2, 470, 2, 600, "drink"), (115, 680, 255, 680, "drink")],
+        rails=[(2, 80, 2, 600, "drink")],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
-        flip_minutes=15,
+        flip_minutes=0,
         notes=[
-            "Bar staff barely enter the room — the lounge zone is at the door.",
-            "Standard bar-height two-tops and wall rails fill the south third.",
-            "Same six tables, tighter aisles than league spacing.",
+            "Every table on display: the side aisles run the full length, "
+            "so one walk covers all six tables.",
+            "Side-to-side swings between neighbouring tables run tight; "
+            "the table ends get full room.",
+            "West-rail drink deliveries cross the line at every table.",
         ],
     ),
     dict(
-        key="bistro",
-        name="5 · Billiards Bistro",
-        tagline="Dining-forward: five-foot rounds fill the south third",
-        tables=_rows(ROWS_NORTH),
-        # v18: rows pulled north/east of the relocated west-end Emergency
-        # Exit and its approach band
-        rounds=[(70, 570), (160, 570), (250, 570), (145, 648), (225, 648)],
-        twotops=[], hightops=[],
-        rails=[(2, 470, 2, 600, "drink")],
-        bench=True, bench_role="spectate",
-        classroom=False, bleachers=[], stage_seats=0,
-        flip_minutes=20,
-        notes=[
-            "Forty covers on five-foot rounds, all south of the play zone.",
-            "Food routes down the east lane past the kitchen door; cocktails "
-            "have the longest run and want a drop station.",
-            "Pool keeps all six tables but loses its walking room to dining.",
-        ],
-    ),
-    dict(
-        key="split",
-        name="6 · Split-House Flex",
-        tagline="Fixed play north, folding flex zone south of the aisle",
-        tables=_rows(ROWS_NORTH),
-        rounds=[(70, 570), (160, 570), (250, 570), (145, 648), (225, 648)],
+        key="eastline",
+        name="5 · East Line + West Lounge",
+        tagline="Tables single-file on the east; full-length hospitality strip west",
+        rot90=True,
+        # cx=206 keeps the playfield clear of the NW stage (which blocks a
+        # west-hugging file) and clear of the east service lane and entry well
+        tables=[(f"Line{i}", 206.0, yt)
+                for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
+        rounds=[(55, 120), (55, 240), (55, 460), (55, 560)],
         round_role="flex",
-        twotops=[], hightops=[],
+        twotops=[], hightops=[(55, 350)],
         rails=[],
         bench=True, bench_role="spectate",
         classroom=False, bleachers=[], stage_seats=0,
         flip_minutes=20,
         notes=[
-            "Same footprint as the bistro but the rounds fold and stack — "
-            "the south third flips between banquet, dining, and overflow.",
-            "Service never crosses the play zone.",
-            "Nothing is purpose-built; everything is possible.",
+            "The west side becomes a 9-ft hospitality strip the full length "
+            "of the room — folding rounds and a high-top under the windows-"
+            "side wall, clear of the Emergency Exit approach.",
+            "Same tight side-to-side swings as the center line; table ends "
+            "get full room.",
+            "Every delivery crosses the table line — the price of putting "
+            "all hospitality opposite the doors.",
         ],
     ),
 ]
 
 
-def table_rect(cx, y_top):
+def table_rect(cx, y_top, rot90=False):
+    """Cabinet rect. rot90=True: long axis east-west (v20 line layouts) —
+    y_top is then the NORTH edge of the rotated (53.5\" deep) cabinet."""
+    if rot90:
+        return (cx - TBL_L / 2, y_top, cx + TBL_L / 2, y_top + TBL_W)
     return (cx - TBL_W / 2, y_top, cx + TBL_W / 2, y_top + TBL_L)
 
 
-def playfield_rect(cx, y_top):
-    x0, y0, x1, y1 = table_rect(cx, y_top)
+def playfield_rect(cx, y_top, rot90=False):
+    x0, y0, x1, y1 = table_rect(cx, y_top, rot90)
     return (x0 + RAIL_W, y0 + RAIL_W, x1 - RAIL_W, y1 - RAIL_W)
 
 
-def cue_zone(cx, y_top):
-    x0, y0, x1, y1 = playfield_rect(cx, y_top)
+def cue_zone(cx, y_top, rot90=False):
+    x0, y0, x1, y1 = playfield_rect(cx, y_top, rot90)
     return (x0 - CUE, y0 - CUE, x1 + CUE, y1 + CUE)
 
 
@@ -209,9 +205,10 @@ def obstacles(cfg, exclude_table=None):
         obs.append(("bench", BENCH))
     if cfg.get("classroom"):
         obs.append(("classroom", CLASSROOM))
+    rot = cfg.get("rot90", False)
     for name, cx, yt in cfg["tables"]:
         if name != exclude_table:
-            obs.append((f"table:{name}", table_rect(cx, yt)))
+            obs.append((f"table:{name}", table_rect(cx, yt, rot)))
     for i, (cx, cy) in enumerate(cfg.get("rounds", [])):
         r = ROUND_D / 2 + 10   # + chair ring
         obs.append((f"round{i}", (cx - r, cy - r, cx + r, cy + r)))

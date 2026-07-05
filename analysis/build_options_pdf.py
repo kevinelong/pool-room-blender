@@ -38,19 +38,17 @@ CLEAN = {
                    ["The bench gives way to a bleacher gallery; the nearest "
                     "table row becomes the feature row.",
                     "Food drops to handhelds while racks are in play."]),
-    "lounge": ("Cocktail Lounge",
-               "Bar-forward: tables compress north, the entry end becomes lounge",
-               ["The lounge meets guests at the door; trays barely travel.",
-                "Bar-height two-tops and wall rails fill the south third."]),
-    "bistro": ("Billiards Bistro",
-               "Dining-forward: five-foot rounds fill the south third",
-               ["Dinner routes down the east lane; the rounds sit south of play.",
-                "Cocktails travel farthest; a mid-room drop station would help."]),
-    "split": ("Split-House Flex",
-              "Fixed play north, folding flex zone at the entry end",
-              ["Service never crosses the play zone.",
-               "The rounds fold and stack — the south third flips between "
-               "banquet, dining, and overflow."]),
+    "centerline": ("Center Line",
+                   "Six tables turned sideways, end-to-end down the middle",
+                   ["Every table on display from the full-length side aisles.",
+                    "Side-to-side swings between neighbours run tight; the "
+                    "table ends get full room."]),
+    "eastline": ("East Line + West Lounge",
+                 "Tables single-file on the east; hospitality strip west",
+                 ["The west side hosts folding rounds and a high-top the "
+                  "full length of the room.",
+                  "Every delivery crosses the table line — hospitality sits "
+                  "opposite the doors."]),
 }
 
 RENDERS = {

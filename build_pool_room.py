@@ -509,13 +509,13 @@ def build_entry_alcove():
     # instead of a black void
     mat_ext = make_pbr_material("Entry_Exterior_Backdrop", None, None, None,
                                 tile_size_m=1.0,
-                                flat_color=(0.55, 0.55, 0.52, 1.0))
+                                flat_color=(0.38, 0.38, 0.36, 1.0))
     build_wall_segment("Entry_Backdrop",
                        x=ROOM_W + 40, y=door_y0 - 20, z=landing_z,
                        w=2, l=door_y_span + 40,
                        h=CEIL_H, material=mat_ext)
     ld = bpy.data.lights.new("Entry_Daylight", type='AREA')
-    ld.energy = 350.0
+    ld.energy = 160.0
     ld.size = 1.6
     ld.color = (1.0, 0.96, 0.88)
     lo = bpy.data.objects.new("Entry_Daylight", ld)

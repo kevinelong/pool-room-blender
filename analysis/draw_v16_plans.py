@@ -89,8 +89,9 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
            fill=(150, 120, 90))
 
     # cue zones under furniture
+    rot = cfg.get("rot90", False)
     for _n, cx, yt in cfg["tables"]:
-        rect(d, cue_zone(cx, yt), fill=COL_CUE + (28,),
+        rect(d, cue_zone(cx, yt, rot), fill=COL_CUE + (28,),
              outline=COL_CUE + (90,), width=1)
 
     # fixed elements
@@ -114,8 +115,8 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
 
     # pool tables
     for name, cx, yt in cfg["tables"]:
-        rect(d, table_rect(cx, yt), fill=COL_TABLE)
-        rect(d, playfield_rect(cx, yt), fill=COL_FELT)
+        rect(d, table_rect(cx, yt, rot), fill=COL_TABLE)
+        rect(d, playfield_rect(cx, yt, rot), fill=COL_FELT)
 
     # rounds / two-tops / high-tops / rails
     for cx, cy in cfg.get("rounds", []):
@@ -146,7 +147,7 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
                    font=F_S, fill=col)
 
     # service routes: all-seat routes faint, farthest bold; conflict rings
-    zones = [cue_zone(cx, yt) for _n, cx, yt in cfg["tables"]]
+    zones = [cue_zone(cx, yt, rot) for _n, cx, yt in cfg["tables"]]
     seats = seat_positions(cfg)
     for stream, door, kinds, col in (
             ("cocktail", DOOR_MAIN, ("drink", "flex"), COL_COCKTAIL),

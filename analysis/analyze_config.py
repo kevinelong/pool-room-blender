@@ -39,7 +39,7 @@ def _overlap(a0, a1, b0, b1):
 
 def side_clearances(cfg, name, cx, yt):
     """Clearance from each playfield edge to the nearest obstruction/wall."""
-    px0, py0, px1, py1 = playfield_rect(cx, yt)
+    px0, py0, px1, py1 = playfield_rect(cx, yt, cfg.get("rot90", False))
     obs = obstacles(cfg, exclude_table=name)
     out = {}
     for side in "WESN":
@@ -93,7 +93,8 @@ def seg_hits_rect(p, q, rect):
 
 
 def service_metrics(cfg):
-    zones = [cue_zone(cx, yt) for _n, cx, yt in cfg["tables"]]
+    rot = cfg.get("rot90", False)
+    zones = [cue_zone(cx, yt, rot) for _n, cx, yt in cfg["tables"]]
     seats = seat_positions(cfg)
     res = {}
     for stream, door, kinds in (
@@ -142,7 +143,8 @@ def egress_metrics(cfg):
             if _overlap(gap[0], gap[1], door_x0, door_x1) > 0:
                 corridor = max(corridor, gap[1] - gap[0])
         cursor = max(cursor, ox1)
-    pts = [(cx, yt + 46.25) for _n, cx, yt in cfg["tables"]]
+    half = 26.75 if cfg.get("rot90", False) else 46.25
+    pts = [(cx, yt + half) for _n, cx, yt in cfg["tables"]]
     pts += [(x, y) for _k, x, y in seat_positions(cfg)]
     worst = 0.0
     for x, y in pts:

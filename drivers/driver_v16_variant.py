@@ -30,16 +30,25 @@ cfg = next(c for c in V16.CONFIGS if c["key"] == KEY)
 print(f"[v16:{KEY}] building variant: {cfg['name']}")
 
 # ---- relabel tables so the furniture module's row conventions hold -------
-ROW_NAMES = ["Back", "MainA", "MainB", "MainC"]
-tables = []
-row = -1
-last_y = None
-for _n, cx, yt in cfg["tables"]:
-    if yt != last_y:
-        row += 1
-        last_y = yt
-    suffix = "L" if cx < 130 else ("R" if cx > 185 else "C")
-    tables.append((f"{ROW_NAMES[row]}{suffix}", cx, yt))
+ROT90 = cfg.get("rot90", False)
+TBL_W_, TBL_L_ = 53.5, 92.5
+if ROT90:
+    # v20 line layouts: build each table unrotated with the same CENTER the
+    # rotated table will have (config y_top is the rotated cabinet's north
+    # edge), then rotate the whole table group 90° about that center below.
+    tables = [(n, cx, yt + TBL_W_ / 2 - TBL_L_ / 2)
+              for n, cx, yt in cfg["tables"]]
+else:
+    ROW_NAMES = ["Back", "MainA", "MainB", "MainC"]
+    tables = []
+    row = -1
+    last_y = None
+    for _n, cx, yt in cfg["tables"]:
+        if yt != last_y:
+            row += 1
+            last_y = yt
+        suffix = "L" if cx < 130 else ("R" if cx > 185 else "C")
+        tables.append((f"{ROW_NAMES[row]}{suffix}", cx, yt))
 tables_src = "POOL_TABLES = [\n" + "".join(
     f"    ({n!r}, {cx!r}, {yt!r}),\n" for n, cx, yt in tables) + "]"
 
@@ -58,12 +67,34 @@ if KEY != "social":          # the v15L north rounds are part of the current
     DISABLE.append("build_round_tables")   # build only
 if not cfg.get("bench"):
     DISABLE.append("build_bench")
+if ROT90:
+    # wall two-tops are keyed to the column layout; a rotated line puts
+    # them inside the tables' east swing — drop them (patrons pruned below)
+    DISABLE.append("build_two_tops")
 for call in DISABLE:
     src, n = re.subn(rf"^{call}\(\)", f"# v16:{KEY} disabled: {call}()",
                      src, count=1, flags=re.M)
     assert n == 1, f"disable patch failed: {call}"
 G2 = {"__name__": "__main__"}
 exec(compile(src, "build_pool_room_furniture.py", "exec"), G2)
+
+if ROT90:
+    # prune seated patrons (their wall two-tops were disabled)
+    for o in [o for o in bpy.data.objects if o.name.startswith("P_patron_")]:
+        bpy.data.objects.remove(o, do_unlink=True)
+    # rotate each table's object group 90° about its cabinet center
+    from mathutils import Matrix
+    IN_ = 0.0254
+    for name, cx, yt in cfg["tables"]:
+        pivot = Vector((cx * IN_, (yt + TBL_W_ / 2) * IN_, 0.0))
+        R = (Matrix.Translation(pivot)
+             @ Matrix.Rotation(3.14159265 / 2, 4, 'Z')
+             @ Matrix.Translation(-pivot))
+        for o in bpy.data.objects:
+            if (f"_{name}_" in o.name or o.name.endswith(f"_{name}")
+                    or o.name.endswith(name)):
+                o.matrix_world = R @ o.matrix_world
+    print(f"[v16:{KEY}] rotated {len(cfg['tables'])} tables 90°")
 
 # ---- config-specific additions -------------------------------------------
 coll = G2["get_or_create_collection"]("V16_Extras")

@@ -256,67 +256,67 @@
       ]
     },
     {
-      "key": "lounge",
-      "name": "4 \u00b7 Cocktail Lounge",
-      "tagline": "Bar-forward: tables compress north, high-tops own the entry end",
+      "key": "centerline",
+      "name": "4 \u00b7 Center Line",
+      "tagline": "Six tables turned 90\u00b0, end-to-end down the middle",
       "capacity": {
         "tables": 6,
         "players": 24,
         "dine": 0,
-        "drink": 20,
+        "drink": 21,
         "flex": 0,
-        "spectators": 11
+        "spectators": 13
       },
       "cue": {
-        "full_pct": 96,
-        "tight_pct": 0,
-        "blocked_pct": 4,
-        "min_clearance_in": 34.5,
+        "full_pct": 58,
+        "tight_pct": 42,
+        "blocked_pct": 0,
+        "min_clearance_in": 54.8,
         "per_table": {
-          "T0L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 61.2,
-            "N": 59.2
+          "Line0": {
+            "W": 119.0,
+            "E": 68.0,
+            "S": 54.8,
+            "N": 60.2
           },
-          "T0R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 61.2,
-            "N": 89.2
+          "Line1": {
+            "W": 119.0,
+            "E": 119.0,
+            "S": 54.8,
+            "N": 54.8
           },
-          "T1L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 61.2,
-            "N": 61.2
+          "Line2": {
+            "W": 119.0,
+            "E": 68.0,
+            "S": 54.8,
+            "N": 54.8
           },
-          "T1R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 61.2,
-            "N": 61.2
+          "Line3": {
+            "W": 119.0,
+            "E": 119.0,
+            "S": 54.8,
+            "N": 54.8
           },
-          "T2L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 58.8,
-            "N": 61.2
+          "Line4": {
+            "W": 119.0,
+            "E": 68.0,
+            "S": 54.8,
+            "N": 54.8
           },
-          "T2R": {
-            "W": 59.8,
-            "E": 34.5,
-            "S": 58.8,
-            "N": 61.2
+          "Line5": {
+            "W": 119.0,
+            "E": 119.0,
+            "S": 59.8,
+            "N": 54.8
           }
         }
       },
       "service": {
         "cocktail": {
-          "seats": 15,
-          "max_run_ft": 39.8,
-          "avg_run_ft": 22.2,
-          "conflicted_seats": 3
+          "seats": 21,
+          "max_run_ft": 72.4,
+          "avg_run_ft": 51.7,
+          "conflicted_seats": 21
         },
         "food": {
           "seats": 0,
@@ -326,182 +326,99 @@
         }
       },
       "egress": {
-        "exit_corridor_in": 130.0,
+        "exit_corridor_in": 111.8,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 50.5
+        "worst_travel_ft": 56.6
       },
-      "revenue_proxy_hr": 310,
-      "flip_minutes": 15,
+      "revenue_proxy_hr": 323,
+      "flip_minutes": 0,
       "notes": [
-        "Bar staff barely enter the room \u2014 the lounge zone is at the door.",
-        "Standard bar-height two-tops and wall rails fill the south third.",
-        "Same six tables, tighter aisles than league spacing."
+        "Every table on display: the side aisles run the full length, so one walk covers all six tables.",
+        "Side-to-side swings between neighbouring tables run tight; the table ends get full room.",
+        "West-rail drink deliveries cross the line at every table."
       ]
     },
     {
-      "key": "bistro",
-      "name": "5 \u00b7 Billiards Bistro",
-      "tagline": "Dining-forward: five-foot rounds fill the south third",
-      "capacity": {
-        "tables": 6,
-        "players": 24,
-        "dine": 40,
-        "drink": 5,
-        "flex": 0,
-        "spectators": 7
-      },
-      "cue": {
-        "full_pct": 92,
-        "tight_pct": 0,
-        "blocked_pct": 8,
-        "min_clearance_in": 51.8,
-        "per_table": {
-          "T0L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 61.2,
-            "N": 59.2
-          },
-          "T0R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 61.2,
-            "N": 89.2
-          },
-          "T1L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 61.2,
-            "N": 61.2
-          },
-          "T1R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 61.2,
-            "N": 61.2
-          },
-          "T2L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 51.8,
-            "N": 61.2
-          },
-          "T2R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 51.8,
-            "N": 61.2
-          }
-        }
-      },
-      "service": {
-        "cocktail": {
-          "seats": 5,
-          "max_run_ft": 39.8,
-          "avg_run_ft": 35.5,
-          "conflicted_seats": 3
-        },
-        "food": {
-          "seats": 5,
-          "max_run_ft": 42.4,
-          "avg_run_ft": 36.4,
-          "conflicted_seats": 0
-        }
-      },
-      "egress": {
-        "exit_corridor_in": 105.0,
-        "exit_corridor_ok": true,
-        "worst_travel_ft": 50.5
-      },
-      "revenue_proxy_hr": 727,
-      "flip_minutes": 20,
-      "notes": [
-        "Forty covers on five-foot rounds, all south of the play zone.",
-        "Food routes down the east lane past the kitchen door; cocktails have the longest run and want a drop station.",
-        "Pool keeps all six tables but loses its walking room to dining."
-      ]
-    },
-    {
-      "key": "split",
-      "name": "6 \u00b7 Split-House Flex",
-      "tagline": "Fixed play north, folding flex zone south of the aisle",
+      "key": "eastline",
+      "name": "5 \u00b7 East Line + West Lounge",
+      "tagline": "Tables single-file on the east; full-length hospitality strip west",
       "capacity": {
         "tables": 6,
         "players": 24,
         "dine": 0,
-        "drink": 0,
-        "flex": 40,
+        "drink": 2,
+        "flex": 32,
         "spectators": 7
       },
       "cue": {
-        "full_pct": 92,
-        "tight_pct": 0,
-        "blocked_pct": 8,
-        "min_clearance_in": 51.8,
+        "full_pct": 58,
+        "tight_pct": 42,
+        "blocked_pct": 0,
+        "min_clearance_in": 54.8,
         "per_table": {
-          "T0L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 61.2,
-            "N": 59.2
+          "Line0": {
+            "W": 72.0,
+            "E": 71.0,
+            "S": 54.8,
+            "N": 60.2
           },
-          "T0R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 61.2,
-            "N": 89.2
+          "Line1": {
+            "W": 72.0,
+            "E": 71.0,
+            "S": 54.8,
+            "N": 54.8
           },
-          "T1L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 61.2,
-            "N": 61.2
+          "Line2": {
+            "W": 167.0,
+            "E": 71.0,
+            "S": 54.8,
+            "N": 54.8
           },
-          "T1R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 61.2,
-            "N": 61.2
+          "Line3": {
+            "W": 72.0,
+            "E": 71.0,
+            "S": 54.8,
+            "N": 54.8
           },
-          "T2L": {
-            "W": 85.5,
-            "E": 59.8,
-            "S": 51.8,
-            "N": 61.2
+          "Line4": {
+            "W": 72.0,
+            "E": 71.0,
+            "S": 54.8,
+            "N": 54.8
           },
-          "T2R": {
-            "W": 59.8,
-            "E": 85.5,
-            "S": 51.8,
-            "N": 61.2
+          "Line5": {
+            "W": 72.0,
+            "E": 71.0,
+            "S": 59.8,
+            "N": 54.8
           }
         }
       },
       "service": {
         "cocktail": {
           "seats": 5,
-          "max_run_ft": 26.9,
-          "avg_run_ft": 16.1,
-          "conflicted_seats": 0
+          "max_run_ft": 65.7,
+          "avg_run_ft": 46.8,
+          "conflicted_seats": 5
         },
         "food": {
-          "seats": 5,
-          "max_run_ft": 42.4,
-          "avg_run_ft": 36.4,
-          "conflicted_seats": 0
+          "seats": 4,
+          "max_run_ft": 42.6,
+          "avg_run_ft": 35.5,
+          "conflicted_seats": 4
         }
       },
       "egress": {
-        "exit_corridor_in": 105.0,
+        "exit_corridor_in": 159.8,
         "exit_corridor_ok": true,
-        "worst_travel_ft": 50.5
+        "worst_travel_ft": 54.9
       },
-      "revenue_proxy_hr": 582,
+      "revenue_proxy_hr": 508,
       "flip_minutes": 20,
       "notes": [
-        "Same footprint as the bistro but the rounds fold and stack \u2014 the south third flips between banquet, dining, and overflow.",
-        "Service never crosses the play zone.",
-        "Nothing is purpose-built; everything is possible."
+        "The west side becomes a 9-ft hospitality strip the full length of the room \u2014 folding rounds and a high-top under the windows-side wall, clear of the Emergency Exit approach.",
+        "Same tight side-to-side swings as the center line; table ends get full room.",
+        "Every delivery crosses the table line \u2014 the price of putting all hospitality opposite the doors."
       ]
     }
   ]
