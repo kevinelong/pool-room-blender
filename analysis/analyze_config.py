@@ -323,7 +323,7 @@ def main():
             for a in an:
                 lines.append(f"    - {a['severity']}: {a['width_in']}\" "
                              f"({a['where']})")
-    lines.append("""
+    lines.append(f"""
 ## Methodology & assumptions
 
 **Revenue proxy** — a *comparator*, not a forecast. Every option has the
@@ -333,12 +333,12 @@ covers vs flex seats vs spectators) in one number so options can be
 ranked. It assumes peak-hour full occupancy — every table rented and
 every seat filled at once — at placeholder margins:
 
-- table: $18/hr (typical hourly rental)
-- drink seat: $9/hr (~1.5 drinks/hr at ~$6 margin)
-- dining cover: $14/hr (~one cover turn/hr at ~$14 food margin)
-- flex seat: the average of drink and dine ($11.50/hr) — a flex seat
-  hosts ONE patron at a time, so it must not be counted as both
-- spectator: $2/hr (incidental purchases)
+- table: ${RATES["table"]:g}/hr rental
+- drink seat: ${RATES["drink_seat"]:g}/hr (~1.5 drinks/hr at margin)
+- dining cover: ${RATES["dine_cover"]:g}/hr (~one cover turn/hr at margin)
+- flex seat: the average of drink and dine — a flex seat hosts ONE
+  patron at a time, so it must not be counted as both
+- spectator: ${RATES["spectator"]:g}/hr (incidental purchases)
 
 It deliberately EXCLUDES labor, kitchen throughput, demand differences
 between layouts, and service speed (scored separately as run lengths

@@ -141,8 +141,7 @@ ul.notes li { margin-bottom: 5px; max-width: 75ch; }
   Service runs are routed along the wall side of the east lane; a conflict is
   a seat whose delivery route crosses an active cue-swing zone. Exit corridor
   is the widest clear approach to the Emergency Exit (44" minimum to pass).
-  Revenue proxy uses $18/hr per table, $9 per drink seat, $14 per dining
-  cover, $11.50 per flex seat, $2 per spectator — adjust to the house's real
+  Revenue proxy uses __RATES_SENTENCE__ — adjust to the house's real
   numbers before deciding on revenue grounds.</p>
 
   <h2>The options</h2>
@@ -280,7 +279,14 @@ render();
 
 
 def main():
+    r = data["rates"]
+    rates_sentence = (
+        f"${r['table']:g}/hr per table, ${r['drink_seat']:g} per drink "
+        f"seat, ${r['dine_cover']:g} per dining cover, "
+        f"${(r['drink_seat'] + r['dine_cover']) / 2:g} per flex seat, "
+        f"${r['spectator']:g} per spectator")
     html = (HTML
+            .replace("__RATES_SENTENCE__", rates_sentence)
             .replace("__DATA_JSON__", json.dumps(data))
             .replace("__IMGS_JSON__", json.dumps(imgs))
             .replace("__PERSPS_JSON__", json.dumps(persps)))

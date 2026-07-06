@@ -53,7 +53,7 @@ BENCH_SEATS = 7
 CLASSROOM_SEATS = 24
 
 # Revenue-proxy defaults ($/hr) — decision makers edit these in the deck.
-RATES = {"table": 18.0, "drink_seat": 9.0, "dine_cover": 14.0,
+RATES = {"table": 10.0, "drink_seat": 9.0, "dine_cover": 14.0,
          "spectator": 2.0}
 
 # Standard 3-row layout (the current build): back pair + two main pairs.
