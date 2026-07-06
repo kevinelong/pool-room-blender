@@ -26,16 +26,18 @@ from configs.v16_configs import (  # noqa: E402
     CONFIGS, ROOM_W, ROOM_L, BEAM_Y, HVAC, ENTRY_WELL, table_rect,
 )
 
+# fallback only — configs carry letter/short as canonical fields (v39
+# letters follow the semantic page order: left, centered, right)
 SHORT = {
-    "social":     ("A", "center 2×3"),
-    "fourturned": ("B", "center 4+2"),
-    "turnleft":   ("C", "left 4+2"),
-    "turnright":  ("D", "right 4+2"),
-    "centerline": ("E", "center 1×6"),
-    "eastline":   ("F", "east 1×6"),
-    "eastshift":  ("G", "east 1×6 low"),
-    "westline":   ("H", "west 1×6"),
-    "westshift":  ("I", "west 1×6 low"),
+    "turnleft":   ("A", "left 4+2"),
+    "westline":   ("B", "west 1×6"),
+    "westshift":  ("C", "west 1×6 low"),
+    "social":     ("D", "center 2×3"),
+    "fourturned": ("E", "center 4+2"),
+    "centerline": ("F", "center 1×6"),
+    "turnright":  ("G", "right 4+2"),
+    "eastline":   ("H", "east 1×6"),
+    "eastshift":  ("I", "east 1×6 low"),
 }
 
 

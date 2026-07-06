@@ -108,3 +108,10 @@ Applied in:
     bleachers left (v26); the column, deck slider/chip, and $/hr rate
     were dead weight and are removed from all surfaces. Gallery-style
     watching is covered by flex seats (rounds/two-tops facing play).
+
+20. **v39: letters follow the semantic order.** The A–I letters now read
+    alphabetically through the presentation order (down the page's
+    left / centered / right columns): A left 4+2, B west 1×6, C west
+    1×6 low, D center 2×3, E center 4+2, F center 1×6, G right 4+2,
+    H east 1×6, I east 1×6 low. Config keys (render filenames) are
+    unchanged.

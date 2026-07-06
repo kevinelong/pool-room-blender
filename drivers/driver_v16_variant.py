@@ -323,6 +323,48 @@ if VIEW in ("topdown", "both"):
         o.hide_render = False
 
 # ---- render 2: 5.5 ft eye height, west side aiming at Main Entry ----------
+if VIEW == "sights":
+    # v38: eight extra sightline views (user): all four side-to-side and
+    # all four corner-to-corner, at PDF-tile resolution. The scene is
+    # already built — just move a camera through the list.
+    SIGHTS = {
+        "side_we":   ((10, 341),  (306, 341)),
+        # the east-wall camera steps just west of the HVAC chase —
+        # at the wall face it would sit inside the chase and render black
+        "side_ew":   ((280, 341), (10, 341)),
+        "side_ns":   ((158, 12),  (158, 670)),
+        "side_sn":   ((158, 670), (158, 12)),
+        "corn_nwse": ((14, 16),   (302, 666)),
+        "corn_nesw": ((302, 16),  (14, 666)),
+        "corn_swne": ((14, 666),  (302, 16)),
+        # SE camera pulls just clear of the sunken entry well
+        "corn_senw": ((268, 604), (14, 16)),
+    }
+    EYE_S = 66
+    cds = bpy.data.cameras.new("CAM_v16_sight")
+    cds.type = 'PERSP'
+    cds.lens = 14.0
+    cds.clip_end = 400.0
+    cos = bpy.data.objects.new("CAM_v16_sight", cds)
+    bpy.context.collection.objects.link(cos)
+    scene.camera = cos
+    scene.view_settings.exposure = -0.7
+    scene.render.resolution_x = 960
+    scene.render.resolution_y = 540
+    scene.cycles.samples = 16
+    want = [s for s in os.environ.get("V16_SIGHTS", "").split(",") if s]
+    for name in (want or list(SIGHTS)):
+        (cx, cy), (lx, ly) = SIGHTS[name]
+        cos.location = (cx * IN, cy * IN, EYE_S * IN)
+        direction = Vector((lx * IN, ly * IN, 48 * IN)) - Vector(cos.location)
+        cos.rotation_euler = direction.to_track_quat('-Z', 'Y').to_euler()
+        out_s = os.path.join(HERE, f"render_v16_{KEY}_sl_{name}.png")
+        scene.render.filepath = out_s
+        t0 = time.time()
+        print(f"[v16:{KEY}] rendering sightline {name} -> {out_s}")
+        bpy.ops.render.render(write_still=True)
+        print(f"[v16:{KEY}] sightline {name} DONE in {time.time()-t0:.1f}s")
+    raise SystemExit(0)
 if VIEW not in ("persp", "both"):
     raise SystemExit(0)
 EYE_H = 66

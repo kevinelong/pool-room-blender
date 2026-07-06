@@ -107,6 +107,21 @@ RENDERS = {
     for c in CONFIGS
 }
 
+# v38: nine sightline views per layout — the original entry view plus all
+# four side-to-side and all four corner-to-corner (user). Grid rule:
+# 3 per row at nine views, 4 per row at eight or twelve.
+SIGHT_VIEWS = [
+    ("persp_west_to_ME_5p5ft", "entry end: west → Main Entry"),
+    ("sl_side_we", "west wall → east"),
+    ("sl_side_ew", "east wall → west"),
+    ("sl_side_ns", "north wall → south"),
+    ("sl_side_sn", "south wall → north"),
+    ("sl_corn_nwse", "NW corner → SE"),
+    ("sl_corn_nesw", "NE corner → SW"),
+    ("sl_corn_swne", "SW corner → NE"),
+    ("sl_corn_senw", "SE corner → NW"),
+]
+
 
 def fnt(size, bold=True):
     p = ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold
@@ -126,7 +141,8 @@ def page_for(cfg):
     # v35: pros / cons split (user) — FLAG-prefixed CLEAN notes are cons
     mode, mn = cue_clearance_stats(cfg)
     pros = [n for n in notes if not n.startswith("FLAG:")]
-    cons = [n[5:].strip() for n in notes if n.startswith("FLAG:")]
+    cons = [(lambda s: s[0].upper() + s[1:])(n[5:].strip())
+            for n in notes if n.startswith("FLAG:")]
     measured = (f'Cue room: most sides about {mode}"; '
                 f'shortest clearance {mn:.0f}".')
     persp_p, top_p = RENDERS[key]
@@ -142,42 +158,35 @@ def page_for(cfg):
            font=fnt(38), fill=(255, 255, 255))
     d.text((M, 68), tagline, font=fnt(19, False), fill=(205, 205, 210))
 
-    # eye-level render, full width, with door callouts. All six pages share
-    # the same camera (SW end of the room, eye level, aimed east at the
-    # Main Entry), so the door pixel anchors are constant: the big dark
-    # slab is the Main Entry door in the east wall; the thin dark panel
-    # left of it is the Emergency Exit door (south wall) seen edge-on.
-    persp = fit(Image.open(persp_p).convert("RGB"), PAGE_W - 2 * M, 700)
-    px0 = M + (PAGE_W - 2 * M - persp.width) // 2
+    # v38: 3x3 grid of eye-level sightlines (entry view + four sides +
+    # four corners), each labelled; 3 per row at nine views, 4 per row
+    # at eight or twelve
+    views = []
+    for suffix, lbl in SIGHT_VIEWS:
+        vp = os.path.join(ROOT, "renders", f"render_v16_{key}_{suffix}.png")
+        if os.path.exists(vp):
+            views.append((vp, lbl))
+    per_row = 4 if len(views) in (8, 12) else 3
+    ggap = 14
+    tile_w = (PAGE_W - 2 * M - (per_row - 1) * ggap) // per_row
+    tile_h = tile_w * 9 // 16
+    lbl_h = 24
     py = 128
-    page.paste(persp, (px0, py))
-    s = persp.width / 2560.0
-    dd = ImageDraw.Draw(page)
-
-    def callout(anchor_2560, label, text_2560):
-        ax, ay = px0 + anchor_2560[0] * s, py + anchor_2560[1] * s
-        tx, ty = px0 + text_2560[0] * s, py + text_2560[1] * s
-        dd.line([tx, ty, ax, ay], fill=(255, 220, 80), width=3)
-        dd.ellipse([ax - 4, ay - 4, ax + 4, ay + 4], fill=(255, 220, 80))
-        f = fnt(16)
-        bbox = dd.textbbox((0, 0), label, font=f)
-        pad = 5
-        dd.rounded_rectangle([tx - pad, ty - pad - (bbox[3] - bbox[1]) - 6,
-                              tx + (bbox[2] - bbox[0]) + pad, ty + pad],
-                             radius=4, fill=(20, 20, 24))
-        dd.text((tx, ty - (bbox[3] - bbox[1]) - 6), label, font=f,
-                fill=(255, 255, 255))
-
-    callout((1130, 720), "Main Entry — two steps down, iron rails",
-            (1420, 380))
-    callout((1360, 640), "wood door standing open", (1620, 990))
-    # (v18: the Emergency Exit moved to the west end of the S wall and is
-    # behind the camera in this view — no callout.)
-
-    cap_y = py + persp.height + 8
+    for vi, (vp, lbl) in enumerate(views):
+        r, cix = divmod(vi, per_row)
+        vx = M + cix * (tile_w + ggap)
+        vy = py + r * (tile_h + lbl_h + 8)
+        im = Image.open(vp).convert("RGB").resize((tile_w, tile_h))
+        page.paste(im, (vx, vy))
+        d.rectangle([vx, vy, vx + tile_w, vy + tile_h],
+                    outline=(190, 188, 182))
+        d.text((vx + 2, vy + tile_h + 4), lbl,
+               font=fnt(15, False), fill=MUTED)
+    rows_used = (len(views) + per_row - 1) // per_row
+    cap_y = py + rows_used * (tile_h + lbl_h + 8) + 2
     d.text((M, cap_y),
-           "Inside the room at the southwest end, eye level, looking east "
-           "toward the Main Entry",
+           "Nine eye-level sightlines — the entry view, the four "
+           "side-to-side views, and the four corner-to-corner views",
            font=fnt(17, False), fill=MUTED)
 
     # bottom row: overhead render | clean diagram | notes
@@ -270,32 +279,32 @@ def overview_page(ordered):
 
 SCENARIOS = [
     ("If bar and kitchen revenue leads",
-     "Four On Top (A) — by far the most seated hospitality, a two-top at "
+     "Four On Top (D) — by far the most seated hospitality, a two-top at "
      "every row end, and it flips to a banquet for free. Runner-up: any "
-     "of the line layouts (F–I)."),
+     "of the line layouts (B, C, H, I)."),
     ("If serious play leads",
-     "Center Line (E) — every table on display with the roomiest typical "
+     "Center Line (F) — every table on display with the roomiest typical "
      "clearance in the set, at the price of tight side-to-side between "
-     "neighbours; A is the classic-room alternative with the fewest "
+     "neighbours; D is the classic-room alternative with the fewest "
      "compromised sides."),
     ("If service simplicity leads",
-     "West Line (H, I) — zero cue-crossing service conflicts and the "
+     "West Line (B, C) — zero cue-crossing service conflicts and the "
      "shortest food runs anywhere: hospitality sits along the service "
      "wall."),
     ("If a clear, welcoming entry leads",
-     "The shifted lines (G, I) — the whole line slides away from the "
+     "The shifted lines (C, I) — the whole line slides away from the "
      "entrance, so the door end opens up and every entry-side compromise "
-     "dissolves; G audits cleanest of the whole set."),
+     "dissolves; I audits cleanest of the whole set."),
     ("If the clustered showroom look leads",
-     "The turned trio (B, C, D) — four tables in a block reads dramatic "
+     "The turned trio (A, E, G) — four tables in a block reads dramatic "
      "from the door and every cluster gets its own seating band; accept "
      "the tightest end swings and the thinnest seating in the set."),
     ("If events and spectating lead",
-     "Four On Top (A) — the five-round cluster doubles as a gallery "
-     "facing the nearest row; East Line (F, G) seats a watching row the "
+     "Four On Top (D) — the five-round cluster doubles as a gallery "
+     "facing the nearest row; East Line (H, I) seats a watching row the "
      "full length of the room."),
     ("If nothing is settled yet",
-     "Hold A and one line layout (G or I) as the short list: they bracket "
+     "Hold D and one line layout (C or I) as the short list: they bracket "
      "the trade-space — maximum hospitality vs maximum play-and-service "
      "clarity — and both pass every safety and walking audit."),
 ]

@@ -86,11 +86,135 @@ TWOTOPS_2X3 = ([(12.0, y) for y in TT_ROW_ENDS]
 
 CONFIGS = [
     dict(
+        key="turnleft",
+        name="A · Four On Top — Turned Left",
+        letter="A", short="left 4+2",
+        tagline="The turned pattern slid left: play opens from the east",
+        rot90=True,
+        # v29 (user): complementary LEFT shift of the turned 4+2. Both
+        # columns slide west — the east aisle grows to a full service
+        # side (spine clear of the HVAC chase, full east end swings);
+        # the west ends give up swing room against the west wall.
+        lane_x=274.0,
+        tables=[("TurnA_L", 76.25, 96), ("TurnA_R", 208.25, 96),
+                ("TurnB_L", 76.25, 396), ("TurnB_R", 208.25, 396),
+                ("TurnC_L", 76.25, 512), ("TurnC_R", 208.25, 512)],
+        rounds=[], pack_grid=False,
+        round_role="flex",
+        hightops=[],
+        twotops=[(76.0, 13.0), (208.0, 13.0),
+                 (72.0, 250.0), (142.0, 250.0), (212.0, 250.0),
+                 (120.0, 671.0), (208.0, 671.0)],
+        twotop_role="flex",
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=15,
+        notes=[
+            "The turned four-and-two slides left: the whole east side "
+            "becomes service and standing room with full end swings.",
+            "FLAG: the west end swings run hard against the west wall — "
+            "the cost of the slide.",
+            "Two-top bands as in the centered version, shifted with the "
+            "tables.",
+        ],
+    ),
+    dict(
+        key="westline",
+        name="B · West Line + Wall Rounds",
+        letter="B", short="west 1×6",
+        tagline="Tables single-file west; a round beside each table on the east wall",
+        rot90=True,
+        # v23: stage removed entirely (user) — the west file needs no
+        # stage relocation any more
+        # v25: the spine threads BETWEEN the table swing and the wall rounds
+        # — an east-wall spine (298) forced the packer to pull every round
+        # 58" off the wall, defeating this layout's whole idea
+        lane_x=213.0,
+        # v30 (user): the kitchen-door table (row 3) and its round nudge
+        # LEFT so the round truly clears the 54" door frontage — the round
+        # alone falls 2" short of clearing it
+        kitchen_soft=False,
+        tables=[("Line0", 110.0, 71), ("Line1", 110.0, 172),
+                ("Line2", 96.0, 273), ("Line3", 110.0, 374),
+                ("Line4", 110.0, 475), ("Line5", 110.0, 576)],
+        # v26: ALL SIX tables get their round (user). Rows 1-3 and 5 reach
+        # the wall (row 3 partially fronts the kitchen door — accepted,
+        # noted); row 4 pulls inboard of the HVAC chase; row 6 is forced
+        # inboard beside the entry well and crowds the Main Entry approach
+        # — accepted, noted.
+        rounds=[],   # auto-packed below
+        rounds_forced=[(228.3, 602.75)],
+        round_role="flex",
+        twotops=[], hightops=[],
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=25,
+        notes=[
+            "Each of the six tables gets its own 5-ft round at matching "
+            "height on the east side — table service at arm's reach.",
+            "FLAG: the sixth (south) round crowds the Main Entry approach "
+            "beside the stair rail.",
+            "The kitchen-door table and its round nudge left, clearing "
+            "the door frontage entirely.",
+            "FLAG: that table's inboard swing tightens — the cost of "
+            "clearing the door.",
+            "FLAG: Another round pulls inboard of the HVAC chase.",
+        ],
+    ),
+    dict(
+        key="westshift",
+        name="C · West Line — Shifted Down",
+        letter="C", short="west 1×6 low",
+        tagline="The west line slid down-wall: the sixth round reaches the wall",
+        rot90=True,
+        lane_x=213.0,
+        # v28 (user): same 33.5" slide as the shifted east line. The top
+        # table clears the entry approach, and its round now sits AT the
+        # east wall like the others (the base layout had to pull it far
+        # inboard) — its chair ring still grazes the approach corner,
+        # which is accepted and noted.
+        tables=[("Line0", 110.0, 37.5), ("Line1", 110.0, 138.5),
+                ("Line2", 96.0, 239.5), ("Line3", 110.0, 340.5),
+                ("Line4", 110.0, 441.5), ("Line5", 110.0, 542.5)],
+        rounds=[],   # auto-packed below
+        # v30 (user): as in the base west line, the kitchen-door table
+        # (row 3) nudges left so its round truly clears the door frontage.
+        # The HVAC-row round is forced: the slide put its chair-body 9"
+        # into the frontage band's southern fringe (past the door span
+        # itself), which the now-hard kitchen check would reject.
+        kitchen_soft=False,
+        rounds_forced=[(250.0, 367.25), (269.0, 569.25)],
+        round_role="flex",
+        twotops=[], hightops=[],
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=25,
+        notes=[
+            "The whole line slides toward the bottom wall, freeing the "
+            "entry end: the sixth round reaches the east wall like the "
+            "rest instead of pulling far inboard.",
+            "FLAG: the sixth round's chairs still graze the Main Entry "
+            "approach corner (accepted).",
+            "The kitchen-door table and its round nudge left, clearing "
+            "the door frontage entirely and keeping the wall approach "
+            "open.",
+            "FLAG: kitchen service still threads a tight squeeze between "
+            "the third and fourth rounds' chairs.",
+            "FLAG: The fourth round pulls inboard of the HVAC chase; the first "
+            "pulls inboard of the storage-door frontage.",
+            "FLAG: the bottom table's end swing runs tight against the "
+            "bottom wall — the cost of the slide.",
+        ],
+    ),
+    dict(
         key="social",   # key kept for render-file continuity
         # v27: Social Hall and Tournament House became geometrically
         # identical once the bleachers left — merged into one option
-        name="A · Four On Top",
-        letter="A", short="center 2×3",
+        name="D · Four On Top",
+        letter="D", short="center 2×3",
         tagline="Six tables; four rounds + a center fifth on the north end",
         tables=_rows(ROWS_CURRENT),
         # v26: four aligned north rounds + a central fifth in PLUS chair
@@ -120,8 +244,8 @@ CONFIGS = [
     ),
     dict(
         key="fourturned",
-        name="B · Four On Top — Turned",
-        letter="B", short="center 4+2",
+        name="E · Four On Top — Turned",
+        letter="E", short="center 4+2",
         tagline="The Four On Top pattern with all six tables rotated 90°",
         rot90=True,
         # v27 second Four On Top (user): four tables 2x2 at the top (south)
@@ -165,78 +289,9 @@ CONFIGS = [
         ],
     ),
     dict(
-        key="turnleft",
-        name="C · Four On Top — Turned Left",
-        letter="C", short="left 4+2",
-        tagline="The turned pattern slid left: play opens from the east",
-        rot90=True,
-        # v29 (user): complementary LEFT shift of the turned 4+2. Both
-        # columns slide west — the east aisle grows to a full service
-        # side (spine clear of the HVAC chase, full east end swings);
-        # the west ends give up swing room against the west wall.
-        lane_x=274.0,
-        tables=[("TurnA_L", 76.25, 96), ("TurnA_R", 208.25, 96),
-                ("TurnB_L", 76.25, 396), ("TurnB_R", 208.25, 396),
-                ("TurnC_L", 76.25, 512), ("TurnC_R", 208.25, 512)],
-        rounds=[], pack_grid=False,
-        round_role="flex",
-        hightops=[],
-        twotops=[(76.0, 13.0), (208.0, 13.0),
-                 (72.0, 250.0), (142.0, 250.0), (212.0, 250.0),
-                 (120.0, 671.0), (208.0, 671.0)],
-        twotop_role="flex",
-        rails=[],
-        bench=False, bench_role=None,
-        classroom=False, bleachers=[], stage_seats=0,
-        flip_minutes=15,
-        notes=[
-            "The turned four-and-two slides left: the whole east side "
-            "becomes service and standing room with full end swings.",
-            "FLAG: the west end swings run hard against the west wall — "
-            "the cost of the slide.",
-            "Two-top bands as in the centered version, shifted with the "
-            "tables.",
-        ],
-    ),
-    dict(
-        key="turnright",
-        name="D · Four On Top — Turned Right",
-        letter="D", short="right 4+2",
-        tagline="The turned pattern slid right: play opens from the west",
-        rot90=True,
-        # v29 (user): complementary RIGHT shift. Both columns slide east
-        # as far as the HVAC chase and entry well allow; the west aisle
-        # becomes the service side (the spine moves there — the east
-        # margin is too tight and encumbered), with full west swings.
-        lane_x=33.0,
-        tables=[("TurnA_L", 107.75, 96), ("TurnA_R", 239.75, 96),
-                ("TurnB_L", 107.75, 396), ("TurnB_R", 239.75, 396),
-                ("TurnC_L", 107.75, 512), ("TurnC_R", 239.75, 512)],
-        rounds=[], pack_grid=False,
-        round_role="flex",
-        hightops=[],
-        twotops=[(108.0, 13.0), (240.0, 13.0),
-                 (104.0, 250.0), (174.0, 250.0), (244.0, 250.0),
-                 (136.0, 671.0), (226.0, 671.0)],
-        twotop_role="flex",
-        rails=[],
-        bench=False, bench_role=None,
-        classroom=False, bleachers=[], stage_seats=0,
-        flip_minutes=15,
-        notes=[
-            "The turned four-and-two slides right as far as the chase "
-            "and entry well allow; the west side becomes service and "
-            "standing room with full end swings.",
-            "FLAG: the east end swings run hard toward the east wall — "
-            "the cost of the slide.",
-            "Two-top bands as in the centered version, shifted with the "
-            "tables.",
-        ],
-    ),
-    dict(
         key="centerline",
-        name="E · Center Line",
-        letter="E", short="center 1×6",
+        name="F · Center Line",
+        letter="F", short="center 1×6",
         tagline="Six tables turned 90°, end-to-end down the middle",
         rot90=True,
         # single file: cabinet gaps ~47.5" -> side swings land at the
@@ -272,9 +327,44 @@ CONFIGS = [
         ],
     ),
     dict(
+        key="turnright",
+        name="G · Four On Top — Turned Right",
+        letter="G", short="right 4+2",
+        tagline="The turned pattern slid right: play opens from the west",
+        rot90=True,
+        # v29 (user): complementary RIGHT shift. Both columns slide east
+        # as far as the HVAC chase and entry well allow; the west aisle
+        # becomes the service side (the spine moves there — the east
+        # margin is too tight and encumbered), with full west swings.
+        lane_x=33.0,
+        tables=[("TurnA_L", 107.75, 96), ("TurnA_R", 239.75, 96),
+                ("TurnB_L", 107.75, 396), ("TurnB_R", 239.75, 396),
+                ("TurnC_L", 107.75, 512), ("TurnC_R", 239.75, 512)],
+        rounds=[], pack_grid=False,
+        round_role="flex",
+        hightops=[],
+        twotops=[(108.0, 13.0), (240.0, 13.0),
+                 (104.0, 250.0), (174.0, 250.0), (244.0, 250.0),
+                 (136.0, 671.0), (226.0, 671.0)],
+        twotop_role="flex",
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=15,
+        notes=[
+            "The turned four-and-two slides right as far as the chase "
+            "and entry well allow; the west side becomes service and "
+            "standing room with full end swings.",
+            "FLAG: the east end swings run hard toward the east wall — "
+            "the cost of the slide.",
+            "Two-top bands as in the centered version, shifted with the "
+            "tables.",
+        ],
+    ),
+    dict(
         key="eastline",
-        name="F · East Line + West Lounge",
-        letter="F", short="east 1×6",
+        name="H · East Line + West Lounge",
+        letter="H", short="east 1×6",
         tagline="Tables single-file on the east; full-length hospitality strip west",
         rot90=True,
         # cx=206 keeps the playfield clear of the NW stage (which blocks a
@@ -310,8 +400,8 @@ CONFIGS = [
     ),
     dict(
         key="eastshift",
-        name="G · East Line — Shifted Down",
-        letter="G", short="east 1×6 low",
+        name="I · East Line — Shifted Down",
+        letter="I", short="east 1×6 low",
         tagline="The east line slid down-wall: the top table rejoins the line",
         rot90=True,
         # v28 (user): slide the whole six-table line 33.5" toward the
@@ -337,96 +427,6 @@ CONFIGS = [
             "end dissolves.",
             "All six rounds sit on their tables' centerlines at the west "
             "wall, fully clear of the Emergency Exit approach.",
-            "FLAG: the bottom table's end swing runs tight against the "
-            "bottom wall — the cost of the slide.",
-        ],
-    ),
-    dict(
-        key="westline",
-        name="H · West Line + Wall Rounds",
-        letter="H", short="west 1×6",
-        tagline="Tables single-file west; a round beside each table on the east wall",
-        rot90=True,
-        # v23: stage removed entirely (user) — the west file needs no
-        # stage relocation any more
-        # v25: the spine threads BETWEEN the table swing and the wall rounds
-        # — an east-wall spine (298) forced the packer to pull every round
-        # 58" off the wall, defeating this layout's whole idea
-        lane_x=213.0,
-        # v30 (user): the kitchen-door table (row 3) and its round nudge
-        # LEFT so the round truly clears the 54" door frontage — the round
-        # alone falls 2" short of clearing it
-        kitchen_soft=False,
-        tables=[("Line0", 110.0, 71), ("Line1", 110.0, 172),
-                ("Line2", 96.0, 273), ("Line3", 110.0, 374),
-                ("Line4", 110.0, 475), ("Line5", 110.0, 576)],
-        # v26: ALL SIX tables get their round (user). Rows 1-3 and 5 reach
-        # the wall (row 3 partially fronts the kitchen door — accepted,
-        # noted); row 4 pulls inboard of the HVAC chase; row 6 is forced
-        # inboard beside the entry well and crowds the Main Entry approach
-        # — accepted, noted.
-        rounds=[],   # auto-packed below
-        rounds_forced=[(228.3, 602.75)],
-        round_role="flex",
-        twotops=[], hightops=[],
-        rails=[],
-        bench=False, bench_role=None,
-        classroom=False, bleachers=[], stage_seats=0,
-        flip_minutes=25,
-        notes=[
-            "Each of the six tables gets its own 5-ft round at matching "
-            "height on the east side — table service at arm's reach.",
-            "FLAG: the sixth (south) round crowds the Main Entry approach "
-            "beside the stair rail.",
-            "The kitchen-door table and its round nudge left, clearing "
-            "the door frontage entirely.",
-            "FLAG: that table's inboard swing tightens — the cost of "
-            "clearing the door.",
-            "FLAG: Another round pulls inboard of the HVAC chase.",
-        ],
-    ),
-    dict(
-        key="westshift",
-        name="I · West Line — Shifted Down",
-        letter="I", short="west 1×6 low",
-        tagline="The west line slid down-wall: the sixth round reaches the wall",
-        rot90=True,
-        lane_x=213.0,
-        # v28 (user): same 33.5" slide as the shifted east line. The top
-        # table clears the entry approach, and its round now sits AT the
-        # east wall like the others (the base layout had to pull it far
-        # inboard) — its chair ring still grazes the approach corner,
-        # which is accepted and noted.
-        tables=[("Line0", 110.0, 37.5), ("Line1", 110.0, 138.5),
-                ("Line2", 96.0, 239.5), ("Line3", 110.0, 340.5),
-                ("Line4", 110.0, 441.5), ("Line5", 110.0, 542.5)],
-        rounds=[],   # auto-packed below
-        # v30 (user): as in the base west line, the kitchen-door table
-        # (row 3) nudges left so its round truly clears the door frontage.
-        # The HVAC-row round is forced: the slide put its chair-body 9"
-        # into the frontage band's southern fringe (past the door span
-        # itself), which the now-hard kitchen check would reject.
-        kitchen_soft=False,
-        rounds_forced=[(250.0, 367.25), (269.0, 569.25)],
-        round_role="flex",
-        twotops=[], hightops=[],
-        rails=[],
-        bench=False, bench_role=None,
-        classroom=False, bleachers=[], stage_seats=0,
-        flip_minutes=25,
-        notes=[
-            "The whole line slides toward the bottom wall, freeing the "
-            "entry end: the sixth round reaches the east wall like the "
-            "rest instead of pulling far inboard.",
-            "FLAG: the sixth round's chairs still graze the Main Entry "
-            "approach corner (accepted).",
-            "The kitchen-door table and its round nudge left, clearing "
-            "the door frontage entirely and keeping the wall approach "
-            "open.",
-            "FLAG: kitchen service still threads a tight squeeze between "
-            "the third and fourth rounds' chairs.",
-            "FLAG: The fourth round pulls inboard of the HVAC chase; the first "
-            "pulls inboard of the storage-door frontage.",
             "FLAG: the bottom table's end swing runs tight against the "
             "bottom wall — the cost of the slide.",
         ],
