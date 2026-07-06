@@ -88,7 +88,8 @@ CONFIGS = [
         key="social",   # key kept for render-file continuity
         # v27: Social Hall and Tournament House became geometrically
         # identical once the bleachers left — merged into one option
-        name="1 · Four On Top",
+        name="A · Four On Top",
+        letter="A", short="center 2×3",
         tagline="Six tables; four rounds + a center fifth on the north end",
         tables=_rows(ROWS_CURRENT),
         # v26: four aligned north rounds + a central fifth in PLUS chair
@@ -118,7 +119,8 @@ CONFIGS = [
     ),
     dict(
         key="fourturned",
-        name="2 · Four On Top — Turned",
+        name="B · Four On Top — Turned",
+        letter="B", short="center 4+2",
         tagline="The Four On Top pattern with all six tables rotated 90°",
         rot90=True,
         # v27 second Four On Top (user): four tables 2x2 at the top (south)
@@ -163,7 +165,8 @@ CONFIGS = [
     ),
     dict(
         key="turnleft",
-        name="3 · Four On Top — Turned Left",
+        name="C · Four On Top — Turned Left",
+        letter="C", short="left 4+2",
         tagline="The turned pattern slid left: play opens from the east",
         rot90=True,
         # v29 (user): complementary LEFT shift of the turned 4+2. Both
@@ -196,7 +199,8 @@ CONFIGS = [
     ),
     dict(
         key="turnright",
-        name="4 · Four On Top — Turned Right",
+        name="D · Four On Top — Turned Right",
+        letter="D", short="right 4+2",
         tagline="The turned pattern slid right: play opens from the west",
         rot90=True,
         # v29 (user): complementary RIGHT shift. Both columns slide east
@@ -230,7 +234,8 @@ CONFIGS = [
     ),
     dict(
         key="centerline",
-        name="5 · Center Line",
+        name="E · Center Line",
+        letter="E", short="center 1×6",
         tagline="Six tables turned 90°, end-to-end down the middle",
         rot90=True,
         # single file: cabinet gaps ~47.5" -> side swings land at the
@@ -267,7 +272,8 @@ CONFIGS = [
     ),
     dict(
         key="eastline",
-        name="6 · East Line + West Lounge",
+        name="F · East Line + West Lounge",
+        letter="F", short="east 1×6",
         tagline="Tables single-file on the east; full-length hospitality strip west",
         rot90=True,
         # cx=206 keeps the playfield clear of the NW stage (which blocks a
@@ -303,7 +309,8 @@ CONFIGS = [
     ),
     dict(
         key="eastshift",
-        name="7 · East Line — Shifted Down",
+        name="G · East Line — Shifted Down",
+        letter="G", short="east 1×6 low",
         tagline="The east line slid down-wall: the top table rejoins the line",
         rot90=True,
         # v28 (user): slide the whole six-table line 33.5" toward the
@@ -335,7 +342,8 @@ CONFIGS = [
     ),
     dict(
         key="westline",
-        name="8 · West Line + Wall Rounds",
+        name="H · West Line + Wall Rounds",
+        letter="H", short="west 1×6",
         tagline="Tables single-file west; a round beside each table on the east wall",
         rot90=True,
         # v23: stage removed entirely (user) — the west file needs no
@@ -378,7 +386,8 @@ CONFIGS = [
     ),
     dict(
         key="westshift",
-        name="9 · West Line — Shifted Down",
+        name="I · West Line — Shifted Down",
+        letter="I", short="west 1×6 low",
         tagline="The west line slid down-wall: the sixth round reaches the wall",
         rot90=True,
         lane_x=213.0,

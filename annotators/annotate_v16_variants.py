@@ -11,23 +11,23 @@ import sys
 SRC_DIR = "/tmp/blender_test"
 
 META = {
-    "social": ("1 · Four On Top",
+    "social": ("A · Four On Top",
                "six tables · four rounds + a center fifth on the north end · two-tops at every row end"),
-    "fourturned": ("2 · Four On Top — Turned",
+    "fourturned": ("B · Four On Top — Turned",
                    "six tables rotated 90° · four on top, two below · two-top bands top, middle, bottom"),
-    "turnleft": ("3 · Four On Top — Turned Left",
+    "turnleft": ("C · Four On Top — Turned Left",
                  "the turned pattern slid left · play and service open from the east"),
-    "turnright": ("4 · Four On Top — Turned Right",
+    "turnright": ("D · Four On Top — Turned Right",
                   "the turned pattern slid right · play and service open from the west"),
-    "centerline": ("5 · Center Line",
+    "centerline": ("E · Center Line",
                    "six tables turned 90°, end-to-end down the middle · wall two-tops both sides"),
-    "eastline": ("6 · East Line + West Lounge",
+    "eastline": ("F · East Line + West Lounge",
                  "six tables single-file east · six aligned rounds down the west"),
-    "eastshift": ("7 · East Line — Shifted Down",
+    "eastshift": ("G · East Line — Shifted Down",
                   "the east line slid down-wall · top table rejoins the line · all rounds clear"),
-    "westline": ("8 · West Line + Wall Rounds",
+    "westline": ("H · West Line + Wall Rounds",
                  "six tables single-file west · a round beside every table east"),
-    "westshift": ("9 · West Line — Shifted Down",
+    "westshift": ("I · West Line — Shifted Down",
                   "the west line slid down-wall · the sixth round reaches the wall"),
 }
 

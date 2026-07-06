@@ -205,7 +205,8 @@ def tour_for(cfg):
 # ------------------------------------------------------------------- data --
 def layout_data(cfg):
     key = cfg["key"]
-    letter, short = SHORT[key]
+    letter = cfg.get("letter") or SHORT[key][0]
+    short = cfg.get("short") or SHORT[key][1]
     rot = cfg.get("rot90", False)
     plus = {(round(px, 1), round(py, 1))
             for px, py in cfg.get("rounds_plus", [])}

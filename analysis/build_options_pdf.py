@@ -136,7 +136,10 @@ def page_for(cfg):
 
     # title bar
     d.rectangle([0, 0, PAGE_W, 104], fill=INK)
-    d.text((M, 18), f"Pool Room — {name}", font=fnt(38), fill=(255, 255, 255))
+    letter = cfg.get("letter", "")
+    short = cfg.get("short", "")
+    d.text((M, 18), f"{letter} · {name}  —  {short}",
+           font=fnt(38), fill=(255, 255, 255))
     d.text((M, 68), tagline, font=fnt(19, False), fill=(205, 205, 210))
 
     # eye-level render, full width, with door callouts. All six pages share
