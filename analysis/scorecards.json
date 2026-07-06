@@ -563,7 +563,7 @@
         "worst_travel_ft": 54.9
       },
       "paths": {
-        "min_width_in": 39.2,
+        "min_width_in": 41.2,
         "anomalies": []
       },
       "revenue_proxy_hr": 660,
@@ -677,9 +677,9 @@
         "spectators": 0
       },
       "cue": {
-        "full_pct": 54,
-        "tight_pct": 42,
-        "blocked_pct": 4,
+        "full_pct": 46,
+        "tight_pct": 46,
+        "blocked_pct": 8,
         "min_clearance_in": 39.3,
         "per_table": {
           "Line0": {
@@ -695,8 +695,8 @@
             "N": 54.8
           },
           "Line2": {
-            "W": 71.0,
-            "E": 80.0,
+            "W": 57.0,
+            "E": 49.0,
             "S": 54.8,
             "N": 54.8
           },
@@ -724,13 +724,13 @@
         "cocktail": {
           "seats": 6,
           "max_run_ft": 59.0,
-          "avg_run_ft": 37.1,
+          "avg_run_ft": 36.5,
           "conflicted_seats": 0
         },
         "food": {
           "seats": 6,
           "max_run_ft": 34.3,
-          "avg_run_ft": 25.0,
+          "avg_run_ft": 24.4,
           "conflicted_seats": 0
         }
       },
@@ -740,7 +740,7 @@
         "worst_travel_ft": 52.6
       },
       "paths": {
-        "min_width_in": 39.2,
+        "min_width_in": 25.0,
         "anomalies": [
           {
             "severity": "blocked",
@@ -748,9 +748,9 @@
             "where": "south-east: walk crosses a round's chairs"
           },
           {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "center-east: walk crosses a round's chairs"
+            "severity": "pinch",
+            "width_in": 25.0,
+            "where": "center-east: between a round's chairs and a round's chairs"
           }
         ]
       },
@@ -759,8 +759,9 @@
       "notes": [
         "Each of the six tables gets its own 5-ft round at matching height on the east side \u2014 table service at arm's reach.",
         "FLAG: the sixth (south) round crowds the Main Entry approach beside the stair rail.",
-        "FLAG: the third round sits partially in front of the kitchen door (user-accepted).",
-        "The fourth round pulls inboard of the HVAC chase.",
+        "The kitchen-door table and its round nudge left, clearing the door frontage entirely.",
+        "FLAG: that table's inboard swing tightens \u2014 the cost of clearing the door.",
+        "Another round pulls inboard of the HVAC chase.",
         "Cue room around the tables: most sides get about 55\"; the shortest clearance is 39.3\"."
       ]
     },
@@ -777,8 +778,8 @@
         "spectators": 0
       },
       "cue": {
-        "full_pct": 46,
-        "tight_pct": 42,
+        "full_pct": 42,
+        "tight_pct": 46,
         "blocked_pct": 12,
         "min_clearance_in": 41.0,
         "per_table": {
@@ -795,8 +796,8 @@
             "N": 54.8
           },
           "Line2": {
-            "W": 71.0,
-            "E": 41.0,
+            "W": 57.0,
+            "E": 49.0,
             "S": 54.8,
             "N": 54.8
           },
@@ -824,13 +825,13 @@
         "cocktail": {
           "seats": 6,
           "max_run_ft": 58.6,
-          "avg_run_ft": 39.4,
+          "avg_run_ft": 39.3,
           "conflicted_seats": 0
         },
         "food": {
           "seats": 6,
           "max_run_ft": 34.9,
-          "avg_run_ft": 24.5,
+          "avg_run_ft": 24.4,
           "conflicted_seats": 0
         }
       },
@@ -840,7 +841,7 @@
         "worst_travel_ft": 55.7
       },
       "paths": {
-        "min_width_in": 20.9,
+        "min_width_in": 25.1,
         "anomalies": [
           {
             "severity": "blocked",
@@ -848,8 +849,8 @@
             "where": "south-east: walk crosses a round's chairs"
           },
           {
-            "severity": "FAIL",
-            "width_in": 20.9,
+            "severity": "pinch",
+            "width_in": 25.1,
             "where": "center-east: between a round's chairs and a round's chairs"
           }
         ]
@@ -859,7 +860,7 @@
       "notes": [
         "The whole line slides toward the bottom wall, freeing the entry end: the sixth round reaches the east wall like the rest instead of pulling far inboard.",
         "FLAG: the sixth round's chairs still graze the Main Entry approach corner (accepted).",
-        "The third round pulls inboard, keeping a clear wall approach to the kitchen door from the north.",
+        "The kitchen-door table and its round nudge left, clearing the door frontage entirely and keeping the wall approach open.",
         "FLAG: kitchen service still threads a tight squeeze between the third and fourth rounds' chairs.",
         "The fourth round pulls inboard of the HVAC chase; the first pulls inboard of the storage-door frontage.",
         "FLAG: the bottom table's end swing runs tight against the bottom wall \u2014 the cost of the slide.",

@@ -344,8 +344,13 @@ CONFIGS = [
         # — an east-wall spine (298) forced the packer to pull every round
         # 58" off the wall, defeating this layout's whole idea
         lane_x=213.0,
-        tables=[(f"Line{i}", 110.0, yt)
-                for i, yt in enumerate([71, 172, 273, 374, 475, 576])],
+        # v30 (user): the kitchen-door table (row 3) and its round nudge
+        # LEFT so the round truly clears the 54" door frontage — the round
+        # alone falls 2" short of clearing it
+        kitchen_soft=False,
+        tables=[("Line0", 110.0, 71), ("Line1", 110.0, 172),
+                ("Line2", 96.0, 273), ("Line3", 110.0, 374),
+                ("Line4", 110.0, 475), ("Line5", 110.0, 576)],
         # v26: ALL SIX tables get their round (user). Rows 1-3 and 5 reach
         # the wall (row 3 partially fronts the kitchen door — accepted,
         # noted); row 4 pulls inboard of the HVAC chase; row 6 is forced
@@ -364,9 +369,11 @@ CONFIGS = [
             "height on the east side — table service at arm's reach.",
             "FLAG: the sixth (south) round crowds the Main Entry approach "
             "beside the stair rail.",
-            "FLAG: the third round sits partially in front of the kitchen "
-            "door (user-accepted).",
-            "The fourth round pulls inboard of the HVAC chase.",
+            "The kitchen-door table and its round nudge left, clearing "
+            "the door frontage entirely.",
+            "FLAG: that table's inboard swing tightens — the cost of "
+            "clearing the door.",
+            "Another round pulls inboard of the HVAC chase.",
         ],
     ),
     dict(
@@ -380,14 +387,17 @@ CONFIGS = [
         # east wall like the others (the base layout had to pull it far
         # inboard) — its chair ring still grazes the approach corner,
         # which is accepted and noted.
-        tables=[(f"Line{i}", 110.0, yt)
-                for i, yt in enumerate(
-                    [37.5, 138.5, 239.5, 340.5, 441.5, 542.5])],
+        tables=[("Line0", 110.0, 37.5), ("Line1", 110.0, 138.5),
+                ("Line2", 96.0, 239.5), ("Line3", 110.0, 340.5),
+                ("Line4", 110.0, 441.5), ("Line5", 110.0, 542.5)],
         rounds=[],   # auto-packed below
-        # round 3 is forced INBOARD (not at the wall): that keeps a clear
-        # 40" wall approach to the kitchen door from the north — at the
-        # wall it would blanket the door's frontage entirely
-        rounds_forced=[(230.0, 266.25), (269.0, 569.25)],
+        # v30 (user): as in the base west line, the kitchen-door table
+        # (row 3) nudges left so its round truly clears the door frontage.
+        # The HVAC-row round is forced: the slide put its chair-body 9"
+        # into the frontage band's southern fringe (past the door span
+        # itself), which the now-hard kitchen check would reject.
+        kitchen_soft=False,
+        rounds_forced=[(250.0, 367.25), (269.0, 569.25)],
         round_role="flex",
         twotops=[], hightops=[],
         rails=[],
@@ -400,8 +410,9 @@ CONFIGS = [
             "rest instead of pulling far inboard.",
             "FLAG: the sixth round's chairs still graze the Main Entry "
             "approach corner (accepted).",
-            "The third round pulls inboard, keeping a clear wall approach "
-            "to the kitchen door from the north.",
+            "The kitchen-door table and its round nudge left, clearing "
+            "the door frontage entirely and keeping the wall approach "
+            "open.",
             "FLAG: kitchen service still threads a tight squeeze between "
             "the third and fourth rounds' chairs.",
             "The fourth round pulls inboard of the HVAC chase; the first "
@@ -570,8 +581,9 @@ def _round_ok(cx, cy, cfg, placed, lane_x, aligned=False):
             return False
     for ko in KEEPOUTS_FRONTAGE:
         # v26: a mandated per-table round may partially front the kitchen
-        # door (user-accepted, noted in the layout notes)
-        if aligned and ko is KITCHEN_FRONT:
+        # door (noted). v30: configs whose kitchen-door table nudges left
+        # set kitchen_soft=False — their rounds must truly clear the door.
+        if aligned and ko is KITCHEN_FRONT and cfg.get("kitchen_soft", True):
             continue
         if _rect_overlap(body, ko):
             return False

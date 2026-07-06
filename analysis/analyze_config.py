@@ -161,12 +161,16 @@ def path_audit(cfg):
     """v26: measure every painted walking path's REAL clear width — the
     span between the obstacles flanking it — and call out anomalies.
     < 36" is a pinch (single server, no passing); < 24" is a fail."""
-    from configs.v16_configs import ROUND_RING, HVAC, ENTRY_WELL, KITCHEN_FRONT
+    from configs.v16_configs import (ROUND_RING, ROUND_BODY, HVAC,
+                                     ENTRY_WELL, KITCHEN_FRONT)
     rot = cfg.get("rot90", False)
     named = [("a pool table", table_rect(tx, ty, rot))
              for _n, tx, ty in cfg["tables"]]
+    # rounds measured at the tucked-chair body — the same convention every
+    # placement rule uses (a 2" wider halo created phantom pinches)
     named += [("a round's chairs",
-               (cx - 40, cy - 40, cx + 40, cy + 40))
+               (cx - ROUND_BODY, cy - ROUND_BODY,
+                cx + ROUND_BODY, cy + ROUND_BODY))
               for cx, cy in cfg.get("rounds", [])]
     named += [("a wall two-top", (hx - 13, hy - 25, hx + 13, hy + 25))
               for hx, hy in

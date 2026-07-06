@@ -96,3 +96,10 @@ Applied in:
     The one-page top-down sheet is arranged semantically: left-shifted
     layouts down the left of the page, centered down the center,
     right-(east-)shifted down the right.
+
+18. **v30: the kitchen-door table nudges left (user).** In both west-line
+    layouts, the table whose round sits by the kitchen door moves ~14"
+    west (cx 96) so its round can pull inboard (x 224) and truly clear
+    the 54" door frontage — the round alone falls 2" short. Cost,
+    flagged: that table's inboard swing ~48"; kitchen service threads a
+    ~25" squeeze between that round and the HVAC-row round (called out).
