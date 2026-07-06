@@ -247,7 +247,7 @@ def overview_page(ordered):
     d.rectangle([0, 0, PAGE_W, 104], fill=INK)
     d.text((M, 18), "Pool Room — Nine Layout Options",
            font=fnt(38), fill=(255, 255, 255))
-    d.text((M, 68), "Overview & contents — letters are names, not rankings; "
+    d.text((M, 68), "Contents — letters read in presentation order; "
            "columns group where the tables sit: left · centered · right",
            font=fnt(19, False), fill=(205, 205, 210))
     cols = [ordered[0:3], ordered[3:6], ordered[6:9]]
@@ -268,7 +268,7 @@ def overview_page(ordered):
             im = im.resize((w, h))
             page.paste(im, (x0 + (col_w - w) // 2, y))
             y += h
-            pageno = ordered.index(cfg) + 2
+            pageno = ordered.index(cfg) + 3
             d.text((x0 + (col_w - w) // 2, y + 4),
                    f"{cfg['letter']}. {cfg['short']}", font=fnt(20), fill=INK)
             d.text((x0 + col_w - 8, y + 8), f"p. {pageno}",
@@ -314,10 +314,9 @@ def closing_page():
     page = Image.new("RGB", (PAGE_W, PAGE_H), PAPER)
     d = ImageDraw.Draw(page)
     d.rectangle([0, 0, PAGE_W, 104], fill=INK)
-    d.text((M, 18), "Closing thoughts — if this, then that",
-           font=fnt(38), fill=(255, 255, 255))
-    d.text((M, 68), "The room decides nothing; the house's priorities do. "
-           "Read these as directions, not verdicts.",
+    d.text((M, 18), "Overview", font=fnt(38), fill=(255, 255, 255))
+    d.text((M, 68), "If this, then that — the room decides nothing; the "
+           "house's priorities do. Read these as directions, not verdicts.",
            font=fnt(19, False), fill=(205, 205, 210))
     import textwrap
     y = 150
@@ -434,9 +433,11 @@ def main():
     bykey = {c["key"]: c for c in CONFIGS}
     ordered = [bykey[k] for k in PAGE_ORDER if k in bykey]
     ordered += [c for c in CONFIGS if c not in ordered]
-    pages = ([overview_page(ordered)]
+    # v40 (user): the scenarios page leads the document as "Overview";
+    # the 3x3 grid follows as "Contents"
+    pages = ([closing_page(), overview_page(ordered)]
              + [page_for(c) for c in ordered]
-             + [closing_page(), walkthrough_page()])
+             + [walkthrough_page()])
     out = os.path.join(ROOT, "docs", "pool_room_v16_options.pdf")
     pages[0].save(out, save_all=True, append_images=pages[1:],
                   resolution=150.0)
