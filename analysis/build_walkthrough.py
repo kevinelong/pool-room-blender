@@ -42,12 +42,22 @@ SHORT = {
 
 
 def thumb_data_uri(key):
+    # v42: higher-res so the same embedded image doubles as a decent
+    # downloadable overhead (cards downscale it via CSS)
     p = os.path.join(ROOT, "renders", f"render_v16_{key}_topdown.png")
     im = Image.open(p).convert("RGB")
-    im.thumbnail((340, 680))
+    im.thumbnail((720, 1440))
     buf = io.BytesIO()
-    im.save(buf, "JPEG", quality=68)
+    im.save(buf, "JPEG", quality=76)
     return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+def file_data_uri(relpath, mime):
+    fp = os.path.join(ROOT, relpath)
+    if not os.path.exists(fp):
+        return None
+    with open(fp, "rb") as fh:
+        return f"data:{mime};base64," + base64.b64encode(fh.read()).decode()
 
 
 def chairs_for(cx, cy, plus):
@@ -240,6 +250,12 @@ def main():
         room=dict(w=ROOM_W, l=ROOM_L, beamY=BEAM_Y, hvac=list(HVAC),
                   well=list(ENTRY_WELL)),
         layouts=[layout_data(c) for c in CONFIGS],
+        downloads=dict(
+            options_pdf=file_data_uri("docs/pool_room_v16_options.pdf",
+                                      "application/pdf"),
+            sheet_pdf=file_data_uri("docs/pool_room_topdowns.pdf",
+                                    "application/pdf"),
+        ),
     )
     tpl_path = os.path.join(HERE, "walkthrough_template.html")
     with open(tpl_path) as fh:

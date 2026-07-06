@@ -24,6 +24,12 @@
   .card .lbl { font-size:12px; padding:5px 7px; color:#d6d6dc;
                white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .card .lbl b { color:#8fe08f; }
+  .card .lbl a { float:right; color:#9ad0ff; text-decoration:none;
+                 font-weight:700; }
+  #downloads { padding:0 20px 4px; font-size:13px; color:#bdbdc6; }
+  #downloads a { color:#9ad0ff; text-decoration:none; font-weight:600;
+                 margin-right:18px; }
+  #downloads a:hover { text-decoration:underline; }
   #stage { position:relative; }
   canvas { width:100%; height:min(72vh,760px); display:block;
            background:#0c0c0e; cursor:crosshair; }
@@ -45,6 +51,7 @@
      A through I, forever. Click a card to jump to that layout; click the view
      to take the controls (WASD + mouse, Shift to hurry, Esc to hand back).</p>
 </header>
+<div id="downloads"></div>
 <div id="gallery"></div>
 <div id="stage">
   <canvas id="gl"></canvas>
@@ -487,12 +494,27 @@ const gal = document.getElementById('gallery');
 DATA.layouts.forEach((lay, i)=>{
   const d = document.createElement('div');
   d.className = 'card';
-  d.innerHTML = `<img src="${lay.img}" alt=""><div class="lbl"><b>${lay.letter}.</b> ${lay.short}</div>`;
+  const fname = `${lay.letter}_${lay.short.replace(/[^a-z0-9]+/gi,'_')}_overhead.jpg`;
+  d.innerHTML = `<img src="${lay.img}" alt="">
+    <div class="lbl"><b>${lay.letter}.</b> ${lay.short}
+    <a href="${lay.img}" download="${fname}" title="download this overhead view">⤓</a></div>`;
   d.title = lay.name;
   d.onclick = ()=>{ if (manual) document.exitPointerLock();
                     loadLayout(i, true); };
+  d.querySelector('a').onclick = (e)=> e.stopPropagation();
   gal.appendChild(d);
 });
+// v42: embedded downloads — the page is self-contained, so the PDFs and
+// each overhead image download straight from it (no repo access needed)
+const dls = DATA.downloads || {};
+const dlBar = document.getElementById('downloads');
+let dlHtml = 'Downloads: ';
+if (dls.options_pdf) dlHtml +=
+  `<a href="${dls.options_pdf}" download="pool_room_options.pdf">⤓ Options PDF (12 pages)</a>`;
+if (dls.sheet_pdf) dlHtml +=
+  `<a href="${dls.sheet_pdf}" download="pool_room_topdowns.pdf">⤓ One-page top-down sheet</a>`;
+dlHtml += '<span style="color:#77777f">each layout card also has its own ⤓</span>';
+dlBar.innerHTML = dlHtml;
 
 /* --------------------------------------------------------------- loop -- */
 const stride = 11*4;
