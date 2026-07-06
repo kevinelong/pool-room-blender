@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pool Room — Walkthrough</title>
+<style>
+  :root { color-scheme: dark; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#141417; color:#eee;
+         font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+  header { padding:14px 20px 6px; }
+  header h1 { font-size:20px; letter-spacing:.3px; }
+  header p { color:#9a9aa2; font-size:13px; margin-top:3px; }
+  #gallery { display:grid; grid-template-columns:repeat(9,1fr); gap:8px;
+             padding:10px 20px 14px; }
+  @media (max-width:1100px){ #gallery{ grid-template-columns:repeat(5,1fr);} }
+  @media (max-width:700px){ #gallery{ grid-template-columns:repeat(3,1fr);} }
+  .card { background:#1d1d22; border:1px solid #2c2c33; border-radius:8px;
+          cursor:pointer; overflow:hidden; transition:border-color .15s; }
+  .card:hover { border-color:#6cc26c; }
+  .card.active { border-color:#8fe08f; box-shadow:0 0 0 1px #8fe08f; }
+  .card img { width:100%; display:block; }
+  .card .lbl { font-size:12px; padding:5px 7px; color:#d6d6dc;
+               white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .card .lbl b { color:#8fe08f; }
+  #stage { position:relative; }
+  canvas { width:100%; height:min(72vh,760px); display:block;
+           background:#0c0c0e; cursor:crosshair; }
+  #hud { position:absolute; top:10px; left:14px; pointer-events:none;
+         text-shadow:0 1px 3px rgba(0,0,0,.8); }
+  #hud .big { font-size:22px; font-weight:700; }
+  #hud .sub { font-size:13px; color:#cfcfd6; }
+  #hint { position:absolute; bottom:10px; left:14px; font-size:12px;
+          color:#bdbdc6; pointer-events:none;
+          text-shadow:0 1px 3px rgba(0,0,0,.8); }
+  #fade { position:absolute; inset:0; background:#000; opacity:0;
+          pointer-events:none; transition:opacity .5s; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Pool Room — First-Person Walkthrough</h1>
+  <p>Auto-tour walks in the Main Entrance, loops each layout, and moves on —
+     A through I, forever. Click a card to jump to that layout; click the view
+     to take the controls (WASD + mouse, Shift to hurry, Esc to hand back).</p>
+</header>
+<div id="gallery"></div>
+<div id="stage">
+  <canvas id="gl"></canvas>
+  <div id="hud"><div class="big"></div><div class="sub"></div></div>
+  <div id="hint">auto-tour</div>
+  <div id="fade"></div>
+</div>
+<script>
+/*__DATA__*/
+
+/* ---------------------------------------------------------- tiny mat4 -- */
+function perspective(fov, asp, n, f){
+  const t = 1/Math.tan(fov/2), d = 1/(n-f);
+  return [t/asp,0,0,0, 0,t,0,0, 0,0,(n+f)*d,-1, 0,0,2*n*f*d,0];
+}
+function fpsView(px,py,pz,yaw,pitch){
+  const cy=Math.cos(yaw), sy=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch);
+  // right, up, back basis
+  const rx=cy, ry=0, rz=-sy;
+  const bx=sy*cp, by=sp, bz=cy*cp;          // back = -forward
+  const ux=by*rz-bz*ry, uy=bz*rx-bx*rz, uz=bx*ry-by*rx;
+  return [rx,ux,bx,0, ry,uy,by,0, rz,uz,bz,0,
+          -(rx*px+ry*py+rz*pz), -(ux*px+uy*py+uz*pz), -(bx*px+by*py+bz*pz), 1];
+}
+
+/* ------------------------------------------------------------- webgl -- */
+const cv = document.getElementById('gl');
+const gl = cv.getContext('webgl', {antialias:true});
+const VS = `attribute vec3 p; attribute vec3 n; attribute vec3 c;
+uniform mat4 proj, view; varying vec3 vc; varying float vd;
+void main(){ vec4 vp = view * vec4(p,1.0); gl_Position = proj * vp;
+  float sh = 0.62 + 0.38*max(dot(normalize(n), normalize(vec3(0.35,0.9,0.25))),0.0);
+  vc = c * sh; vd = length(vp.xyz); }`;
+const FS = `precision mediump float; varying vec3 vc; varying float vd;
+void main(){ float fog = smoothstep(9.0, 24.0, vd);
+  gl_FragColor = vec4(mix(vc, vec3(0.93,0.93,0.94), fog*0.55), 1.0); }`;
+function shader(t,s){ const o=gl.createShader(t); gl.shaderSource(o,s);
+  gl.compileShader(o); if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))
+  throw gl.getShaderInfoLog(o); return o; }
+const prog = gl.createProgram();
+gl.attachShader(prog, shader(gl.VERTEX_SHADER, VS));
+gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FS));
+gl.linkProgram(prog); gl.useProgram(prog);
+const aP=gl.getAttribLocation(prog,'p'), aN=gl.getAttribLocation(prog,'n'),
+      aC=gl.getAttribLocation(prog,'c');
+const uProj=gl.getUniformLocation(prog,'proj'),
+      uView=gl.getUniformLocation(prog,'view');
+gl.enable(gl.DEPTH_TEST); gl.enable(gl.CULL_FACE);
+
+/* ------------------------------------------------- geometry building -- */
+const IN = 0.0254;                       // room inches -> meters
+let verts = [];                          // px,py,pz, nx,ny,nz, r,g,b
+function quad(a,b,c,d,nrm,col){
+  for (const v of [a,b,c,a,c,d])
+    verts.push(v[0]*IN, v[1]*IN, v[2]*IN, nrm[0],nrm[1],nrm[2],
+               col[0],col[1],col[2]);
+}
+/* box in room coords: x east, y up (height), z = room-y (south) */
+function box(x0,z0,y0, x1,z1,y1, col){   // (x, roomY, height-bottom) ...
+  const A=[x0,y0,z0],B=[x1,y0,z0],C=[x1,y0,z1],D=[x0,y0,z1];
+  const E=[x0,y1,z0],F=[x1,y1,z0],G=[x1,y1,z1],H=[x0,y1,z1];
+  quad(E,F,G,H,[0,1,0],col);             // top
+  quad(D,C,B,A,[0,-1,0],col);            // bottom
+  quad(A,B,F,E,[0,0,-1],col);            // north (z0)
+  quad(C,D,H,G,[0,0,1],col);             // south
+  quad(D,A,E,H,[-1,0,0],col);            // west
+  quad(B,C,G,F,[1,0,0],col);             // east
+}
+function rotBox(cx,cz,y0, w,l,h, yawDeg, col){
+  const a = yawDeg*Math.PI/180, ca=Math.cos(a), sa=Math.sin(a);
+  const hw=w/2, hl=l/2;
+  const pt=(dx,dz,y)=>[cx+dx*ca-dz*sa, y, cz+dx*sa+dz*ca];
+  const y1=y0+h;
+  const c=[[-hw,-hl],[hw,-hl],[hw,hl],[-hw,hl]];
+  const lo=c.map(p=>pt(p[0],p[1],y0)), hi=c.map(p=>pt(p[0],p[1],y1));
+  quad(hi[0],hi[1],hi[2],hi[3],[0,1,0],col);
+  quad(lo[3],lo[2],lo[1],lo[0],[0,-1,0],col);
+  for(let i=0;i<4;i++){
+    const j=(i+1)%4;
+    const nx=(c[i][1]+c[j][1])?0:0;      // approximate side normals
+    const mx=(c[i][0]+c[j][0])/2, mz=(c[i][1]+c[j][1])/2;
+    const nl=Math.hypot(mx,mz)||1;
+    const wn=[ (mx*ca-mz*sa)/nl, 0, (mx*sa+mz*ca)/nl ];
+    quad(lo[i],lo[j],hi[j],hi[i],wn,col);
+  }
+}
+function cylinder(cx,cz,y0,y1,r,col,seg){
+  seg = seg||14;
+  for(let i=0;i<seg;i++){
+    const a0=i/seg*Math.PI*2, a1=(i+1)/seg*Math.PI*2;
+    const p0=[cx+r*Math.cos(a0), 0, cz+r*Math.sin(a0)];
+    const p1=[cx+r*Math.cos(a1), 0, cz+r*Math.sin(a1)];
+    quad([p0[0],y0,p0[2]],[p1[0],y0,p1[2]],[p1[0],y1,p1[2]],[p0[0],y1,p0[2]],
+         [Math.cos((a0+a1)/2),0,Math.sin((a0+a1)/2)],col);
+    // top disc fan — emit both windings so culling never hides it
+    quad([cx,y1,cz],[p0[0],y1,p0[2]],[p1[0],y1,p1[2]],[cx,y1,cz],[0,1,0],col);
+    quad([cx,y1,cz],[p1[0],y1,p1[2]],[p0[0],y1,p0[2]],[cx,y1,cz],[0,1,0],col);
+  }
+}
+
+const R = DATA.room, W=R.w, L=R.l;
+const WALL_H=118, CEIL=[0.96,0.96,0.97], WALLC=[0.94,0.94,0.95];
+const FLOOR=[0.72,0.62,0.52], PATH=[0.62,0.85,0.62];
+function buildScene(lay){
+  verts = [];
+  // floor (split around the entry well) + well treads
+  const wl=R.well;
+  box(0,0,-1, W,wl[1],0, FLOOR);
+  box(0,wl[1],-1, wl[0],L,0, FLOOR);
+  box(wl[0]+22,wl[1],-16, W,L,-15, [0.6,0.6,0.6]);        // landing
+  box(wl[0]+11,wl[1],-16, wl[0]+22,L,-7.5, [0.62,0.62,0.62]); // step1
+  box(wl[0],wl[1],-16, wl[0]+11,L,0, [0.64,0.64,0.64]);   // step2
+  // well rails
+  for (const ry of [wl[1], L-2]){
+    box(wl[0],ry,36, W-2,ry+2,39, [0.15,0.15,0.16]);
+    for (const px of [wl[0]+1, wl[0]+12, wl[0]+23, W-5])
+      box(px,ry,0, px+2,ry+2,36, [0.15,0.15,0.16]);
+  }
+  // walls: N, S (gap only visual EE slab), W; E wall with entry opening
+  box(0,-6,0, W,0,WALL_H, WALLC);                          // north
+  box(0,L,0, W,L+6,WALL_H, WALLC);                         // south
+  box(-6,0,0, 0,L,WALL_H, WALLC);                          // west
+  box(W,0,0, W+6,wl[1],WALL_H, WALLC);                     // east (N of door)
+  box(W,wl[1],80, W+6,L,WALL_H, WALLC);                    // header over door
+  // daylight backdrop + open wood leaf (hinged S jamb, 90 deg)
+  box(W+40,wl[1]-20,-16, W+42,L+20,WALL_H, [0.85,0.84,0.80]);
+  box(W-37,L-4.5,0, W-1,L-2.5,80, [0.42,0.26,0.13]);
+  // door slabs: EE (south wall), kitchen (east), storage (north)
+  box(30,L-2,0, 95,L,84, [0.12,0.12,0.13]);
+  box(W-2,290,0, W,330,84, [0.12,0.12,0.13]);
+  box(268,0,0, 316,2,84, [0.12,0.12,0.13]);
+  // HVAC chase + beam + red LED strips + signage
+  const hv=R.hvac; box(hv[0],hv[1],0, hv[2],hv[3],WALL_H, [0.55,0.55,0.56]);
+  box(0,R.beamY-6,106, W,R.beamY+6,118, [0.32,0.22,0.13]);
+  box(1,1,1, 3,L-1,3, [1,0.25,0.2]); box(W-3,1,1, W-1,wl[1],3, [1,0.25,0.2]);
+  box(1,1,1, W-1,3,3, [1,0.25,0.2]); box(1,L-3,1, 260,L-1,3, [1,0.25,0.2]);
+  box(120,L-1,70, 200,L,86, [1,0.4,0.35]);                 // south sign
+  box(0,300,70, 1,380,86, [1,0.4,0.35]);                   // west sign
+  // ceiling
+  box(0,0,WALL_H, W,L,WALL_H+2, CEIL);
+  // green paths
+  for (const p of lay.paths) box(p[0],p[1],0.05, p[2],p[3],0.4, PATH);
+  // pool tables: cabinet + felt + skirt shadow
+  for (const t of lay.tables){
+    box(t[0],t[1],26, t[2],t[3],32, [0.22,0.22,0.24]);     // cabinet
+    box(t[0]+2,t[1]+2,0, t[0]+6,t[1]+6,26, [0.2,0.2,0.22]);
+    box(t[2]-6,t[1]+2,0, t[2]-2,t[1]+6,26, [0.2,0.2,0.22]);
+    box(t[0]+2,t[3]-6,0, t[0]+6,t[3]-2,26, [0.2,0.2,0.22]);
+    box(t[2]-6,t[3]-6,0, t[2]-2,t[3]-2,26, [0.2,0.2,0.22]);
+    box(t[0]+7.25,t[1]+7.25,32, t[2]-7.25,t[3]-7.25,32.8, [0.35,0.75,0.95]);
+  }
+  // rounds: top + pedestal
+  for (const r of lay.rounds){
+    cylinder(r[0],r[1],28,30,30,[0.93,0.92,0.90]);
+    cylinder(r[0],r[1],0,28,3.5,[0.5,0.5,0.5],8);
+  }
+  // chairs
+  for (const ch of lay.chairs){
+    rotBox(ch[0],ch[1],15.5, 11,12,1.8, ch[2], [0.85,0.45,0.5]);
+    rotBox(ch[0],ch[1]+0*0,0, 10,10,15.5, ch[2], [0.75,0.4,0.45]);
+    // back: offset outward along local +l
+    const a=ch[2]*Math.PI/180;
+    rotBox(ch[0]-Math.sin(a)*-5.2, ch[1]+Math.cos(a)*5.2, 15.5,
+           11,1.6,18, ch[2], [0.85,0.45,0.5]);
+  }
+  // bar two-tops + stools
+  for (const tp of lay.tops){
+    const ns = tp[2];
+    if (ns) box(tp[0]-14,tp[1]-11,39, tp[0]+14,tp[1]+11,40.5,[0.45,0.3,0.2]);
+    else    box(tp[0]-11,tp[1]-14,39, tp[0]+11,tp[1]+14,40.5,[0.45,0.3,0.2]);
+    box(tp[0]-2,tp[1]-2,0, tp[0]+2,tp[1]+2,39, [0.4,0.27,0.18]);
+    const st = ns ? [[tp[0]-23,tp[1]-7],[tp[0]+9,tp[1]-7]]
+                  : [[tp[0]-7,tp[1]-23],[tp[0]-7,tp[1]+9]];
+    for (const s of st){
+      box(s[0],s[1],26, s[0]+14,s[1]+14,28, [0.5,0.34,0.22]);
+      box(s[0]+5,s[1]+5,0, s[0]+9,s[1]+9,26, [0.4,0.27,0.18]);
+    }
+  }
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+  const stride = 9*4;
+  gl.vertexAttribPointer(aP,3,gl.FLOAT,false,stride,0); gl.enableVertexAttribArray(aP);
+  gl.vertexAttribPointer(aN,3,gl.FLOAT,false,stride,12); gl.enableVertexAttribArray(aN);
+  gl.vertexAttribPointer(aC,3,gl.FLOAT,false,stride,24); gl.enableVertexAttribArray(aC);
+  return verts.length/9;
+}
+
+/* -------------------------------------------------------------- state -- */
+let cur = 0, nVerts = 0;
+let cam = {x:348, y:646, yaw:Math.PI/2, pitch:0};   // x,roomY in inches
+let manual = false, tourIdx = 0, tourT = 0;
+const keys = {};
+const fadeEl = document.getElementById('fade');
+const hudBig = document.querySelector('#hud .big');
+const hudSub = document.querySelector('#hud .sub');
+const hintEl = document.getElementById('hint');
+
+function floorAt(x,y){
+  const wl=R.well;
+  if (x>wl[0]+22 && y>wl[1]) return -15;
+  if (x>wl[0]+11 && y>wl[1]) return -7.5;
+  if (x>W) return -15;
+  return 0;
+}
+function eyeY(x,y){ return floorAt(x,y) + 64; }
+
+function loadLayout(i, spawnOutside){
+  cur = ((i % DATA.layouts.length) + DATA.layouts.length) % DATA.layouts.length;
+  const lay = DATA.layouts[cur];
+  nVerts = buildScene(lay);
+  tourIdx = 0; tourT = 0;
+  if (spawnOutside){ cam.x = lay.tour[0][0]; cam.y = lay.tour[0][1];
+                     cam.yaw = Math.PI/2; cam.pitch = 0; }
+  hudBig.textContent = lay.letter + ". " + lay.short;
+  hudSub.textContent = lay.name;
+  document.querySelectorAll('.card').forEach((c,j)=>
+    c.classList.toggle('active', j===cur));
+}
+
+/* --------------------------------------------------------------- tour -- */
+const SPEED = 62;                        // in/s
+function stepTour(dt){
+  const lay = DATA.layouts[cur], T = lay.tour;
+  if (tourIdx >= T.length-1){
+    fadeEl.style.opacity = 1;
+    setTimeout(()=>{ loadLayout(cur+1, true);
+                     fadeEl.style.opacity = 0; }, 550);
+    tourIdx = -1;                        // parked until reload
+    return;
+  }
+  if (tourIdx < 0) return;
+  const a = T[tourIdx], b = T[tourIdx+1];
+  const seg = Math.hypot(b[0]-a[0], b[1]-a[1]) || 1;
+  tourT += SPEED*dt/seg;
+  if (tourT >= 1){ tourIdx++; tourT = 0; return; }
+  cam.x = a[0] + (b[0]-a[0])*tourT;
+  cam.y = a[1] + (b[1]-a[1])*tourT;
+  // look toward a point ahead on the path
+  let lx = b[0], ly = b[1];
+  if (tourIdx+2 < T.length && tourT > 0.6){
+    lx = (b[0]+T[tourIdx+2][0])/2; ly = (b[1]+T[tourIdx+2][1])/2; }
+  const want = Math.atan2(-(lx-cam.x), -(ly-cam.y));
+  let d = want - cam.yaw;
+  while (d >  Math.PI) d -= 2*Math.PI;
+  while (d < -Math.PI) d += 2*Math.PI;
+  cam.yaw += d * Math.min(1, dt*2.4);
+  cam.pitch += (0 - cam.pitch) * Math.min(1, dt*2);
+}
+
+/* ------------------------------------------------------------- manual -- */
+function collide(nx, ny){
+  const r = 9, lay = DATA.layouts[cur], wl=R.well;
+  if (nx < r) nx = r;
+  if (ny < r) ny = r;
+  if (ny > L - r) ny = L - r;
+  if (nx > W - r && !(ny > wl[1]+6 && ny < L-6)) nx = W - r; // door gap
+  if (nx > W + 30) nx = W + 30;
+  for (const o of lay.obstacles){
+    const cx = Math.max(o[0], Math.min(nx, o[2]));
+    const cy = Math.max(o[1], Math.min(ny, o[3]));
+    const dx = nx-cx, dy = ny-cy, d2 = dx*dx+dy*dy;
+    if (d2 < r*r && d2 > 1e-9){
+      const d = Math.sqrt(d2); nx = cx + dx/d*r; ny = cy + dy/d*r;
+    } else if (d2 <= 1e-9){ nx += r; }
+  }
+  return [nx, ny];
+}
+function stepManual(dt){
+  const sp = (keys['ShiftLeft']||keys['ShiftRight']) ? 140 : 70;
+  let fx = -Math.sin(cam.yaw), fy = -Math.cos(cam.yaw);
+  let rx = Math.cos(cam.yaw),  ry = -Math.sin(cam.yaw);
+  let mx = 0, my = 0;
+  if (keys['KeyW']||keys['ArrowUp'])    { mx += fx; my += fy; }
+  if (keys['KeyS']||keys['ArrowDown'])  { mx -= fx; my -= fy; }
+  if (keys['KeyD']||keys['ArrowRight']) { mx += rx; my += ry; }
+  if (keys['KeyA']||keys['ArrowLeft'])  { mx -= rx; my -= ry; }
+  const m = Math.hypot(mx,my);
+  if (m > 0){
+    const [nx, ny] = collide(cam.x + mx/m*sp*dt, cam.y + my/m*sp*dt);
+    cam.x = nx; cam.y = ny;
+  }
+}
+
+/* -------------------------------------------------------------- input -- */
+window.addEventListener('keydown', e=>{ keys[e.code]=true;
+  if (e.code==='KeyT' && manual) document.exitPointerLock(); });
+window.addEventListener('keyup', e=>{ keys[e.code]=false; });
+cv.addEventListener('click', ()=>{ if (!manual) cv.requestPointerLock(); });
+document.addEventListener('pointerlockchange', ()=>{
+  manual = (document.pointerLockElement === cv);
+  hintEl.textContent = manual
+    ? 'manual — WASD move · mouse look · Shift hurry · Esc = auto-tour'
+    : 'auto-tour — click the view to walk yourself';
+  if (!manual){
+    // resume tour from the nearest tour vertex
+    const T = DATA.layouts[cur].tour;
+    let bi = 0, bd = 1e18;
+    for (let i=0;i<T.length;i++){
+      const d = (T[i][0]-cam.x)**2 + (T[i][1]-cam.y)**2;
+      if (d < bd){ bd = d; bi = i; }
+    }
+    tourIdx = Math.min(bi, T.length-2); tourT = 0;
+  }
+});
+document.addEventListener('mousemove', e=>{
+  if (!manual) return;
+  cam.yaw   -= e.movementX * 0.0026;
+  cam.pitch -= e.movementY * 0.0026;
+  cam.pitch = Math.max(-1.2, Math.min(1.2, cam.pitch));
+});
+
+/* ------------------------------------------------------------ gallery -- */
+const gal = document.getElementById('gallery');
+DATA.layouts.forEach((lay, i)=>{
+  const d = document.createElement('div');
+  d.className = 'card';
+  d.innerHTML = `<img src="${lay.img}" alt=""><div class="lbl"><b>${lay.letter}.</b> ${lay.short}</div>`;
+  d.title = lay.name;
+  d.onclick = ()=>{ if (manual) document.exitPointerLock();
+                    loadLayout(i, true); };
+  gal.appendChild(d);
+});
+
+/* --------------------------------------------------------------- loop -- */
+let last = performance.now();
+function frame(now){
+  const dt = Math.min(0.05, (now-last)/1000); last = now;
+  if (manual) stepManual(dt); else stepTour(dt);
+  const wpx = cv.clientWidth, hpx = cv.clientHeight;
+  if (cv.width !== wpx*devicePixelRatio|0 || cv.height !== hpx*devicePixelRatio|0){
+    cv.width = wpx*devicePixelRatio; cv.height = hpx*devicePixelRatio;
+  }
+  gl.viewport(0,0,cv.width,cv.height);
+  gl.clearColor(0.93,0.93,0.94,1);
+  gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+  gl.uniformMatrix4fv(uProj,false,new Float32Array(
+    perspective(1.15, cv.width/cv.height, 0.06, 40)));
+  gl.uniformMatrix4fv(uView,false,new Float32Array(
+    fpsView(cam.x*IN, eyeY(cam.x,cam.y)*IN, cam.y*IN, cam.yaw, cam.pitch)));
+  gl.drawArrays(gl.TRIANGLES, 0, nVerts);
+  requestAnimationFrame(frame);
+}
+loadLayout(0, true);
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
