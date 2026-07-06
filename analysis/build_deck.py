@@ -129,7 +129,7 @@ ul.notes li { margin-bottom: 5px; max-width: 75ch; }
 <div class="wrap">
   <p class="eyebrow">Pool Room · 26'4" × 56'10" · v16 configuration study</p>
   <h1>Six ways to balance the room</h1>
-  <p class="sub">Players, spectators, drinkers, eaters — and the two service
+  <p class="sub">Players, drinkers, eaters — and the two service
   streams that feed them: <span class="legend-dot" style="background:var(--cocktail)"></span>cocktails
   in through the Main Entry, <span class="legend-dot" style="background:var(--food)"></span>food
   in through the kitchen door. Every number below is computed from the room
@@ -166,7 +166,6 @@ const PERSPS = __PERSPS_JSON__;
 
 const DIMS = [
   { key: "players",    label: "Pool players",   raw: c => c.capacity.players },
-  { key: "spectators", label: "Spectators",     raw: c => c.capacity.spectators },
   { key: "drinks",     label: "Drink service",  raw: c => c.capacity.drink + 0.5 * c.capacity.flex },
   { key: "dining",     label: "Food service",   raw: c => c.capacity.dine + 0.5 * c.capacity.flex },
   { key: "service",    label: "Service speed",  raw: c => -(c.service.cocktail.max_run_ft + c.service.food.max_run_ft
@@ -175,11 +174,11 @@ const DIMS = [
   { key: "revenue",    label: "Revenue proxy",  raw: c => c.revenue_proxy_hr },
 ];
 const PRESETS = {
-  "Balanced":        { players: 5, spectators: 5, drinks: 5, dining: 5, service: 5, flex: 5, revenue: 5 },
-  "Players first":   { players: 10, spectators: 3, drinks: 4, dining: 1, service: 3, flex: 2, revenue: 4 },
-  "Revenue first":   { players: 3, spectators: 2, drinks: 7, dining: 7, service: 6, flex: 4, revenue: 10 },
-  "Events & shows":  { players: 3, spectators: 10, drinks: 6, dining: 3, service: 4, flex: 8, revenue: 4 },
-  "Ops simplicity":  { players: 4, spectators: 3, drinks: 5, dining: 5, service: 10, flex: 6, revenue: 4 },
+  "Balanced":        { players: 5, drinks: 5, dining: 5, service: 5, flex: 5, revenue: 5 },
+  "Players first":   { players: 10, drinks: 4, dining: 1, service: 3, flex: 2, revenue: 4 },
+  "Revenue first":   { players: 3, drinks: 7, dining: 7, service: 6, flex: 4, revenue: 10 },
+  "Events & shows":  { players: 3, drinks: 6, dining: 3, service: 4, flex: 8, revenue: 4 },
+  "Ops simplicity":  { players: 4, drinks: 5, dining: 5, service: 10, flex: 6, revenue: 4 },
 };
 
 // normalize each dimension 0..10 across configs
@@ -242,7 +241,6 @@ const fmt = (v, unit) => v ? v + (unit || "") : "—";
 const rows = [
   ["Pool tables", c => c.capacity.tables],
   ["Player positions", c => c.capacity.players],
-  ["Spectator seats", c => c.capacity.spectators],
   ["Drink positions", c => c.capacity.drink],
   ["Dining covers", c => c.capacity.dine],
   ["Flex seats", c => c.capacity.flex],
@@ -275,7 +273,6 @@ document.getElementById("cards").innerHTML = DATA.configs.map(c => `
       <div class="chips">
         <span class="chip"><b>${c.capacity.tables}</b> tables</span>
         <span class="chip"><b>${c.capacity.players}</b> players</span>
-        <span class="chip"><b>${c.capacity.spectators}</b> spectators</span>
         <span class="chip"><b>${c.capacity.drink}</b> drink</span>
         <span class="chip"><b>${c.capacity.dine}</b> dine</span>
         <span class="chip"><b>${c.capacity.flex}</b> flex</span>
@@ -302,8 +299,7 @@ def main():
     rates_sentence = (
         f"${r['table']:g}/hr per table, ${r['drink_seat']:g} per drink "
         f"seat, ${r['dine_cover']:g} per dining cover, "
-        f"${(r['drink_seat'] + r['dine_cover']) / 2:g} per flex seat, "
-        f"${r['spectator']:g} per spectator")
+        f"${(r['drink_seat'] + r['dine_cover']) / 2:g} per flex seat")
     html = (HTML
             .replace("__RATES_SENTENCE__", rates_sentence)
             .replace("__DATA_JSON__", json.dumps(data))

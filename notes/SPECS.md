@@ -103,3 +103,8 @@ Applied in:
     the 54" door frontage — the round alone falls 2" short. Cost,
     flagged: that table's inboard swing ~48"; kitchen service threads a
     ~25" squeeze between that round and the HVAC-row round (called out).
+
+19. **v36: spectator metric retired.** Zero in every layout since the
+    bleachers left (v26); the column, deck slider/chip, and $/hr rate
+    were dead weight and are removed from all surfaces. Gallery-style
+    watching is covered by flex seats (rounds/two-tops facing play).

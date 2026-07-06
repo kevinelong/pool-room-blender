@@ -53,8 +53,9 @@ BENCH_SEATS = 7
 CLASSROOM_SEATS = 24
 
 # Revenue-proxy defaults ($/hr) — decision makers edit these in the deck.
-RATES = {"table": 10.0, "drink_seat": 9.0, "dine_cover": 14.0,
-         "spectator": 2.0}
+# v36: the spectator rate retired with the bleachers (v26) — every layout
+# scores zero spectators, so the term was dead weight in every surface
+RATES = {"table": 10.0, "drink_seat": 9.0, "dine_cover": 14.0}
 
 # Standard 3-row layout (the current build): back pair + two main pairs.
 ROWS_CURRENT = [233.5, 392.0, 537.0]

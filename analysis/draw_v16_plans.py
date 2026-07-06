@@ -215,7 +215,6 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
     ty += 40
     row("Pool tables", cap["tables"])
     row("Player positions", cap["players"])
-    row("Spectator seats", cap["spectators"])
     row("Drink positions", cap["drink"])
     row("Dining covers", cap["dine"])
     row("Flex seats", cap["flex"])

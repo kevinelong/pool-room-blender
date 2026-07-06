@@ -268,8 +268,7 @@ def analyze(cfg):
     revenue = (caps["tables"] * RATES["table"]
                + caps["drink"] * RATES["drink_seat"]
                + caps["dine"] * RATES["dine_cover"]
-               + caps["flex"] * flex_rate
-               + caps["spectators"] * RATES["spectator"])
+               + caps["flex"] * flex_rate)
     return dict(
         key=cfg["key"], name=cfg["name"], tagline=cfg["tagline"],
         capacity=caps,
@@ -326,18 +325,17 @@ def main():
     with open(os.path.join(here, "scorecards.json"), "w") as fh:
         json.dump(dict(rates=RATES, configs=out), fh, indent=2)
     lines = ["# v16 configuration scorecards\n",
-             "| Config | Tables | Players | Spect. | Drink | Dine | Flex | "
+             "| Config | Tables | Players | Drink | Dine | Flex | "
              "Cue full% | Min clr\" | Cocktail max run | Food max run | "
              "Svc conflicts | Egress worst | Path min\" | $/hr proxy | "
              "Flip min |",
-             "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"
-             "---|"]
+             "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in out:
         c, s = r["capacity"], r["service"]
         conf = s["cocktail"]["conflicted_seats"] + s["food"]["conflicted_seats"]
         lines.append(
             f"| {r['name']} | {c['tables']} | {c['players']} | "
-            f"{c['spectators']} | {c['drink']} | {c['dine']} | {c['flex']} | "
+            f"{c['drink']} | {c['dine']} | {c['flex']} | "
             f"{r['cue']['full_pct']}% | {r['cue']['min_clearance_in']} | "
             f"{s['cocktail']['max_run_ft']} ft | {s['food']['max_run_ft']} ft | "
             f"{conf} | {r['egress']['worst_travel_ft']} ft | "
@@ -372,7 +370,7 @@ def main():
 **Revenue proxy** — a *comparator*, not a forecast. Every option has the
 same six tables, so table rent is constant across the set; the proxy
 exists to price the HOSPITALITY differences (drink seats vs dining
-covers vs flex seats vs spectators) in one number so options can be
+covers vs flex seats) in one number so options can be
 ranked. It assumes peak-hour full occupancy — every table rented and
 every seat filled at once — at placeholder margins:
 
@@ -381,7 +379,6 @@ every seat filled at once — at placeholder margins:
 - dining cover: ${RATES["dine_cover"]:g}/hr (~one cover turn/hr at margin)
 - flex seat: the average of drink and dine — a flex seat hosts ONE
   patron at a time, so it must not be counted as both
-- spectator: ${RATES["spectator"]:g}/hr (incidental purchases)
 
 It deliberately EXCLUDES labor, kitchen throughput, demand differences
 between layouts, and service speed (scored separately as run lengths

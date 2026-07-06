@@ -2,8 +2,7 @@
   "rates": {
     "table": 10.0,
     "drink_seat": 9.0,
-    "dine_cover": 14.0,
-    "spectator": 2.0
+    "dine_cover": 14.0
   },
   "configs": [
     {
