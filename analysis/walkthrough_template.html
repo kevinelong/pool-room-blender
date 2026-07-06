@@ -182,6 +182,7 @@ const aP=gl.getAttribLocation(prog,'p'), aN=gl.getAttribLocation(prog,'n'),
 const uProj=gl.getUniformLocation(prog,'proj'),
       uView=gl.getUniformLocation(prog,'view');
 gl.enable(gl.DEPTH_TEST); gl.enable(gl.CULL_FACE);
+gl.cullFace(gl.FRONT);   // v41: world reflection reverses winding
 const TEX = {};
 for (const k in TEXDEFS) TEX[k] = makeTex(gl, TEXDEFS[k]);
 
@@ -189,8 +190,12 @@ for (const k in TEXDEFS) TEX[k] = makeTex(gl, TEXDEFS[k]);
 const IN = 0.0254;
 let buckets = {};                 // mat -> array of floats (p3,n3,c3,t2)
 function bkt(mat){ return buckets[mat] || (buckets[mat] = []); }
+/* v41 mirror fix: the walkthrough world was the chiral twin of the
+   validated Blender renders (room-y mapped straight to GL Z under Y-up
+   flips handedness vs Blender's Z-up). Negate Z and normal-z here; the
+   reflection reverses winding, so culling switches to FRONT below. */
 function pushV(arr, v, nrm, col, u, vv){
-  arr.push(v[0]*IN, v[1]*IN, v[2]*IN, nrm[0],nrm[1],nrm[2],
+  arr.push(v[0]*IN, v[1]*IN, -v[2]*IN, nrm[0],nrm[1],-nrm[2],
            col[0],col[1],col[2], u, vv);
 }
 function quadM(mat, a,b,c,d, nrm, col){
@@ -436,7 +441,8 @@ function collide(nx, ny){
 function stepManual(dt){
   const sp = (keys['ShiftLeft']||keys['ShiftRight']) ? 140 : 70;
   let fx = -Math.sin(cam.yaw), fy = -Math.cos(cam.yaw);
-  let rx = Math.cos(cam.yaw),  ry = -Math.sin(cam.yaw);
+  // v41: screen-right in the mirrored world
+  let rx = -Math.cos(cam.yaw), ry = Math.sin(cam.yaw);
   let mx = 0, my = 0;
   if (keys['KeyW']||keys['ArrowUp'])    { mx += fx; my += fy; }
   if (keys['KeyS']||keys['ArrowDown'])  { mx -= fx; my -= fy; }
@@ -471,7 +477,7 @@ document.addEventListener('pointerlockchange', ()=>{
 });
 document.addEventListener('mousemove', e=>{
   if (!manual) return;
-  cam.yaw   -= e.movementX * 0.0026;
+  cam.yaw   += e.movementX * 0.0026;   // v41: sign flips with the mirror
   cam.pitch -= e.movementY * 0.0026;
   cam.pitch = Math.max(-1.2, Math.min(1.2, cam.pitch));
 });
@@ -504,7 +510,8 @@ function frame(now){
   gl.uniformMatrix4fv(uProj,false,new Float32Array(
     perspective(1.15, cv.width/cv.height, 0.06, 40)));
   gl.uniformMatrix4fv(uView,false,new Float32Array(
-    fpsView(cam.x*IN, eyeY(cam.x,cam.y)*IN, cam.y*IN, cam.yaw, cam.pitch)));
+    fpsView(cam.x*IN, eyeY(cam.x,cam.y)*IN, -cam.y*IN,
+            Math.PI - cam.yaw, cam.pitch)));
   for (const mat in scene){
     gl.bindTexture(gl.TEXTURE_2D, TEX[mat]);
     gl.bindBuffer(gl.ARRAY_BUFFER, scene[mat].buf);
