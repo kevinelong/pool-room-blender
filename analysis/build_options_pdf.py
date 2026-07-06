@@ -360,13 +360,74 @@ def closing_page():
     return page
 
 
+WALKTHROUGH_URL = "https://claude.ai/code/artifact/29c21156-ee9c-46b8-96b3-bf32162aacfe"
+
+
+def walkthrough_page():
+    """v37: final page — walk the layouts yourself (URL + QR + what to
+    expect)."""
+    import qrcode
+    page = Image.new("RGB", (PAGE_W, PAGE_H), PAPER)
+    d = ImageDraw.Draw(page)
+    d.rectangle([0, 0, PAGE_W, 104], fill=INK)
+    d.text((M, 18), "Walk it yourself", font=fnt(38), fill=(255, 255, 255))
+    d.text((M, 68), "A first-person walkthrough of all nine layouts — in "
+           "any browser, no install", font=fnt(19, False), fill=(205, 205, 210))
+
+    qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M,
+                       box_size=14, border=2)
+    qr.add_data(WALKTHROUGH_URL)
+    qr.make(fit=True)
+    qim = qr.make_image(fill_color="black",
+                        back_color="white").convert("RGB")
+    qim = qim.resize((560, 560), Image.NEAREST)
+    qx = (PAGE_W - qim.width) // 2
+    page.paste(qim, (qx, 170))
+    d.text((PAGE_W // 2, 756), "scan to open",
+           font=fnt(18, False), fill=MUTED, anchor="ma")
+
+    # the URL in large print, split to fit
+    u1, u2 = WALKTHROUGH_URL.split("/artifact/")
+    d.text((PAGE_W // 2, 820), u1 + "/artifact/",
+           font=fnt(40), fill=(20, 20, 24), anchor="ma")
+    d.text((PAGE_W // 2, 878), u2,
+           font=fnt(40), fill=(20, 20, 24), anchor="ma")
+
+    import textwrap
+    y = 990
+    d.text((M, y), "What to expect", font=fnt(24), fill=(20, 20, 24))
+    y += 44
+    for item in [
+        "The page opens on a gallery of all nine layouts — one overhead "
+        "view each, lettered A through I with its short name. Click any "
+        "card to jump straight into that room.",
+        "By default an auto-tour walks in through the Main Entrance steps, "
+        "loops the whole room on a collision-checked path, walks back out, "
+        "and fades to the next layout — A through I, then it starts over.",
+        "Click the 3-D view to take the controls: WASD or arrow keys to "
+        "walk, mouse to look, Shift to hurry, Esc to hand back to the "
+        "tour. You collide with every table, round, and chair — walk the "
+        "aisles the servers would.",
+        "Everything is one self-contained file: it loads instantly, works "
+        "offline, and the same page lives in the repository at "
+        "docs/index.html.",
+    ]:
+        for li, line in enumerate(textwrap.wrap(item, 92)):
+            d.text((M + (0 if li == 0 else 22), y),
+                   ("\u2022 " if li == 0 else "") + line,
+                   font=fnt(19, False), fill=(60, 60, 66))
+            y += 30
+        y += 14
+    return page
+
+
 def main():
     bykey = {c["key"]: c for c in CONFIGS}
     ordered = [bykey[k] for k in PAGE_ORDER if k in bykey]
     ordered += [c for c in CONFIGS if c not in ordered]
     pages = ([overview_page(ordered)]
              + [page_for(c) for c in ordered]
-             + [closing_page()])
+             + [closing_page(), walkthrough_page()])
     out = os.path.join(ROOT, "docs", "pool_room_v16_options.pdf")
     pages[0].save(out, save_all=True, append_images=pages[1:],
                   resolution=150.0)
