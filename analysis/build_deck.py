@@ -112,6 +112,15 @@ td.fail { color: var(--fail); font-weight: 700; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
 .chip { background: var(--bar-bg); border-radius: 14px; padding: 3px 12px; font-size: .8rem; font-weight: 600; }
 .chip b { color: var(--felt-deep); }
+.pcwrap { display:grid; grid-template-columns:1fr 1fr; gap:0 18px; }
+.pchead { font-weight:700; margin-top:10px; font-size:.85rem;
+          letter-spacing:.4px; text-transform:uppercase; }
+.pchead.pro { color:#3fae52; } .pchead.con { color:#e06a5e; }
+.impact { margin-top:10px; display:flex; flex-wrap:wrap; gap:6px; }
+.imp { font-size:.78rem; padding:2px 8px; border-radius:10px;
+       background:#26262c; color:#aaa; }
+.imp\+ { background:#173d1f; color:#7fe08f; }
+.imp\- { background:#3d1a17; color:#f09a8f; }
 ul.notes { margin: 10px 0 0; padding-left: 20px; font-size: .9rem; }
 ul.notes li { margin-bottom: 5px; max-width: 75ch; }
 .method { font-size: .85rem; color: var(--muted); max-width: 72ch; }
@@ -149,6 +158,9 @@ ul.notes li { margin-bottom: 5px; max-width: 75ch; }
 </div>
 <script>
 const DATA = __DATA_JSON__;
+const IMPACT_LABELS = [["play","play"],["hosp","hosp $"],["svc","service"],
+  ["walk","walk"],["entry","entry"],["flip","flip"]];
+const SYMS = {"+":"+", ".":"·", "-":"−"};
 const IMGS = __IMGS_JSON__;
 const PERSPS = __PERSPS_JSON__;
 
@@ -269,7 +281,14 @@ document.getElementById("cards").innerHTML = DATA.configs.map(c => `
         <span class="chip"><b>${c.capacity.flex}</b> flex</span>
         <span class="chip"><b>$${c.revenue_proxy_hr}</b>/hr proxy</span>
       </div>
-      <ul class="notes">${c.notes.map(n => `<li>${n}</li>`).join("")}</ul>
+      <div class="pcwrap">
+        <div><div class="pchead pro">Pros</div>
+          <ul class="notes">${(c.pros||[]).map(n => `<li>${n}</li>`).join("")}</ul></div>
+        <div><div class="pchead con">Cons</div>
+          <ul class="notes">${(c.cons||[]).map(n => `<li>${n}</li>`).join("")}</ul></div>
+      </div>
+      <div class="impact">${IMPACT_LABELS.map(([k,lbl]) =>
+        `<span class="imp imp${(c.impact||{})[k]||'.'}">${lbl} ${SYMS[(c.impact||{})[k]||'.']}</span>`).join("")}</div>
     </div>
   </div>`).join("");
 

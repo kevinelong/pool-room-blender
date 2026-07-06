@@ -96,10 +96,27 @@
       "notes": [
         "The four aligned rounds and center fifth double as a tournament gallery \u2014 they face the nearest table row.",
         "Wall two-tops at every table end flex between drinkers, eaters, and spectators; stools face the tops.",
-        "The center round of the north quincunx runs tight to its four neighbours \u2014 deliberate, for one big social cluster.",
-        "The two-top by the kitchen door partially fronts it (accepted).",
+        "FLAG: The center round of the north quincunx runs tight to its four neighbours \u2014 deliberate, for one big social cluster.",
+        "FLAG: The two-top by the kitchen door partially fronts it (accepted).",
         "Cue room around the tables: most sides get about 60\"; the shortest clearance is 56.5\"."
-      ]
+      ],
+      "pros": [
+        "The four aligned rounds and center fifth double as a tournament gallery \u2014 they face the nearest table row.",
+        "Wall two-tops at every table end flex between drinkers, eaters, and spectators; stools face the tops."
+      ],
+      "cons": [
+        "The center round of the north quincunx runs tight to its four neighbours \u2014 deliberate, for one big social cluster.",
+        "The two-top by the kitchen door partially fronts it (accepted)."
+      ],
+      "measured": "Cue room around the tables: most sides get about 60\"; the shortest clearance is 56.5\".",
+      "impact": {
+        "play": "+",
+        "hosp": "+",
+        "svc": "-",
+        "walk": ".",
+        "entry": "+",
+        "flip": "+"
+      }
     },
     {
       "key": "fourturned",
@@ -197,9 +214,26 @@
         "The Four On Top pattern turned sideways: four tables in a block at the top, two at the bottom, every table rotated.",
         "Each cluster gets its own two-top band \u2014 top wall, between the clusters, and below the bottom pair \u2014 so every table has seating at arm's reach.",
         "FLAG: the rotated ends run tight side-to-side \u2014 the west and center aisles are the practical maximum, not the cue standard.",
-        "The south-wall tops narrow the along-wall walk; servers pass north of them.",
+        "FLAG: The south-wall tops narrow the along-wall walk; servers pass north of them.",
         "Cue room around the tables: most sides get about 47\"; the shortest clearance is 46.8\"."
-      ]
+      ],
+      "pros": [
+        "The Four On Top pattern turned sideways: four tables in a block at the top, two at the bottom, every table rotated.",
+        "Each cluster gets its own two-top band \u2014 top wall, between the clusters, and below the bottom pair \u2014 so every table has seating at arm's reach."
+      ],
+      "cons": [
+        "The rotated ends run tight side-to-side \u2014 the west and center aisles are the practical maximum, not the cue standard.",
+        "The south-wall tops narrow the along-wall walk; servers pass north of them."
+      ],
+      "measured": "Cue room around the tables: most sides get about 47\"; the shortest clearance is 46.8\".",
+      "impact": {
+        "play": ".",
+        "hosp": "-",
+        "svc": ".",
+        "walk": ".",
+        "entry": "+",
+        "flip": "."
+      }
     },
     {
       "key": "turnleft",
@@ -298,7 +332,23 @@
         "FLAG: the west end swings run hard against the west wall \u2014 the cost of the slide.",
         "Two-top bands as in the centered version, shifted with the tables.",
         "Cue room around the tables: most sides get about 47\"; the shortest clearance is 37.2\"."
-      ]
+      ],
+      "pros": [
+        "The turned four-and-two slides left: the whole east side becomes service and standing room with full end swings.",
+        "Two-top bands as in the centered version, shifted with the tables."
+      ],
+      "cons": [
+        "The west end swings run hard against the west wall \u2014 the cost of the slide."
+      ],
+      "measured": "Cue room around the tables: most sides get about 47\"; the shortest clearance is 37.2\".",
+      "impact": {
+        "play": "-",
+        "hosp": "-",
+        "svc": ".",
+        "walk": ".",
+        "entry": "+",
+        "flip": "."
+      }
     },
     {
       "key": "turnright",
@@ -397,7 +447,23 @@
         "FLAG: the east end swings run hard toward the east wall \u2014 the cost of the slide.",
         "Two-top bands as in the centered version, shifted with the tables.",
         "Cue room around the tables: most sides get about 47\"; the shortest clearance is 37.2\"."
-      ]
+      ],
+      "pros": [
+        "The turned four-and-two slides right as far as the chase and entry well allow; the west side becomes service and standing room with full end swings.",
+        "Two-top bands as in the centered version, shifted with the tables."
+      ],
+      "cons": [
+        "The east end swings run hard toward the east wall \u2014 the cost of the slide."
+      ],
+      "measured": "Cue room around the tables: most sides get about 47\"; the shortest clearance is 37.2\".",
+      "impact": {
+        "play": "-",
+        "hosp": "-",
+        "svc": ".",
+        "walk": ".",
+        "entry": "+",
+        "flip": "."
+      }
     },
     {
       "key": "centerline",
@@ -482,10 +548,26 @@
       "flip_minutes": 0,
       "notes": [
         "Every table on display: the side aisles run the full length, so one walk covers all six tables.",
-        "Side-to-side swings between neighbouring tables run tight; the table ends get full room.",
-        "West-rail drink deliveries cross the line at every table.",
+        "FLAG: Side-to-side swings between neighbouring tables run tight; the table ends get full room.",
+        "FLAG: West-rail drink deliveries cross the line at every table.",
         "Cue room around the tables: most sides get about 74\"; the shortest clearance is 54.8\"."
-      ]
+      ],
+      "pros": [
+        "Every table on display: the side aisles run the full length, so one walk covers all six tables."
+      ],
+      "cons": [
+        "Side-to-side swings between neighbouring tables run tight; the table ends get full room.",
+        "West-rail drink deliveries cross the line at every table."
+      ],
+      "measured": "Cue room around the tables: most sides get about 74\"; the shortest clearance is 54.8\".",
+      "impact": {
+        "play": ".",
+        "hosp": "-",
+        "svc": "-",
+        "walk": "+",
+        "entry": "+",
+        "flip": "+"
+      }
     },
     {
       "key": "eastline",
@@ -571,10 +653,27 @@
       "notes": [
         "The west side becomes a 9-ft hospitality strip the full length of the room \u2014 six rounds in one line, each on its table's centerline.",
         "FLAG: the sixth (south) round partially narrows the Emergency Exit approach \u2014 the corridor bends around it.",
-        "Same tight side-to-side swings as the center line; table ends get full room.",
-        "Every delivery crosses the table line \u2014 the price of putting all hospitality opposite the doors.",
+        "FLAG: Same tight side-to-side swings as the center line; table ends get full room.",
+        "FLAG: Every delivery crosses the table line \u2014 the price of putting all hospitality opposite the doors.",
         "Cue room around the tables: most sides get about 55\"; the shortest clearance is 54.8\"."
-      ]
+      ],
+      "pros": [
+        "The west side becomes a 9-ft hospitality strip the full length of the room \u2014 six rounds in one line, each on its table's centerline."
+      ],
+      "cons": [
+        "The sixth (south) round partially narrows the Emergency Exit approach \u2014 the corridor bends around it.",
+        "Same tight side-to-side swings as the center line; table ends get full room.",
+        "Every delivery crosses the table line \u2014 the price of putting all hospitality opposite the doors."
+      ],
+      "measured": "Cue room around the tables: most sides get about 55\"; the shortest clearance is 54.8\".",
+      "impact": {
+        "play": ".",
+        "hosp": "+",
+        "svc": "-",
+        "walk": "+",
+        "entry": "-",
+        "flip": "-"
+      }
     },
     {
       "key": "eastshift",
@@ -662,7 +761,23 @@
         "All six rounds sit on their tables' centerlines at the west wall, fully clear of the Emergency Exit approach.",
         "FLAG: the bottom table's end swing runs tight against the bottom wall \u2014 the cost of the slide.",
         "Cue room around the tables: most sides get about 55\"; the shortest clearance is 43.0\"."
-      ]
+      ],
+      "pros": [
+        "The whole line slides toward the bottom wall: the top table rejoins the straight line and every compromise at the entry end dissolves.",
+        "All six rounds sit on their tables' centerlines at the west wall, fully clear of the Emergency Exit approach."
+      ],
+      "cons": [
+        "The bottom table's end swing runs tight against the bottom wall \u2014 the cost of the slide."
+      ],
+      "measured": "Cue room around the tables: most sides get about 55\"; the shortest clearance is 43.0\".",
+      "impact": {
+        "play": "-",
+        "hosp": "+",
+        "svc": "-",
+        "walk": "+",
+        "entry": "+",
+        "flip": "-"
+      }
     },
     {
       "key": "westline",
@@ -761,9 +876,27 @@
         "FLAG: the sixth (south) round crowds the Main Entry approach beside the stair rail.",
         "The kitchen-door table and its round nudge left, clearing the door frontage entirely.",
         "FLAG: that table's inboard swing tightens \u2014 the cost of clearing the door.",
-        "Another round pulls inboard of the HVAC chase.",
+        "FLAG: Another round pulls inboard of the HVAC chase.",
         "Cue room around the tables: most sides get about 55\"; the shortest clearance is 39.3\"."
-      ]
+      ],
+      "pros": [
+        "Each of the six tables gets its own 5-ft round at matching height on the east side \u2014 table service at arm's reach.",
+        "The kitchen-door table and its round nudge left, clearing the door frontage entirely."
+      ],
+      "cons": [
+        "The sixth (south) round crowds the Main Entry approach beside the stair rail.",
+        "That table's inboard swing tightens \u2014 the cost of clearing the door.",
+        "Another round pulls inboard of the HVAC chase."
+      ],
+      "measured": "Cue room around the tables: most sides get about 55\"; the shortest clearance is 39.3\".",
+      "impact": {
+        "play": "-",
+        "hosp": "+",
+        "svc": "+",
+        "walk": ".",
+        "entry": "-",
+        "flip": "-"
+      }
     },
     {
       "key": "westshift",
@@ -862,10 +995,29 @@
         "FLAG: the sixth round's chairs still graze the Main Entry approach corner (accepted).",
         "The kitchen-door table and its round nudge left, clearing the door frontage entirely and keeping the wall approach open.",
         "FLAG: kitchen service still threads a tight squeeze between the third and fourth rounds' chairs.",
-        "The fourth round pulls inboard of the HVAC chase; the first pulls inboard of the storage-door frontage.",
+        "FLAG: The fourth round pulls inboard of the HVAC chase; the first pulls inboard of the storage-door frontage.",
         "FLAG: the bottom table's end swing runs tight against the bottom wall \u2014 the cost of the slide.",
         "Cue room around the tables: most sides get about 55\"; the shortest clearance is 41.0\"."
-      ]
+      ],
+      "pros": [
+        "The whole line slides toward the bottom wall, freeing the entry end: the sixth round reaches the east wall like the rest instead of pulling far inboard.",
+        "The kitchen-door table and its round nudge left, clearing the door frontage entirely and keeping the wall approach open."
+      ],
+      "cons": [
+        "The sixth round's chairs still graze the Main Entry approach corner (accepted).",
+        "Kitchen service still threads a tight squeeze between the third and fourth rounds' chairs.",
+        "The fourth round pulls inboard of the HVAC chase; the first pulls inboard of the storage-door frontage.",
+        "The bottom table's end swing runs tight against the bottom wall \u2014 the cost of the slide."
+      ],
+      "measured": "Cue room around the tables: most sides get about 55\"; the shortest clearance is 41.0\".",
+      "impact": {
+        "play": "-",
+        "hosp": "+",
+        "svc": "+",
+        "walk": ".",
+        "entry": "-",
+        "flip": "-"
+      }
     }
   ]
 }

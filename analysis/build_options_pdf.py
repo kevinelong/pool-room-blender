@@ -30,7 +30,7 @@ CLEAN = {
                 "social cluster that doubles as a tournament gallery "
                 "facing the nearest table row.",
                 "Wall two-tops flank every table row on both walls.",
-                "The cluster runs deliberately tight, and the two-top by "
+                "FLAG: The cluster runs deliberately tight, and the two-top by "
                 "the kitchen door partially fronts it — both accepted."]),
     "fourturned": ("Four On Top — Turned",
                    "The same pattern with every table rotated sideways",
@@ -60,7 +60,7 @@ CLEAN = {
                    ["Every table on display from the full-length side aisles.",
                     "The service lane runs inboard, between the table ends "
                     "and the east wall tops — the wall lane pinched.",
-                    "Side-to-side swings between neighbours run tight; the "
+                    "FLAG: Side-to-side swings between neighbours run tight; the "
                     "table ends get full room."]),
     "eastline": ("East Line + West Lounge",
                  "Tables single-file on the east; six aligned rounds west",
@@ -68,7 +68,7 @@ CLEAN = {
                   "table's centerline.",
                   "FLAG: the southernmost round narrows the Emergency Exit "
                   "approach — the walk bends around its chairs.",
-                  "Every delivery crosses the table line — hospitality sits "
+                  "FLAG: Every delivery crosses the table line — hospitality sits "
                   "opposite the doors."]),
     "eastshift": ("East Line — Shifted Down",
                   "The east line slid toward the bottom wall",
@@ -91,7 +91,7 @@ CLEAN = {
                   ["The entry end frees up: the sixth round reaches the "
                    "east wall like the rest instead of pulling far "
                    "inboard (its chairs still graze the approach corner).",
-                   "The third round pulls inboard to keep the kitchen "
+                   "FLAG: The third round pulls inboard to keep the kitchen "
                    "door's wall approach clear; kitchen service still "
                    "threads a squeeze between two rounds' chairs.",
                    "FLAG: the bottom table's end swing runs tight against "
@@ -123,12 +123,12 @@ def fit(img, w, h):
 def page_for(cfg):
     key = cfg["key"]
     name, tagline, notes = CLEAN[key]
-    # v26: cue-clearance stats on every page (user request) — the one
-    # place numbers are allowed in the In-brief column
+    # v35: pros / cons split (user) — FLAG-prefixed CLEAN notes are cons
     mode, mn = cue_clearance_stats(cfg)
-    notes = list(notes) + [
-        f'Cue room around the tables: most sides get about {mode}"; '
-        f'the shortest clearance is {mn:.0f}".']
+    pros = [n for n in notes if not n.startswith("FLAG:")]
+    cons = [n[5:].strip() for n in notes if n.startswith("FLAG:")]
+    measured = (f'Cue room: most sides about {mode}"; '
+                f'shortest clearance {mn:.0f}".')
     persp_p, top_p = RENDERS[key]
 
     page = Image.new("RGB", (PAGE_W, PAGE_H), PAPER)
@@ -198,18 +198,28 @@ def page_for(cfg):
 
     tx = px + plan.width + 28
     ty = row_y + 6
-    d.text((tx, ty), "In brief", font=fnt(22), fill=INK)
-    ty += 44
     import textwrap
     wrap_w = max(18, (PAGE_W - M - tx) // 11)
-    for note in notes:
-        lines = textwrap.wrap(note, wrap_w)
-        for li, line in enumerate(lines):
-            d.text((tx + (0 if li == 0 else 14), ty),
-                   ("• " if li == 0 else "") + line,
-                   font=fnt(18, False), fill=(60, 60, 66))
-            ty += 27
-        ty += 12
+
+    def block(title, items, tcol, icol):
+        nonlocal ty
+        d.text((tx, ty), title, font=fnt(22), fill=tcol)
+        ty += 40
+        for note in items:
+            for li, line in enumerate(textwrap.wrap(note, wrap_w)):
+                d.text((tx + (0 if li == 0 else 14), ty),
+                       ("• " if li == 0 else "") + line,
+                       font=fnt(18, False), fill=icol)
+                ty += 27
+            ty += 10
+
+    block("Pros", pros, (30, 110, 40), (60, 60, 66))
+    ty += 10
+    block("Cons", cons, (165, 45, 40), (95, 60, 58))
+    ty += 6
+    for line in textwrap.wrap(measured, wrap_w):
+        d.text((tx, ty), line, font=fnt(16, False), fill=MUTED)
+        ty += 24
     return page
 
 
@@ -309,6 +319,34 @@ def closing_page():
             d.text((M + 22, y), line, font=fnt(19, False), fill=(60, 60, 66))
             y += 30
         y += 22
+    # v35: -/./+ impact grid
+    import json as _json
+    sc = _json.load(open(os.path.join(HERE, "scorecards.json")))
+    by = {c["key"]: c for c in sc["configs"]}
+    areas = [("play", "Play room"), ("hosp", "Hosp. $"), ("svc", "Service"),
+             ("walk", "Walking"), ("entry", "Entry/egress"), ("flip", "Flip")]
+    SYM = {"+": "+", ".": "·", "-": "−"}
+    gy = y + 6
+    d.text((M, gy), "Impact at a glance", font=fnt(24), fill=(20, 20, 24))
+    gy += 40
+    colw = 130
+    x0 = M + 150
+    for ai, (_k, lbl) in enumerate(areas):
+        d.text((x0 + ai * colw + colw // 2, gy), lbl,
+               font=fnt(16), fill=MUTED, anchor="ma")
+    gy += 30
+    for cfg2 in CONFIGS:
+        r = by.get(cfg2["key"], {})
+        g = r.get("impact", {})
+        d.text((M, gy), f"{cfg2['letter']}. {cfg2['short']}",
+               font=fnt(17), fill=(40, 40, 46))
+        for ai, (k, _lbl) in enumerate(areas):
+            v = g.get(k, ".")
+            col = ((30, 130, 45) if v == "+" else
+                   (170, 50, 45) if v == "-" else (150, 150, 158))
+            d.text((x0 + ai * colw + colw // 2, gy), SYM[v],
+                   font=fnt(22), fill=col, anchor="ma")
+        gy += 32
     foot = ("Every figure behind these pages is computed from the room "
             "geometry — capacities, cue room, walking widths, egress, and "
             "the revenue proxy (a peak-hour comparator at placeholder "

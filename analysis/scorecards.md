@@ -12,6 +12,20 @@
 | H · West Line + Wall Rounds | 6 | 24 | 0 | 0 | 0 | 48 | 46% | 39.3 | 59.0 ft | 34.3 ft | 0 | 52.6 ft | 25.0 | $612 | 25 |
 | I · West Line — Shifted Down | 6 | 24 | 0 | 0 | 0 | 48 | 42% | 41.0 | 58.6 ft | 34.9 ft | 0 | 55.7 ft | 25.1 | $612 | 25 |
 
+## Impact at a glance (− negative · neutral + positive)
+
+| Layout | Play room | Hospitality $ | Service | Walkability | Entry/egress | Flip |
+|---|---|---|---|---|---|---|
+| A · Four On Top | + | + | − | · | + | + |
+| B · Four On Top — Turned | · | − | · | · | + | · |
+| C · Four On Top — Turned Left | − | − | · | · | + | · |
+| D · Four On Top — Turned Right | − | − | · | · | + | · |
+| E · Center Line | · | − | − | + | + | + |
+| F · East Line + West Lounge | · | + | − | + | − | − |
+| G · East Line — Shifted Down | − | + | − | + | + | − |
+| H · West Line + Wall Rounds | − | + | + | · | − | − |
+| I · West Line — Shifted Down | − | + | + | · | − | − |
+
 ## Walking-path anomalies (clear width < 36")
 
 - **A · Four On Top** — narrowest walk 38.2":
@@ -56,6 +70,14 @@ between layouts, and service speed (scored separately as run lengths
 and cue-crossing conflicts). Read it as "peak-hour gross capacity at
 placeholder margins"; edit RATES in configs/v16_configs.py (or reweight
 in the deck) and regenerate before deciding on revenue grounds.
+
+**Impact grid** — "+" / "·" / "−" per area, from fixed thresholds:
+play room + at full-swing >= 65% of sides (− under 55% or tightest
+< 44"); hospitality + at proxy >= $600/hr (− under $300); service + at
+zero cue-crossing conflicts and food runs <= 45 ft (− at 10+ conflicts);
+walkability + at no anomalies and narrowest walk >= 38" (− at any FAIL
+or < 24"); entry/egress − when a compromise is flagged at the entry or
+exit approach; flip + at <= 5 minutes (− at >= 20).
 
 **Other conventions** — cue swing: full >= 58" from the playfield edge,
 playable-but-tight >= 54"; walking paths: < 36" clear is a pinch, < 24"

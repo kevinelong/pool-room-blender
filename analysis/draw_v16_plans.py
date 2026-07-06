@@ -246,16 +246,32 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
     row("Flip cost", f"{score['flip_minutes']} min")
 
     ty += 16
-    d.text((sx + 18, ty), "TRADE-OFFS", font=F_H, fill=(255, 220, 80))
-    ty += 34
     import textwrap
-    for note in score["notes"]:
-        for li, line in enumerate(textwrap.wrap(note, 42)):
-            d.text((sx + 18 + (0 if li == 0 else 14), ty),
-                   ("• " if li == 0 else "") + line, font=F_S,
-                   fill=(220, 220, 225))
-            ty += 20
-        ty += 8
+
+    def _bullets(items, color):
+        nonlocal ty
+        for note in items:
+            for li, line in enumerate(textwrap.wrap(note, 42)):
+                d.text((sx + 18 + (0 if li == 0 else 14), ty),
+                       ("• " if li == 0 else "") + line, font=F_S,
+                       fill=color)
+                ty += 20
+            ty += 6
+
+    pros = score.get("pros") or [n for n in score["notes"]
+                                 if not n.startswith("FLAG:")]
+    cons = score.get("cons") or [n[5:].strip() for n in score["notes"]
+                                 if n.startswith("FLAG:")]
+    d.text((sx + 18, ty), "PROS", font=F_H, fill=(140, 220, 140))
+    ty += 32
+    _bullets(pros, (220, 220, 225))
+    ty += 8
+    d.text((sx + 18, ty), "CONS", font=F_H, fill=(235, 130, 120))
+    ty += 32
+    _bullets(cons, (225, 205, 205))
+    if score.get("measured"):
+        ty += 6
+        _bullets([score["measured"]], (150, 150, 158))
 
     # legend + footer
     ly = H - MBOT + 6

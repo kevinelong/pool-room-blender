@@ -112,9 +112,9 @@ CONFIGS = [
             "tournament gallery — they face the nearest table row.",
             "Wall two-tops at every table end flex between drinkers, "
             "eaters, and spectators; stools face the tops.",
-            "The center round of the north quincunx runs tight to its four "
+            "FLAG: The center round of the north quincunx runs tight to its four "
             "neighbours — deliberate, for one big social cluster.",
-            "The two-top by the kitchen door partially fronts it (accepted).",
+            "FLAG: The two-top by the kitchen door partially fronts it (accepted).",
         ],
     ),
     dict(
@@ -159,7 +159,7 @@ CONFIGS = [
             "FLAG: the rotated ends run tight side-to-side — the west "
             "and center aisles are the practical maximum, not the cue "
             "standard.",
-            "The south-wall tops narrow the along-wall walk; servers "
+            "FLAG: The south-wall tops narrow the along-wall walk; servers "
             "pass north of them.",
         ],
     ),
@@ -265,9 +265,9 @@ CONFIGS = [
         notes=[
             "Every table on display: the side aisles run the full length, "
             "so one walk covers all six tables.",
-            "Side-to-side swings between neighbouring tables run tight; "
+            "FLAG: Side-to-side swings between neighbouring tables run tight; "
             "the table ends get full room.",
-            "West-rail drink deliveries cross the line at every table.",
+            "FLAG: West-rail drink deliveries cross the line at every table.",
         ],
     ),
     dict(
@@ -301,9 +301,9 @@ CONFIGS = [
             "centerline.",
             "FLAG: the sixth (south) round partially narrows the Emergency "
             "Exit approach — the corridor bends around it.",
-            "Same tight side-to-side swings as the center line; table ends "
+            "FLAG: Same tight side-to-side swings as the center line; table ends "
             "get full room.",
-            "Every delivery crosses the table line — the price of putting "
+            "FLAG: Every delivery crosses the table line — the price of putting "
             "all hospitality opposite the doors.",
         ],
     ),
@@ -381,7 +381,7 @@ CONFIGS = [
             "the door frontage entirely.",
             "FLAG: that table's inboard swing tightens — the cost of "
             "clearing the door.",
-            "Another round pulls inboard of the HVAC chase.",
+            "FLAG: Another round pulls inboard of the HVAC chase.",
         ],
     ),
     dict(
@@ -424,7 +424,7 @@ CONFIGS = [
             "open.",
             "FLAG: kitchen service still threads a tight squeeze between "
             "the third and fourth rounds' chairs.",
-            "The fourth round pulls inboard of the HVAC chase; the first "
+            "FLAG: The fourth round pulls inboard of the HVAC chase; the first "
             "pulls inboard of the storage-door frontage.",
             "FLAG: the bottom table's end swing runs tight against the "
             "bottom wall — the cost of the slide.",
@@ -824,8 +824,13 @@ for _cfg in CONFIGS:
     _cfg["rounds"] = pack_rounds(_cfg)
     _cfg.setdefault("round_role", "flex")
     _cfg["paths"] = compute_paths(_cfg)
-    # v26: cue-clearance stats appended to every layout's notes (user)
+    # v26: cue-clearance stats; v35: notes split into pros / cons (user)
     _mode, _mn = cue_clearance_stats(_cfg)
-    _cfg["notes"] = list(_cfg["notes"]) + [
+    _cfg["measured"] = (
         f'Cue room around the tables: most sides get about {_mode}"; '
-        f'the shortest clearance is {_mn:.1f}".']
+        f'the shortest clearance is {_mn:.1f}".')
+    _cfg["cons"] = [
+        (lambda s: s[0].upper() + s[1:])(n[5:].lstrip())
+        for n in _cfg["notes"] if n.startswith("FLAG:")]
+    _cfg["pros"] = [n for n in _cfg["notes"] if not n.startswith("FLAG:")]
+    _cfg["notes"] = list(_cfg["notes"]) + [_cfg["measured"]]

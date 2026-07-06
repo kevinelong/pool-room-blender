@@ -284,11 +284,44 @@ def analyze(cfg):
         revenue_proxy_hr=round(revenue),
         flip_minutes=cfg["flip_minutes"],
         notes=cfg["notes"],
+        pros=cfg.get("pros", []),
+        cons=cfg.get("cons", []),
+        measured=cfg.get("measured", ""),
     )
+
+
+IMPACT_AREAS = ["play", "hosp", "svc", "walk", "entry", "flip"]
+
+
+def impact_grid(r):
+    """v35: -/./+ impact per area of concern (thresholds in Methodology)."""
+    cue, svc, pth = r["cue"], r["service"], r["paths"]
+    conf = svc["cocktail"]["conflicted_seats"] + svc["food"]["conflicted_seats"]
+    out = {}
+    out["play"] = ("+" if cue["full_pct"] >= 65 else
+                   "-" if (cue["full_pct"] < 55
+                           or cue["min_clearance_in"] < 44) else ".")
+    rev = r["revenue_proxy_hr"]
+    out["hosp"] = "+" if rev >= 600 else "-" if rev < 300 else "."
+    out["svc"] = ("+" if conf == 0 and svc["food"]["max_run_ft"] <= 45 else
+                  "-" if conf >= 10 else ".")
+    anom = pth["anomalies"]
+    hard = [a for a in anom if a["severity"] in ("FAIL",)]
+    out["walk"] = ("-" if hard or (pth["min_width_in"] or 99) < 24 else
+                   "+" if not anom and (pth["min_width_in"] or 0) >= 38
+                   else ".")
+    entry_flag = any(("Entry" in c or "Exit" in c) for c in r["cons"])
+    out["entry"] = ("-" if entry_flag or not r["egress"]["exit_corridor_ok"]
+                    else "+")
+    fl = r["flip_minutes"]
+    out["flip"] = "+" if fl <= 5 else "-" if fl >= 20 else "."
+    return out
 
 
 def main():
     out = [analyze(c) for c in CONFIGS]
+    for r in out:
+        r["impact"] = impact_grid(r)
     here = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(here, "scorecards.json"), "w") as fh:
         json.dump(dict(rates=RATES, configs=out), fh, indent=2)
@@ -310,6 +343,16 @@ def main():
             f"{conf} | {r['egress']['worst_travel_ft']} ft | "
             f"{r['paths']['min_width_in']} | "
             f"${r['revenue_proxy_hr']} | {r['flip_minutes']} |")
+    # v35: -/./+ impact grid per area of concern
+    lines.append("\n## Impact at a glance (− negative · neutral + positive)\n")
+    lines.append("| Layout | Play room | Hospitality $ | Service | "
+                 "Walkability | Entry/egress | Flip |")
+    lines.append("|---|---|---|---|---|---|---|")
+    SYM = {"+": "+", ".": "·", "-": "−"}
+    for r in out:
+        g = r["impact"]
+        lines.append("| " + r["name"] + " | "
+                     + " | ".join(SYM[g[a]] for a in IMPACT_AREAS) + " |")
     # v26: walking-path width anomalies, called out per config
     lines.append("\n## Walking-path anomalies (clear width < 36\")\n")
     for r in out:
@@ -345,6 +388,14 @@ between layouts, and service speed (scored separately as run lengths
 and cue-crossing conflicts). Read it as "peak-hour gross capacity at
 placeholder margins"; edit RATES in configs/v16_configs.py (or reweight
 in the deck) and regenerate before deciding on revenue grounds.
+
+**Impact grid** — "+" / "·" / "−" per area, from fixed thresholds:
+play room + at full-swing >= 65% of sides (− under 55% or tightest
+< 44"); hospitality + at proxy >= $600/hr (− under $300); service + at
+zero cue-crossing conflicts and food runs <= 45 ft (− at 10+ conflicts);
+walkability + at no anomalies and narrowest walk >= 38" (− at any FAIL
+or < 24"); entry/egress − when a compromise is flagged at the entry or
+exit approach; flip + at <= 5 minutes (− at >= 20).
 
 **Other conventions** — cue swing: full >= 58" from the playfield edge,
 playable-but-tight >= 54"; walking paths: < 36" clear is a pinch, < 24"
