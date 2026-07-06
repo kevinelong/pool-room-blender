@@ -172,10 +172,14 @@ function buildScene(lay){
   // daylight backdrop + open wood leaf (hinged S jamb, 90 deg)
   box(W+40,wl[1]-20,-16, W+42,L+20,WALL_H, [0.85,0.84,0.80]);
   box(W-37,L-4.5,0, W-1,L-2.5,80, [0.42,0.26,0.13]);
-  // door slabs: EE (south wall), kitchen (east), storage (north)
-  box(30,L-2,0, 95,L,84, [0.12,0.12,0.13]);
-  box(W-2,290,0, W,330,84, [0.12,0.12,0.13]);
-  box(268,0,0, 316,2,84, [0.12,0.12,0.13]);
+  // door slabs, positions per the reference video (build_pool_room DOORS):
+  // EE south wall x 30..95; kitchen east wall y 290..330; Storage A north
+  // wall x 276..312; Storage B east wall y 4..40 (both 36", 4" off the
+  // NE corner); all 80" tall
+  box(30,L-2,0, 95,L,80, [0.12,0.12,0.13]);
+  box(W-2,290,0, W,330,80, [0.12,0.12,0.13]);
+  box(276,0,0, 312,2,80, [0.12,0.12,0.13]);
+  box(W-2,4,0, W,40,80, [0.12,0.12,0.13]);
   // HVAC chase + beam + red LED strips + signage
   const hv=R.hvac; box(hv[0],hv[1],0, hv[2],hv[3],WALL_H, [0.55,0.55,0.56]);
   box(0,R.beamY-6,106, W,R.beamY+6,118, [0.32,0.22,0.13]);
@@ -389,6 +393,13 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 loadLayout(0, true);
+// debug/screenshot hook: #cam=x,y,yawDeg[,layoutIndex] freezes the camera
+if (location.hash.startsWith('#cam=')){
+  const v = location.hash.slice(5).split(',').map(Number);
+  if (v.length >= 4) loadLayout(v[3]|0, false);
+  cam.x = v[0]; cam.y = v[1]; cam.yaw = (v[2]||0)*Math.PI/180;
+  tourIdx = -1;
+}
 requestAnimationFrame(frame);
 </script>
 </body>
