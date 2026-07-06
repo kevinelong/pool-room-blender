@@ -87,3 +87,12 @@ Applied in:
     approach corner, noted). Costs, flagged: the bottom table's end swing
     runs ~45", and the west line's first round pulls inboard of the
     storage-door frontage.
+
+17. **v29: complementary shifts of the turned 4+2 + semantic sheet.**
+    "Turned Left" and "Turned Right" slide both rotated columns toward a
+    side wall (right capped by the HVAC chase and entry well; the spine
+    moves to the west aisle there). The pushed side's end swings run
+    ~37" (flagged); the open side gets full swings and the service lane.
+    The one-page top-down sheet is arranged semantically: left-shifted
+    layouts down the left of the page, centered down the center,
+    right-(east-)shifted down the right.

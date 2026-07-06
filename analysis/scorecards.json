@@ -202,8 +202,206 @@
       ]
     },
     {
+      "key": "turnleft",
+      "name": "3 \u00b7 Four On Top \u2014 Turned Left",
+      "tagline": "The turned pattern slid left: play opens from the east",
+      "capacity": {
+        "tables": 6,
+        "players": 24,
+        "dine": 0,
+        "drink": 0,
+        "flex": 14,
+        "spectators": 0
+      },
+      "cue": {
+        "full_pct": 62,
+        "tight_pct": 0,
+        "blocked_pct": 38,
+        "min_clearance_in": 37.2,
+        "per_table": {
+          "TurnA_L": {
+            "W": 37.2,
+            "E": 46.8,
+            "S": 87.8,
+            "N": 70.2
+          },
+          "TurnA_R": {
+            "W": 46.8,
+            "E": 68.8,
+            "S": 87.8,
+            "N": 70.2
+          },
+          "TurnB_L": {
+            "W": 37.2,
+            "E": 46.8,
+            "S": 69.8,
+            "N": 133.2
+          },
+          "TurnB_R": {
+            "W": 46.8,
+            "E": 68.8,
+            "S": 69.8,
+            "N": 133.2
+          },
+          "TurnC_L": {
+            "W": 37.2,
+            "E": 46.8,
+            "S": 92.8,
+            "N": 69.8
+          },
+          "TurnC_R": {
+            "W": 46.8,
+            "E": 68.8,
+            "S": 92.8,
+            "N": 69.8
+          }
+        }
+      },
+      "service": {
+        "cocktail": {
+          "seats": 7,
+          "max_run_ft": 72.8,
+          "avg_run_ft": 43.8,
+          "conflicted_seats": 5
+        },
+        "food": {
+          "seats": 7,
+          "max_run_ft": 46.4,
+          "avg_run_ft": 31.8,
+          "conflicted_seats": 4
+        }
+      },
+      "egress": {
+        "exit_corridor_in": 103.0,
+        "exit_corridor_ok": true,
+        "worst_travel_ft": 61.8
+      },
+      "paths": {
+        "min_width_in": 44.0,
+        "anomalies": [
+          {
+            "severity": "blocked",
+            "width_in": 0.0,
+            "where": "south-center: walk crosses a wall two-top"
+          },
+          {
+            "severity": "blocked",
+            "width_in": 0.0,
+            "where": "south-east: walk crosses a wall two-top"
+          }
+        ]
+      },
+      "revenue_proxy_hr": 269,
+      "flip_minutes": 15,
+      "notes": [
+        "The turned four-and-two slides left: the whole east side becomes service and standing room with full end swings.",
+        "FLAG: the west end swings run hard against the west wall \u2014 the cost of the slide.",
+        "Two-top bands as in the centered version, shifted with the tables.",
+        "Cue room around the tables: most sides get about 47\"; the shortest clearance is 37.2\"."
+      ]
+    },
+    {
+      "key": "turnright",
+      "name": "4 \u00b7 Four On Top \u2014 Turned Right",
+      "tagline": "The turned pattern slid right: play opens from the west",
+      "capacity": {
+        "tables": 6,
+        "players": 24,
+        "dine": 0,
+        "drink": 0,
+        "flex": 14,
+        "spectators": 0
+      },
+      "cue": {
+        "full_pct": 62,
+        "tight_pct": 0,
+        "blocked_pct": 38,
+        "min_clearance_in": 37.2,
+        "per_table": {
+          "TurnA_L": {
+            "W": 68.8,
+            "E": 46.8,
+            "S": 87.8,
+            "N": 70.2
+          },
+          "TurnA_R": {
+            "W": 46.8,
+            "E": 37.2,
+            "S": 87.8,
+            "N": 70.2
+          },
+          "TurnB_L": {
+            "W": 68.8,
+            "E": 46.8,
+            "S": 69.8,
+            "N": 133.2
+          },
+          "TurnB_R": {
+            "W": 46.8,
+            "E": 37.2,
+            "S": 69.8,
+            "N": 133.2
+          },
+          "TurnC_L": {
+            "W": 68.8,
+            "E": 46.8,
+            "S": 92.8,
+            "N": 69.8
+          },
+          "TurnC_R": {
+            "W": 46.8,
+            "E": 37.2,
+            "S": 92.8,
+            "N": 69.8
+          }
+        }
+      },
+      "service": {
+        "cocktail": {
+          "seats": 7,
+          "max_run_ft": 93.7,
+          "avg_run_ft": 65.3,
+          "conflicted_seats": 5
+        },
+        "food": {
+          "seats": 7,
+          "max_run_ft": 69.8,
+          "avg_run_ft": 53.3,
+          "conflicted_seats": 4
+        }
+      },
+      "egress": {
+        "exit_corridor_in": 119.0,
+        "exit_corridor_ok": true,
+        "worst_travel_ft": 59.5
+      },
+      "paths": {
+        "min_width_in": 37.0,
+        "anomalies": [
+          {
+            "severity": "blocked",
+            "width_in": 0.0,
+            "where": "south-center: walk crosses a wall two-top"
+          },
+          {
+            "severity": "blocked",
+            "width_in": 0.0,
+            "where": "south-east: walk crosses a wall two-top"
+          }
+        ]
+      },
+      "revenue_proxy_hr": 269,
+      "flip_minutes": 15,
+      "notes": [
+        "The turned four-and-two slides right as far as the chase and entry well allow; the west side becomes service and standing room with full end swings.",
+        "FLAG: the east end swings run hard toward the east wall \u2014 the cost of the slide.",
+        "Two-top bands as in the centered version, shifted with the tables.",
+        "Cue room around the tables: most sides get about 47\"; the shortest clearance is 37.2\"."
+      ]
+    },
+    {
       "key": "centerline",
-      "name": "3 \u00b7 Center Line",
+      "name": "5 \u00b7 Center Line",
       "tagline": "Six tables turned 90\u00b0, end-to-end down the middle",
       "capacity": {
         "tables": 6,
@@ -291,7 +489,7 @@
     },
     {
       "key": "eastline",
-      "name": "4 \u00b7 East Line + West Lounge",
+      "name": "6 \u00b7 East Line + West Lounge",
       "tagline": "Tables single-file on the east; full-length hospitality strip west",
       "capacity": {
         "tables": 6,
@@ -380,7 +578,7 @@
     },
     {
       "key": "eastshift",
-      "name": "5 \u00b7 East Line \u2014 Shifted Down",
+      "name": "7 \u00b7 East Line \u2014 Shifted Down",
       "tagline": "The east line slid down-wall: the top table rejoins the line",
       "capacity": {
         "tables": 6,
@@ -468,7 +666,7 @@
     },
     {
       "key": "westline",
-      "name": "6 \u00b7 West Line + Wall Rounds",
+      "name": "8 \u00b7 West Line + Wall Rounds",
       "tagline": "Tables single-file west; a round beside each table on the east wall",
       "capacity": {
         "tables": 6,
@@ -568,7 +766,7 @@
     },
     {
       "key": "westshift",
-      "name": "7 \u00b7 West Line \u2014 Shifted Down",
+      "name": "9 \u00b7 West Line \u2014 Shifted Down",
       "tagline": "The west line slid down-wall: the sixth round reaches the wall",
       "capacity": {
         "tables": 6,

@@ -2,10 +2,9 @@
 """Build docs/pool_room_topdowns.pdf — a single US-letter (8.5x11) page with
 all option top-down renders, no words, no annotations.
 
-Layout math: the renders are 1:2 (room aspect). On a portrait letter page
-the six tiles come out largest as 3 columns x 2 rows, upright — each tile
-~2.7 x 5.4 inches at 300 dpi, which beats every rotated or landscape
-arrangement for per-tile area.
+v29: the page is organized SEMANTICALLY (user): layouts whose tables sit
+left (west) run down the LEFT of the page, centered layouts down the
+CENTER, right-(east-)shifted layouts down the RIGHT.
 """
 import os
 import sys
@@ -19,41 +18,52 @@ from configs.v16_configs import CONFIGS                     # noqa: E402
 
 DPI = 300
 PAGE_W, PAGE_H = int(8.5 * DPI), 11 * DPI      # 2550 x 3300
-# v27: four options after the Social/Tournament merge — 2x2 tiles beat
-# 3x2 for per-tile area; fall back to 3 columns for five or six options
-COLS = 2 if len(CONFIGS) <= 4 else 3
-ROWS = (len(CONFIGS) + COLS - 1) // COLS
 GAP = 20
+
+# semantic columns: left-shifted | centered | right-shifted
+SHEET_COLS = [
+    ["turnleft", "westline", "westshift"],
+    ["social", "fourturned", "centerline"],
+    ["turnright", "eastline", "eastshift"],
+]
 
 
 def main():
-    tile_h = (PAGE_H - (ROWS + 1) * GAP) // ROWS          # 1620
-    tile_w_fit = (PAGE_W - (COLS + 1) * GAP) // COLS      # 823
+    known = {c["key"] for c in CONFIGS}
+    cols = [[k for k in col if k in known] for col in SHEET_COLS]
+    # any config not placed falls into the center column
+    placed = {k for col in cols for k in col}
+    cols[1] += [c["key"] for c in CONFIGS if c["key"] not in placed]
+    n_cols = len(cols)
+    n_rows = max(len(c) for c in cols)
+    tile_h = (PAGE_H - (n_rows + 1) * GAP) // n_rows
+    tile_w_fit = (PAGE_W - (n_cols + 1) * GAP) // n_cols
     page = Image.new("RGB", (PAGE_W, PAGE_H), (255, 255, 255))
-    tiles = []
-    for c in CONFIGS:
-        p = os.path.join(ROOT, "renders",
-                         f"render_v16_{c['key']}_topdown.png")
-        im = Image.open(p).convert("RGB")
-        w = int(im.width * tile_h / im.height)
-        if w > tile_w_fit:                                # width-limited
-            w = tile_w_fit
-            h = int(im.height * w / im.width)
-        else:
-            h = tile_h
-        tiles.append(im.resize((w, h), Image.LANCZOS))
-    rows = [tiles[i:i + COLS] for i in range(0, len(tiles), COLS)]
-    for r, row_tiles in enumerate(rows):
-        x_gap = (PAGE_W - sum(t.width for t in row_tiles)) // (len(row_tiles) + 1)
-        x = x_gap
-        for t in row_tiles:
-            y = GAP + r * (tile_h + GAP)
-            page.paste(t, (x, y + (tile_h - t.height) // 2))
-            x += t.width + x_gap
+    col_w = (PAGE_W - (n_cols + 1) * GAP) // n_cols
+    for ci, col in enumerate(cols):
+        x0 = GAP + ci * (col_w + GAP)
+        # center each column's tile stack vertically
+        tiles = []
+        for key in col:
+            im = Image.open(os.path.join(
+                ROOT, "renders", f"render_v16_{key}_topdown.png")).convert("RGB")
+            w = int(im.width * tile_h / im.height)
+            if w > tile_w_fit:
+                w = tile_w_fit
+                h = int(im.height * w / im.width)
+            else:
+                h = tile_h
+            tiles.append(im.resize((w, h), Image.LANCZOS))
+        total_h = sum(t.height for t in tiles) + (len(tiles) - 1) * GAP
+        y = (PAGE_H - total_h) // 2
+        for t in tiles:
+            page.paste(t, (x0 + (col_w - t.width) // 2, y))
+            y += t.height + GAP
     out = os.path.join(ROOT, "docs", "pool_room_topdowns.pdf")
     page.save(out, resolution=float(DPI))
+    n = sum(len(c) for c in cols)
     print(f"wrote {out} ({os.path.getsize(out) / 1e6:.1f} MB, "
-          f"{len(tiles)} layouts, 8.5x11 @ {DPI}dpi)")
+          f"{n} layouts in semantic columns, 8.5x11 @ {DPI}dpi)")
 
 
 if __name__ == "__main__":

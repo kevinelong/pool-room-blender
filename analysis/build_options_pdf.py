@@ -41,6 +41,20 @@ CLEAN = {
                     "seating at arm's reach.",
                     "FLAG: the rotated ends run tight side-to-side; the "
                     "west and center aisles are the practical maximum."]),
+    "turnleft": ("Four On Top — Turned Left",
+                 "The turned pattern slid left",
+                 ["Both columns slide toward the left wall: the whole "
+                  "east side becomes service and standing room with full "
+                  "end swings.",
+                  "FLAG: the west end swings run hard against the wall — "
+                  "the cost of the slide."]),
+    "turnright": ("Four On Top — Turned Right",
+                  "The turned pattern slid right",
+                  ["Both columns slide toward the right wall, as far as "
+                   "the chase and entry well allow; the west side becomes "
+                   "service and standing room with full end swings.",
+                   "FLAG: the east end swings run hard toward the wall — "
+                   "the cost of the slide."]),
     "centerline": ("Center Line",
                    "Six tables turned sideways, end-to-end down the middle",
                    ["Every table on display from the full-length side aisles.",

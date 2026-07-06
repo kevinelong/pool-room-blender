@@ -162,8 +162,75 @@ CONFIGS = [
         ],
     ),
     dict(
+        key="turnleft",
+        name="3 · Four On Top — Turned Left",
+        tagline="The turned pattern slid left: play opens from the east",
+        rot90=True,
+        # v29 (user): complementary LEFT shift of the turned 4+2. Both
+        # columns slide west — the east aisle grows to a full service
+        # side (spine clear of the HVAC chase, full east end swings);
+        # the west ends give up swing room against the west wall.
+        lane_x=274.0,
+        tables=[("TurnA_L", 76.25, 96), ("TurnA_R", 208.25, 96),
+                ("TurnB_L", 76.25, 396), ("TurnB_R", 208.25, 396),
+                ("TurnC_L", 76.25, 512), ("TurnC_R", 208.25, 512)],
+        rounds=[], pack_grid=False,
+        round_role="flex",
+        hightops=[],
+        twotops=[(76.0, 13.0), (208.0, 13.0),
+                 (72.0, 250.0), (142.0, 250.0), (212.0, 250.0),
+                 (120.0, 671.0), (208.0, 671.0)],
+        twotop_role="flex",
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=15,
+        notes=[
+            "The turned four-and-two slides left: the whole east side "
+            "becomes service and standing room with full end swings.",
+            "FLAG: the west end swings run hard against the west wall — "
+            "the cost of the slide.",
+            "Two-top bands as in the centered version, shifted with the "
+            "tables.",
+        ],
+    ),
+    dict(
+        key="turnright",
+        name="4 · Four On Top — Turned Right",
+        tagline="The turned pattern slid right: play opens from the west",
+        rot90=True,
+        # v29 (user): complementary RIGHT shift. Both columns slide east
+        # as far as the HVAC chase and entry well allow; the west aisle
+        # becomes the service side (the spine moves there — the east
+        # margin is too tight and encumbered), with full west swings.
+        lane_x=33.0,
+        tables=[("TurnA_L", 107.75, 96), ("TurnA_R", 239.75, 96),
+                ("TurnB_L", 107.75, 396), ("TurnB_R", 239.75, 396),
+                ("TurnC_L", 107.75, 512), ("TurnC_R", 239.75, 512)],
+        rounds=[], pack_grid=False,
+        round_role="flex",
+        hightops=[],
+        twotops=[(108.0, 13.0), (240.0, 13.0),
+                 (104.0, 250.0), (174.0, 250.0), (244.0, 250.0),
+                 (136.0, 671.0), (226.0, 671.0)],
+        twotop_role="flex",
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=15,
+        notes=[
+            "The turned four-and-two slides right as far as the chase "
+            "and entry well allow; the west side becomes service and "
+            "standing room with full end swings.",
+            "FLAG: the east end swings run hard toward the east wall — "
+            "the cost of the slide.",
+            "Two-top bands as in the centered version, shifted with the "
+            "tables.",
+        ],
+    ),
+    dict(
         key="centerline",
-        name="3 · Center Line",
+        name="5 · Center Line",
         tagline="Six tables turned 90°, end-to-end down the middle",
         rot90=True,
         # single file: cabinet gaps ~47.5" -> side swings land at the
@@ -200,7 +267,7 @@ CONFIGS = [
     ),
     dict(
         key="eastline",
-        name="4 · East Line + West Lounge",
+        name="6 · East Line + West Lounge",
         tagline="Tables single-file on the east; full-length hospitality strip west",
         rot90=True,
         # cx=206 keeps the playfield clear of the NW stage (which blocks a
@@ -236,7 +303,7 @@ CONFIGS = [
     ),
     dict(
         key="eastshift",
-        name="5 · East Line — Shifted Down",
+        name="7 · East Line — Shifted Down",
         tagline="The east line slid down-wall: the top table rejoins the line",
         rot90=True,
         # v28 (user): slide the whole six-table line 33.5" toward the
@@ -268,7 +335,7 @@ CONFIGS = [
     ),
     dict(
         key="westline",
-        name="6 · West Line + Wall Rounds",
+        name="8 · West Line + Wall Rounds",
         tagline="Tables single-file west; a round beside each table on the east wall",
         rot90=True,
         # v23: stage removed entirely (user) — the west file needs no
@@ -304,7 +371,7 @@ CONFIGS = [
     ),
     dict(
         key="westshift",
-        name="7 · West Line — Shifted Down",
+        name="9 · West Line — Shifted Down",
         tagline="The west line slid down-wall: the sixth round reaches the wall",
         rot90=True,
         lane_x=213.0,
