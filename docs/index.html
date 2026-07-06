@@ -62,25 +62,114 @@ function perspective(fov, asp, n, f){
 }
 function fpsView(px,py,pz,yaw,pitch){
   const cy=Math.cos(yaw), sy=Math.sin(yaw), cp=Math.cos(pitch), sp=Math.sin(pitch);
-  // right, up, back basis
   const rx=cy, ry=0, rz=-sy;
-  const bx=sy*cp, by=sp, bz=cy*cp;          // back = -forward
+  const bx=sy*cp, by=sp, bz=cy*cp;
   const ux=by*rz-bz*ry, uy=bz*rx-bx*rz, uz=bx*ry-by*rx;
   return [rx,ux,bx,0, ry,uy,by,0, rz,uz,bz,0,
           -(rx*px+ry*py+rz*pz), -(ux*px+uy*py+uz*pz), -(bx*px+by*py+bz*pz), 1];
 }
 
+/* ------------------------------------------------ procedural textures -- */
+function makeTex(gl, draw, size){
+  size = size || 256;
+  const c = document.createElement('canvas'); c.width = c.height = size;
+  const x = c.getContext('2d');
+  draw(x, size);
+  const t = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, t);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, c);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+  return t;
+}
+function speckle(x, s, n, col, a){
+  x.globalAlpha = a;
+  for (let i=0;i<n;i++){
+    x.fillStyle = col;
+    x.fillRect(Math.random()*s, Math.random()*s, 1+Math.random()*2, 1+Math.random()*2);
+  }
+  x.globalAlpha = 1;
+}
+const TEXDEFS = {
+  /* floor: brown VCT, 2 tiles per texture (world 24" per tile => scale 48) */
+  floor: (x,s)=>{
+    x.fillStyle = '#a8825c'; x.fillRect(0,0,s,s);
+    const t = s/2;
+    for (let i=0;i<2;i++) for (let j=0;j<2;j++){
+      const v = ((i+j)%2 ? 6 : -5) + (Math.random()*6-3);
+      x.fillStyle = `rgb(${168+v},${130+v},${92+v})`;
+      x.fillRect(i*t+1, j*t+1, t-2, t-2);
+    }
+    speckle(x, s, 900, '#7a5c40', .5); speckle(x, s, 500, '#c9a87e', .4);
+    x.strokeStyle = 'rgba(88,66,46,.85)'; x.lineWidth = 2;
+    x.strokeRect(0,0,s,s); x.beginPath();
+    x.moveTo(t,0); x.lineTo(t,s); x.moveTo(0,t); x.lineTo(s,t); x.stroke();
+  },
+  /* wall: white painted panelling, vertical seams (world 48" per repeat) */
+  wall: (x,s)=>{
+    x.fillStyle = '#f2f1ee'; x.fillRect(0,0,s,s);
+    const g = x.createLinearGradient(0,0,s,0);
+    g.addColorStop(0,'rgba(0,0,0,.045)'); g.addColorStop(.08,'rgba(0,0,0,0)');
+    g.addColorStop(.92,'rgba(0,0,0,0)'); g.addColorStop(1,'rgba(0,0,0,.045)');
+    x.fillStyle = g; x.fillRect(0,0,s,s);
+    x.strokeStyle = 'rgba(150,148,142,.7)'; x.lineWidth = 2;
+    x.beginPath(); x.moveTo(1,0); x.lineTo(1,s); x.stroke();
+    x.strokeStyle = 'rgba(255,255,255,.6)';
+    x.beginPath(); x.moveTo(4,0); x.lineTo(4,s); x.stroke();
+    speckle(x, s, 250, '#dddad2', .35);
+  },
+  /* ceiling: 24x48 acoustic grid (texture = 48x48 world inches) */
+  ceil: (x,s)=>{
+    x.fillStyle = '#f4f4f5'; x.fillRect(0,0,s,s);
+    speckle(x, s, 1400, '#dcdcdf', .5);
+    x.strokeStyle = 'rgba(165,165,172,.9)'; x.lineWidth = 2;
+    x.strokeRect(0,0,s,s);
+    x.beginPath(); x.moveTo(0,s/2); x.lineTo(s,s/2); x.stroke();
+  },
+  /* felt: tournament blue with cloth noise */
+  felt: (x,s)=>{
+    x.fillStyle = '#2f8fd0'; x.fillRect(0,0,s,s);
+    speckle(x, s, 2200, '#3ba0e2', .35); speckle(x, s, 1600, '#2679b3', .35);
+  },
+  /* wood: warm grain */
+  wood: (x,s)=>{
+    x.fillStyle = '#7a4f2a'; x.fillRect(0,0,s,s);
+    for (let i=0;i<46;i++){
+      const y0 = Math.random()*s;
+      x.strokeStyle = `rgba(${60+Math.random()*40},${34+Math.random()*22},${12+Math.random()*12},${.25+Math.random()*.3})`;
+      x.lineWidth = .6 + Math.random()*1.8;
+      x.beginPath(); x.moveTo(0, y0);
+      for (let px=0; px<=s; px+=16)
+        x.lineTo(px, y0 + Math.sin(px*.05 + i)*2.2);
+      x.stroke();
+    }
+  },
+  /* concrete for steps/landing/HVAC */
+  conc: (x,s)=>{
+    x.fillStyle = '#9d9da0'; x.fillRect(0,0,s,s);
+    speckle(x, s, 2600, '#8a8a8e', .5); speckle(x, s, 1000, '#b2b2b6', .5);
+  },
+  flat: (x,s)=>{ x.fillStyle = '#fff'; x.fillRect(0,0,s,s); },
+};
+/* world inches per texture repeat, per material */
+const TEXSCALE = { floor:48, wall:96, ceil:48, felt:24, wood:40, conc:36, flat:64 };
+
 /* ------------------------------------------------------------- webgl -- */
 const cv = document.getElementById('gl');
 const gl = cv.getContext('webgl', {antialias:true});
-const VS = `attribute vec3 p; attribute vec3 n; attribute vec3 c;
-uniform mat4 proj, view; varying vec3 vc; varying float vd;
+const VS = `attribute vec3 p; attribute vec3 n; attribute vec3 c; attribute vec2 t;
+uniform mat4 proj, view; varying vec3 vc; varying float vd; varying vec2 vt;
 void main(){ vec4 vp = view * vec4(p,1.0); gl_Position = proj * vp;
-  float sh = 0.62 + 0.38*max(dot(normalize(n), normalize(vec3(0.35,0.9,0.25))),0.0);
-  vc = c * sh; vd = length(vp.xyz); }`;
-const FS = `precision mediump float; varying vec3 vc; varying float vd;
-void main(){ float fog = smoothstep(9.0, 24.0, vd);
-  gl_FragColor = vec4(mix(vc, vec3(0.93,0.93,0.94), fog*0.55), 1.0); }`;
+  float sh = 0.60 + 0.40*max(dot(normalize(n), normalize(vec3(0.35,0.9,0.25))),0.0);
+  float ao = 0.86 + 0.14*clamp(p.y/1.4, 0.0, 1.0);
+  vc = c * sh * ao; vd = length(vp.xyz); vt = t; }`;
+const FS = `precision mediump float; varying vec3 vc; varying float vd; varying vec2 vt;
+uniform sampler2D tex;
+void main(){ vec3 base = texture2D(tex, vt).rgb * vc;
+  float fog = smoothstep(9.0, 26.0, vd);
+  gl_FragColor = vec4(mix(base, vec3(0.90,0.90,0.92), fog*0.5), 1.0); }`;
 function shader(t,s){ const o=gl.createShader(t); gl.shaderSource(o,s);
   gl.compileShader(o); if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))
   throw gl.getShaderInfoLog(o); return o; }
@@ -89,157 +178,185 @@ gl.attachShader(prog, shader(gl.VERTEX_SHADER, VS));
 gl.attachShader(prog, shader(gl.FRAGMENT_SHADER, FS));
 gl.linkProgram(prog); gl.useProgram(prog);
 const aP=gl.getAttribLocation(prog,'p'), aN=gl.getAttribLocation(prog,'n'),
-      aC=gl.getAttribLocation(prog,'c');
+      aC=gl.getAttribLocation(prog,'c'), aT=gl.getAttribLocation(prog,'t');
 const uProj=gl.getUniformLocation(prog,'proj'),
       uView=gl.getUniformLocation(prog,'view');
 gl.enable(gl.DEPTH_TEST); gl.enable(gl.CULL_FACE);
+const TEX = {};
+for (const k in TEXDEFS) TEX[k] = makeTex(gl, TEXDEFS[k]);
 
 /* ------------------------------------------------- geometry building -- */
-const IN = 0.0254;                       // room inches -> meters
-let verts = [];                          // px,py,pz, nx,ny,nz, r,g,b
-function quad(a,b,c,d,nrm,col){
-  for (const v of [a,b,c,a,c,d])
-    verts.push(v[0]*IN, v[1]*IN, v[2]*IN, nrm[0],nrm[1],nrm[2],
-               col[0],col[1],col[2]);
+const IN = 0.0254;
+let buckets = {};                 // mat -> array of floats (p3,n3,c3,t2)
+function bkt(mat){ return buckets[mat] || (buckets[mat] = []); }
+function pushV(arr, v, nrm, col, u, vv){
+  arr.push(v[0]*IN, v[1]*IN, v[2]*IN, nrm[0],nrm[1],nrm[2],
+           col[0],col[1],col[2], u, vv);
 }
-/* box in room coords: x east, y up (height), z = room-y (south) */
-function box(x0,z0,y0, x1,z1,y1, col){   // (x, roomY, height-bottom) ...
+function quadM(mat, a,b,c,d, nrm, col){
+  const s = TEXSCALE[mat], arr = bkt(mat);
+  const ax=Math.abs(nrm[0]), ay=Math.abs(nrm[1]), az=Math.abs(nrm[2]);
+  function uv(v){
+    if (ay >= ax && ay >= az) return [v[0]/s, v[2]/s];
+    if (ax >= az)             return [v[2]/s, v[1]/s];
+    return [v[0]/s, v[1]/s];
+  }
+  const A=uv(a),B=uv(b),C=uv(c),D=uv(d);
+  pushV(arr,a,nrm,col,A[0],A[1]); pushV(arr,b,nrm,col,B[0],B[1]);
+  pushV(arr,c,nrm,col,C[0],C[1]);
+  pushV(arr,a,nrm,col,A[0],A[1]); pushV(arr,c,nrm,col,C[0],C[1]);
+  pushV(arr,d,nrm,col,D[0],D[1]);
+}
+function box(mat, x0,z0,y0, x1,z1,y1, col){
   const A=[x0,y0,z0],B=[x1,y0,z0],C=[x1,y0,z1],D=[x0,y0,z1];
   const E=[x0,y1,z0],F=[x1,y1,z0],G=[x1,y1,z1],H=[x0,y1,z1];
-  quad(E,F,G,H,[0,1,0],col);             // top
-  quad(D,C,B,A,[0,-1,0],col);            // bottom
-  quad(A,B,F,E,[0,0,-1],col);            // north (z0)
-  quad(C,D,H,G,[0,0,1],col);             // south
-  quad(D,A,E,H,[-1,0,0],col);            // west
-  quad(B,C,G,F,[1,0,0],col);             // east
+  quadM(mat,E,F,G,H,[0,1,0],col);
+  quadM(mat,D,C,B,A,[0,-1,0],col);
+  quadM(mat,A,B,F,E,[0,0,-1],col);
+  quadM(mat,C,D,H,G,[0,0,1],col);
+  quadM(mat,D,A,E,H,[-1,0,0],col);
+  quadM(mat,B,C,G,F,[1,0,0],col);
 }
-function rotBox(cx,cz,y0, w,l,h, yawDeg, col){
+function rotBox(mat, cx,cz,y0, w,l,h, yawDeg, col){
   const a = yawDeg*Math.PI/180, ca=Math.cos(a), sa=Math.sin(a);
-  const hw=w/2, hl=l/2;
+  const hw=w/2, hl=l/2, y1=y0+h;
   const pt=(dx,dz,y)=>[cx+dx*ca-dz*sa, y, cz+dx*sa+dz*ca];
-  const y1=y0+h;
   const c=[[-hw,-hl],[hw,-hl],[hw,hl],[-hw,hl]];
   const lo=c.map(p=>pt(p[0],p[1],y0)), hi=c.map(p=>pt(p[0],p[1],y1));
-  quad(hi[0],hi[1],hi[2],hi[3],[0,1,0],col);
-  quad(lo[3],lo[2],lo[1],lo[0],[0,-1,0],col);
+  quadM(mat,hi[0],hi[1],hi[2],hi[3],[0,1,0],col);
+  quadM(mat,lo[3],lo[2],lo[1],lo[0],[0,-1,0],col);
   for(let i=0;i<4;i++){
     const j=(i+1)%4;
-    const nx=(c[i][1]+c[j][1])?0:0;      // approximate side normals
     const mx=(c[i][0]+c[j][0])/2, mz=(c[i][1]+c[j][1])/2;
     const nl=Math.hypot(mx,mz)||1;
-    const wn=[ (mx*ca-mz*sa)/nl, 0, (mx*sa+mz*ca)/nl ];
-    quad(lo[i],lo[j],hi[j],hi[i],wn,col);
+    const wn=[(mx*ca-mz*sa)/nl, 0, (mx*sa+mz*ca)/nl];
+    quadM(mat,lo[i],lo[j],hi[j],hi[i],wn,col);
   }
 }
-function cylinder(cx,cz,y0,y1,r,col,seg){
-  seg = seg||14;
+function cylinder(mat, cx,cz,y0,y1,r0,r1,col,seg){
+  seg = seg||16; r1 = (r1===undefined)? r0 : r1;
   for(let i=0;i<seg;i++){
     const a0=i/seg*Math.PI*2, a1=(i+1)/seg*Math.PI*2;
-    const p0=[cx+r*Math.cos(a0), 0, cz+r*Math.sin(a0)];
-    const p1=[cx+r*Math.cos(a1), 0, cz+r*Math.sin(a1)];
-    quad([p0[0],y0,p0[2]],[p1[0],y0,p1[2]],[p1[0],y1,p1[2]],[p0[0],y1,p0[2]],
-         [Math.cos((a0+a1)/2),0,Math.sin((a0+a1)/2)],col);
-    // top disc fan — emit both windings so culling never hides it
-    quad([cx,y1,cz],[p0[0],y1,p0[2]],[p1[0],y1,p1[2]],[cx,y1,cz],[0,1,0],col);
-    quad([cx,y1,cz],[p1[0],y1,p1[2]],[p0[0],y1,p0[2]],[cx,y1,cz],[0,1,0],col);
+    const q0=[cx+r0*Math.cos(a0), y0, cz+r0*Math.sin(a0)];
+    const q1=[cx+r0*Math.cos(a1), y0, cz+r0*Math.sin(a1)];
+    const q2=[cx+r1*Math.cos(a1), y1, cz+r1*Math.sin(a1)];
+    const q3=[cx+r1*Math.cos(a0), y1, cz+r1*Math.sin(a0)];
+    quadM(mat,q0,q1,q2,q3,[Math.cos((a0+a1)/2),0,Math.sin((a0+a1)/2)],col);
+    const c0=[cx,y1,cz];
+    quadM(mat,c0,q3,q2,c0,[0,1,0],col);
+    quadM(mat,c0,q2,q3,c0,[0,1,0],col);
   }
 }
 
 const R = DATA.room, W=R.w, L=R.l;
-const WALL_H=118, CEIL=[0.96,0.96,0.97], WALLC=[0.94,0.94,0.95];
-const FLOOR=[0.72,0.62,0.52], PATH=[0.62,0.85,0.62];
+const WALL_H=118;
+const WHITE=[1,1,1], DIM=[0.85,0.85,0.85];
 function buildScene(lay){
-  verts = [];
-  // floor (split around the entry well) + well treads
+  buckets = {};
   const wl=R.well;
-  box(0,0,-1, W,wl[1],0, FLOOR);
-  box(0,wl[1],-1, wl[0],L,0, FLOOR);
-  box(wl[0]+22,wl[1],-16, W,L,-15, [0.6,0.6,0.6]);        // landing
-  box(wl[0]+11,wl[1],-16, wl[0]+22,L,-7.5, [0.62,0.62,0.62]); // step1
-  box(wl[0],wl[1],-16, wl[0]+11,L,0, [0.64,0.64,0.64]);   // step2
-  // well rails
+  // ---- shell -------------------------------------------------------------
+  box('floor', 0,0,-1, W,wl[1],0, WHITE);
+  box('floor', 0,wl[1],-1, wl[0],L,0, WHITE);
+  box('conc', wl[0]+22,wl[1],-16, W,L,-15, WHITE);
+  box('conc', wl[0]+11,wl[1],-16, wl[0]+22,L,-7.5, WHITE);
+  box('conc', wl[0],wl[1],-16, wl[0]+11,L,0, WHITE);
   for (const ry of [wl[1], L-2]){
-    box(wl[0],ry,36, W-2,ry+2,39, [0.15,0.15,0.16]);
+    box('flat', wl[0],ry,36, W-2,ry+2,39, [0.13,0.13,0.14]);
     for (const px of [wl[0]+1, wl[0]+12, wl[0]+23, W-5])
-      box(px,ry,0, px+2,ry+2,36, [0.15,0.15,0.16]);
+      box('flat', px,ry,0, px+2,ry+2,36, [0.13,0.13,0.14]);
   }
-  // walls: N, S (gap only visual EE slab), W; E wall with entry opening
-  box(0,-6,0, W,0,WALL_H, WALLC);                          // north
-  box(0,L,0, W,L+6,WALL_H, WALLC);                         // south
-  box(-6,0,0, 0,L,WALL_H, WALLC);                          // west
-  box(W,0,0, W+6,wl[1],WALL_H, WALLC);                     // east (N of door)
-  box(W,wl[1],80, W+6,L,WALL_H, WALLC);                    // header over door
-  // daylight backdrop + open wood leaf (hinged S jamb, 90 deg)
-  box(W+40,wl[1]-20,-16, W+42,L+20,WALL_H, [0.85,0.84,0.80]);
-  box(W-37,L-4.5,0, W-1,L-2.5,80, [0.42,0.26,0.13]);
-  // door slabs, positions per the reference video (build_pool_room DOORS):
-  // EE south wall x 30..95; kitchen east wall y 290..330; Storage A north
-  // wall x 276..312; Storage B east wall y 4..40 (both 36", 4" off the
-  // NE corner); all 80" tall
-  box(30,L-2,0, 95,L,80, [0.12,0.12,0.13]);
-  box(W-2,290,0, W,330,80, [0.12,0.12,0.13]);
-  box(276,0,0, 312,2,80, [0.12,0.12,0.13]);
-  box(W-2,4,0, W,40,80, [0.12,0.12,0.13]);
-  // HVAC chase + beam + red LED strips + signage
-  const hv=R.hvac; box(hv[0],hv[1],0, hv[2],hv[3],WALL_H, [0.55,0.55,0.56]);
-  box(0,R.beamY-6,106, W,R.beamY+6,118, [0.32,0.22,0.13]);
-  box(1,1,1, 3,L-1,3, [1,0.25,0.2]); box(W-3,1,1, W-1,wl[1],3, [1,0.25,0.2]);
-  box(1,1,1, W-1,3,3, [1,0.25,0.2]); box(1,L-3,1, 260,L-1,3, [1,0.25,0.2]);
-  box(120,L-1,70, 200,L,86, [1,0.4,0.35]);                 // south sign
-  box(0,300,70, 1,380,86, [1,0.4,0.35]);                   // west sign
-  // ceiling
-  box(0,0,WALL_H, W,L,WALL_H+2, CEIL);
-  // green paths
-  for (const p of lay.paths) box(p[0],p[1],0.05, p[2],p[3],0.4, PATH);
-  // pool tables: cabinet + felt + skirt shadow
+  box('wall', 0,-6,0, W,0,WALL_H, WHITE);
+  box('wall', 0,L,0, W,L+6,WALL_H, WHITE);
+  box('wall', -6,0,0, 0,L,WALL_H, WHITE);
+  box('wall', W,0,0, W+6,wl[1],WALL_H, WHITE);
+  box('wall', W,wl[1],80, W+6,L,WALL_H, WHITE);
+  box('flat', W+40,wl[1]-20,-16, W+42,L+20,WALL_H, [0.88,0.87,0.83]);
+  box('wood', W-37,L-4.5,0, W-1,L-2.5,80, WHITE);          // open entry leaf
+  // doors per the reference video (build DOORS list)
+  box('flat', 30,L-2,0, 95,L,80, [0.12,0.12,0.13]);        // EE
+  box('flat', W-2,290,0, W,330,80, [0.12,0.12,0.13]);      // kitchen
+  box('flat', 276,0,0, 312,2,80, [0.12,0.12,0.13]);        // storage A (N)
+  box('flat', W-2,4,0, W,40,80, [0.12,0.12,0.13]);         // storage B (E)
+  const hv=R.hvac;
+  box('conc', hv[0],hv[1],0, hv[2],hv[3],WALL_H, [0.72,0.72,0.74]);
+  box('wood', 0,R.beamY-6,106, W,R.beamY+6,118, [0.55,0.42,0.3]);
+  box('flat', 1,1,1, 3,L-1,3, [1,0.22,0.18]);
+  box('flat', W-3,1,1, W-1,wl[1],3, [1,0.22,0.18]);
+  box('flat', 1,1,1, W-1,3,3, [1,0.22,0.18]);
+  box('flat', 1,L-3,1, 260,L-1,3, [1,0.22,0.18]);
+  box('flat', 120,L-1,70, 200,L,86, [1,0.42,0.36]);
+  box('flat', 0,300,70, 1,380,86, [1,0.42,0.36]);
+  box('ceil', 0,0,WALL_H, W,L,WALL_H+2, WHITE);
+  for (const p of lay.paths)
+    box('flat', p[0],p[1],0.05, p[2],p[3],0.4, [0.62,0.85,0.62]);
+  // ---- pool tables: skirt, rails, felt, pockets, tapered legs ------------
   for (const t of lay.tables){
-    box(t[0],t[1],26, t[2],t[3],32, [0.22,0.22,0.24]);     // cabinet
-    box(t[0]+2,t[1]+2,0, t[0]+6,t[1]+6,26, [0.2,0.2,0.22]);
-    box(t[2]-6,t[1]+2,0, t[2]-2,t[1]+6,26, [0.2,0.2,0.22]);
-    box(t[0]+2,t[3]-6,0, t[0]+6,t[3]-2,26, [0.2,0.2,0.22]);
-    box(t[2]-6,t[3]-6,0, t[2]-2,t[3]-2,26, [0.2,0.2,0.22]);
-    box(t[0]+7.25,t[1]+7.25,32, t[2]-7.25,t[3]-7.25,32.8, [0.35,0.75,0.95]);
+    const [x0,y0v,x1,y1v] = t;
+    box('flat', x0+1.5,y0v+1.5,24, x1-1.5,y1v-1.5,30, [0.16,0.16,0.18]); // skirt
+    box('felt', x0+6,y0v+6,30, x1-6,y1v-6,31.2, WHITE);                  // felt bed
+    const rc=[0.24,0.20,0.17];                                           // rail wood
+    box('wood', x0,y0v,30, x1,y0v+6,33, rc);
+    box('wood', x0,y1v-6,30, x1,y1v,33, rc);
+    box('wood', x0,y0v,30, x0+6,y1v,33, rc);
+    box('wood', x1-6,y0v,30, x1,y1v,33, rc);
+    const mx=(x0+x1)/2, my=(y0v+y1v)/2;
+    const long = (x1-x0) > (y1v-y0v);
+    const pockets = [[x0+3,y0v+3],[x1-3,y0v+3],[x0+3,y1v-3],[x1-3,y1v-3]];
+    if (long) pockets.push([mx,y0v+3],[mx,y1v-3]);
+    else      pockets.push([x0+3,my],[x1-3,my]);
+    for (const pk of pockets)
+      cylinder('flat', pk[0],pk[1],32.4,33.4,3.4,3.4,[0.05,0.05,0.06],10);
+    for (const [lx,ly] of [[x0+7,y0v+7],[x1-7,y0v+7],[x0+7,y1v-7],[x1-7,y1v-7]])
+      cylinder('wood', lx,ly,0,24,2.2,3.4,[0.5,0.4,0.32],10);
   }
-  // rounds: top + pedestal
+  // ---- rounds: cloth drape + top + pedestal ------------------------------
   for (const r of lay.rounds){
-    cylinder(r[0],r[1],28,30,30,[0.93,0.92,0.90]);
-    cylinder(r[0],r[1],0,28,3.5,[0.5,0.5,0.5],8);
+    cylinder('flat', r[0],r[1],29,30,30,30,[0.95,0.94,0.92]);
+    cylinder('flat', r[0],r[1],20,29,27.5,30,[0.90,0.89,0.86]);
+    cylinder('conc', r[0],r[1],0,20,2.8,2.8,[0.55,0.55,0.57],8);
+    cylinder('conc', r[0],r[1],0,1.2,10,10,[0.5,0.5,0.52],10);
   }
-  // chairs
+  // ---- chairs -------------------------------------------------------------
   for (const ch of lay.chairs){
-    rotBox(ch[0],ch[1],15.5, 11,12,1.8, ch[2], [0.85,0.45,0.5]);
-    rotBox(ch[0],ch[1]+0*0,0, 10,10,15.5, ch[2], [0.75,0.4,0.45]);
-    // back: offset outward along local +l
+    rotBox('flat', ch[0],ch[1],15, 11,12,2.2, ch[2], [0.78,0.36,0.42]);
     const a=ch[2]*Math.PI/180;
-    rotBox(ch[0]-Math.sin(a)*-5.2, ch[1]+Math.cos(a)*5.2, 15.5,
-           11,1.6,18, ch[2], [0.85,0.45,0.5]);
+    for (const [dx,dz] of [[-4.2,-4.6],[4.2,-4.6],[-4.2,4.6],[4.2,4.6]]){
+      const lx = ch[0] + dx*Math.cos(a)-dz*Math.sin(a);
+      const lz = ch[1] + dx*Math.sin(a)+dz*Math.cos(a);
+      box('flat', lx-0.7,lz-0.7,0, lx+0.7,lz+0.7,15, [0.35,0.28,0.24]);
+    }
+    rotBox('flat', ch[0]-Math.sin(a)*-5.2, ch[1]+Math.cos(a)*5.2, 15,
+           11,1.6,19, ch[2], [0.78,0.36,0.42]);
   }
-  // bar two-tops + stools
+  // ---- bar tops + stools --------------------------------------------------
   for (const tp of lay.tops){
     const ns = tp[2];
-    if (ns) box(tp[0]-14,tp[1]-11,39, tp[0]+14,tp[1]+11,40.5,[0.45,0.3,0.2]);
-    else    box(tp[0]-11,tp[1]-14,39, tp[0]+11,tp[1]+14,40.5,[0.45,0.3,0.2]);
-    box(tp[0]-2,tp[1]-2,0, tp[0]+2,tp[1]+2,39, [0.4,0.27,0.18]);
-    const st = ns ? [[tp[0]-23,tp[1]-7],[tp[0]+9,tp[1]-7]]
-                  : [[tp[0]-7,tp[1]-23],[tp[0]-7,tp[1]+9]];
+    if (ns) box('wood', tp[0]-14,tp[1]-11,39, tp[0]+14,tp[1]+11,40.8, WHITE);
+    else    box('wood', tp[0]-11,tp[1]-14,39, tp[0]+11,tp[1]+14,40.8, WHITE);
+    cylinder('flat', tp[0],tp[1],0,39,1.8,1.8,[0.15,0.15,0.16],8);
+    cylinder('flat', tp[0],tp[1],0,1.2,8,8,[0.15,0.15,0.16],10);
+    const st = ns ? [[tp[0]-16,tp[1]],[tp[0]+16,tp[1]]]
+                  : [[tp[0],tp[1]-16],[tp[0],tp[1]+16]];
     for (const s of st){
-      box(s[0],s[1],26, s[0]+14,s[1]+14,28, [0.5,0.34,0.22]);
-      box(s[0]+5,s[1]+5,0, s[0]+9,s[1]+9,26, [0.4,0.27,0.18]);
+      cylinder('wood', s[0],s[1],26,28,7,7,WHITE,10);
+      cylinder('flat', s[0],s[1],0,26,1.4,1.4,[0.15,0.15,0.16],8);
+      cylinder('flat', s[0],s[1],0,1,6,6,[0.15,0.15,0.16],8);
     }
   }
-  const buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
-  const stride = 9*4;
-  gl.vertexAttribPointer(aP,3,gl.FLOAT,false,stride,0); gl.enableVertexAttribArray(aP);
-  gl.vertexAttribPointer(aN,3,gl.FLOAT,false,stride,12); gl.enableVertexAttribArray(aN);
-  gl.vertexAttribPointer(aC,3,gl.FLOAT,false,stride,24); gl.enableVertexAttribArray(aC);
-  return verts.length/9;
+  // upload buckets
+  const out = {};
+  for (const mat in buckets){
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(buckets[mat]), gl.STATIC_DRAW);
+    out[mat] = { buf, n: buckets[mat].length/11 };
+  }
+  return out;
 }
 
 /* -------------------------------------------------------------- state -- */
-let cur = 0, nVerts = 0;
-let cam = {x:348, y:646, yaw:Math.PI/2, pitch:0};   // x,roomY in inches
+let cur = 0, scene = {};
+let cam = {x:348, y:646, yaw:Math.PI/2, pitch:0};
 let manual = false, tourIdx = 0, tourT = 0;
 const keys = {};
 const fadeEl = document.getElementById('fade');
@@ -249,9 +366,9 @@ const hintEl = document.getElementById('hint');
 
 function floorAt(x,y){
   const wl=R.well;
+  if (x>W) return -15;
   if (x>wl[0]+22 && y>wl[1]) return -15;
   if (x>wl[0]+11 && y>wl[1]) return -7.5;
-  if (x>W) return -15;
   return 0;
 }
 function eyeY(x,y){ return floorAt(x,y) + 64; }
@@ -259,7 +376,7 @@ function eyeY(x,y){ return floorAt(x,y) + 64; }
 function loadLayout(i, spawnOutside){
   cur = ((i % DATA.layouts.length) + DATA.layouts.length) % DATA.layouts.length;
   const lay = DATA.layouts[cur];
-  nVerts = buildScene(lay);
+  scene = buildScene(lay);
   tourIdx = 0; tourT = 0;
   if (spawnOutside){ cam.x = lay.tour[0][0]; cam.y = lay.tour[0][1];
                      cam.yaw = Math.PI/2; cam.pitch = 0; }
@@ -270,14 +387,14 @@ function loadLayout(i, spawnOutside){
 }
 
 /* --------------------------------------------------------------- tour -- */
-const SPEED = 62;                        // in/s
+const SPEED = 62;
 function stepTour(dt){
   const lay = DATA.layouts[cur], T = lay.tour;
   if (tourIdx >= T.length-1){
     fadeEl.style.opacity = 1;
     setTimeout(()=>{ loadLayout(cur+1, true);
                      fadeEl.style.opacity = 0; }, 550);
-    tourIdx = -1;                        // parked until reload
+    tourIdx = -1;
     return;
   }
   if (tourIdx < 0) return;
@@ -287,7 +404,6 @@ function stepTour(dt){
   if (tourT >= 1){ tourIdx++; tourT = 0; return; }
   cam.x = a[0] + (b[0]-a[0])*tourT;
   cam.y = a[1] + (b[1]-a[1])*tourT;
-  // look toward a point ahead on the path
   let lx = b[0], ly = b[1];
   if (tourIdx+2 < T.length && tourT > 0.6){
     lx = (b[0]+T[tourIdx+2][0])/2; ly = (b[1]+T[tourIdx+2][1])/2; }
@@ -305,7 +421,7 @@ function collide(nx, ny){
   if (nx < r) nx = r;
   if (ny < r) ny = r;
   if (ny > L - r) ny = L - r;
-  if (nx > W - r && !(ny > wl[1]+6 && ny < L-6)) nx = W - r; // door gap
+  if (nx > W - r && !(ny > wl[1]+6 && ny < L-6)) nx = W - r;
   if (nx > W + 30) nx = W + 30;
   for (const o of lay.obstacles){
     const cx = Math.max(o[0], Math.min(nx, o[2]));
@@ -344,7 +460,6 @@ document.addEventListener('pointerlockchange', ()=>{
     ? 'manual — WASD move · mouse look · Shift hurry · Esc = auto-tour'
     : 'auto-tour — click the view to walk yourself';
   if (!manual){
-    // resume tour from the nearest tour vertex
     const T = DATA.layouts[cur].tour;
     let bi = 0, bd = 1e18;
     for (let i=0;i<T.length;i++){
@@ -374,6 +489,7 @@ DATA.layouts.forEach((lay, i)=>{
 });
 
 /* --------------------------------------------------------------- loop -- */
+const stride = 11*4;
 let last = performance.now();
 function frame(now){
   const dt = Math.min(0.05, (now-last)/1000); last = now;
@@ -383,17 +499,24 @@ function frame(now){
     cv.width = wpx*devicePixelRatio; cv.height = hpx*devicePixelRatio;
   }
   gl.viewport(0,0,cv.width,cv.height);
-  gl.clearColor(0.93,0.93,0.94,1);
+  gl.clearColor(0.90,0.90,0.92,1);
   gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
   gl.uniformMatrix4fv(uProj,false,new Float32Array(
     perspective(1.15, cv.width/cv.height, 0.06, 40)));
   gl.uniformMatrix4fv(uView,false,new Float32Array(
     fpsView(cam.x*IN, eyeY(cam.x,cam.y)*IN, cam.y*IN, cam.yaw, cam.pitch)));
-  gl.drawArrays(gl.TRIANGLES, 0, nVerts);
+  for (const mat in scene){
+    gl.bindTexture(gl.TEXTURE_2D, TEX[mat]);
+    gl.bindBuffer(gl.ARRAY_BUFFER, scene[mat].buf);
+    gl.vertexAttribPointer(aP,3,gl.FLOAT,false,stride,0);  gl.enableVertexAttribArray(aP);
+    gl.vertexAttribPointer(aN,3,gl.FLOAT,false,stride,12); gl.enableVertexAttribArray(aN);
+    gl.vertexAttribPointer(aC,3,gl.FLOAT,false,stride,24); gl.enableVertexAttribArray(aC);
+    gl.vertexAttribPointer(aT,2,gl.FLOAT,false,stride,36); gl.enableVertexAttribArray(aT);
+    gl.drawArrays(gl.TRIANGLES, 0, scene[mat].n);
+  }
   requestAnimationFrame(frame);
 }
 loadLayout(0, true);
-// debug/screenshot hook: #cam=x,y,yawDeg[,layoutIndex] freezes the camera
 if (location.hash.startsWith('#cam=')){
   const v = location.hash.slice(5).split(',').map(Number);
   if (v.length >= 4) loadLayout(v[3]|0, false);

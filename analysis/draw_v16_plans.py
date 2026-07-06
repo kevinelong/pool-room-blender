@@ -141,6 +141,13 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
         else:
             d.text((px((dx0 + dx1) / 2) - 62, py(dy0) + 12), lbl,
                    font=F_S, fill=col)
+    # v32: the two 36" storage doors at the NE corner (per the reference
+    # video / build DOORS): Storage A on the north wall x 276..312,
+    # Storage B on the east wall y 4..40
+    SC = (70, 70, 75)
+    d.line([px(276), py(0), px(312), py(0)], fill=SC, width=9)
+    d.line([px(ROOM_W), py(4), px(ROOM_W), py(40)], fill=SC, width=9)
+    d.text((px(276) - 4, py(0) + 10), "STORAGE", font=F_S, fill=SC)
 
     # service routes: all-seat routes faint, farthest bold; conflict rings
     zones = [cue_zone(cx, yt, rot) for _n, cx, yt in cfg["tables"]]
