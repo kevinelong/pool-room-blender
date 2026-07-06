@@ -34,3 +34,32 @@
 - **9 · West Line — Shifted Down** — narrowest walk 25.1":
     - blocked: 0.0" (south-east: walk crosses a round's chairs)
     - pinch: 25.1" (center-east: between a round's chairs and a round's chairs)
+
+## Methodology & assumptions
+
+**Revenue proxy** — a *comparator*, not a forecast. Every option has the
+same six tables, so table rent is constant across the set; the proxy
+exists to price the HOSPITALITY differences (drink seats vs dining
+covers vs flex seats vs spectators) in one number so options can be
+ranked. It assumes peak-hour full occupancy — every table rented and
+every seat filled at once — at placeholder margins:
+
+- table: $18/hr (typical hourly rental)
+- drink seat: $9/hr (~1.5 drinks/hr at ~$6 margin)
+- dining cover: $14/hr (~one cover turn/hr at ~$14 food margin)
+- flex seat: the average of drink and dine ($11.50/hr) — a flex seat
+  hosts ONE patron at a time, so it must not be counted as both
+- spectator: $2/hr (incidental purchases)
+
+It deliberately EXCLUDES labor, kitchen throughput, demand differences
+between layouts, and service speed (scored separately as run lengths
+and cue-crossing conflicts). Read it as "peak-hour gross capacity at
+placeholder margins"; edit RATES in configs/v16_configs.py (or reweight
+in the deck) and regenerate before deciding on revenue grounds.
+
+**Other conventions** — cue swing: full >= 58" from the playfield edge,
+playable-but-tight >= 54"; walking paths: < 36" clear is a pinch, < 24"
+a fail, rounds measured at the 38" tucked-chair body; egress: 36" EE
+frontage held clear, corridor pass >= 44"; service runs: Manhattan
+routes door -> spine -> seat; capacities: a 60" round seats 8, a
+two-top seats 2, four players per table.
