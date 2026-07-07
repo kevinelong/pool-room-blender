@@ -79,7 +79,14 @@ def main():
   <img class="card-qr" src="{qr_uri(url)}" alt="QR code for {title}">
 </a>"""
 
-    html = f"""<title>The Pool Room — Nine Ways to Rack the Room</title>
+    html = f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Pool Room — Nine Ways to Rack the Room</title>
+</head>
+<body>
 <style>
   :root {{
     --paper: #f7f6f2; --ink: #17171a; --muted: #6a6a70; --rule: #c9c7c0;
@@ -170,9 +177,12 @@ def main():
       NOT ESTIMATED</p>
   </footer>
 </div>
+</body>
+</html>
 """
     # v47: the hub is the GitHub Pages site root
-    out = os.path.join(ROOT, "docs", "index.html")
+    # v48: Pages serves the repo root — public pages live there
+    out = os.path.join(ROOT, "index.html")
     with open(out, "w") as fh:
         fh.write(html)
     print(f"wrote {out} ({os.path.getsize(out)/1e6:.2f} MB)")

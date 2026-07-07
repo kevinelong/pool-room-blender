@@ -27,7 +27,14 @@ def data_uri(relpath):
 def main():
     options, opt_mb = data_uri("docs/pool_room_v16_options.pdf")
     sheet, sheet_mb = data_uri("docs/pool_room_topdowns.pdf")
-    html = f"""<title>Pool Room — PDF Download</title>
+    html = f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pool Room — PDF Download</title>
+</head>
+<body>
 <style>
   body {{ font-family: system-ui, sans-serif; background:#141417; color:#eee;
          display:flex; flex-direction:column; align-items:center;
@@ -61,8 +68,11 @@ has these same downloads at the top — and the
 <a style="color:#9ad0ff" href="{DECK_URL}">interactive decision deck</a>
 lets you set what the house values and watch the nine layouts
 re-rank live.</p>
+</body>
+</html>
 """
-    out = os.path.join(ROOT, "docs", "get_pdf.html")
+    # v48: Pages serves the repo root — public pages live there
+    out = os.path.join(ROOT, "get_pdf.html")
     with open(out, "w") as fh:
         fh.write(html)
     print(f"wrote {out} ({os.path.getsize(out)/1e6:.1f} MB)")

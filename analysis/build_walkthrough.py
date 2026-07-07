@@ -266,7 +266,8 @@ def main():
     html = tpl.replace("/*__DATA__*/", "const DATA = "
                        + json.dumps(data, separators=(",", ":")) + ";")
     # v47: walk.html — the hub owns index.html (the GitHub Pages root)
-    out = os.path.join(ROOT, "docs", "walk.html")
+    # v48: Pages serves the repo root — public pages live there
+    out = os.path.join(ROOT, "walk.html")
     with open(out, "w") as fh:
         fh.write(html)
     print(f"wrote {out} ({os.path.getsize(out)/1e6:.1f} MB, "

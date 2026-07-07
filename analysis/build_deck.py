@@ -316,10 +316,16 @@ def main():
             .replace("__WALKTHROUGH_URL__", WALKTHROUGH_URL)
             .replace("__DOWNLOAD_URL__", DOWNLOAD_URL))
     # v47: friendly public filename on GitHub Pages
-    out = os.path.join(ROOT, "docs", "deck.html")
+    # v48: Pages serves the repo root — public pages live there
+    out = os.path.join(ROOT, "deck.html")
     os.makedirs(os.path.dirname(out), exist_ok=True)
+    skel = ("<!doctype html>\n<html lang=\"en\">\n<head>\n"
+            "<meta charset=\"utf-8\">\n"
+            "<meta name=\"viewport\" "
+            "content=\"width=device-width, initial-scale=1\">\n"
+            "</head>\n<body>\n")
     with open(out, "w") as fh:
-        fh.write(html)
+        fh.write(skel + html + "\n</body>\n</html>\n")
     print(f"wrote {out} ({os.path.getsize(out) / 1e6:.1f} MB)")
 
 
