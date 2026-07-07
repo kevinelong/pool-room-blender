@@ -21,7 +21,7 @@ sys.path.insert(0, ROOT)
 sys.path.insert(0, HERE)
 from configs.v16_configs import CONFIGS, ROOM_W, ROOM_L  # noqa: E402
 from project_urls import WALKTHROUGH_URL, DOWNLOAD_URL, DECK_URL  # noqa: E402
-from build_poster import draw_plan_lineart  # noqa: E402
+from build_poster import draw_plan_grid  # noqa: E402
 
 LINKS = [
     ("Walk it", "walkthrough",
@@ -55,10 +55,8 @@ def qr_uri(url):
 
 
 def main():
-    cfg = next(c for c in CONFIGS if c["key"] == "social")
-    plan_h = 1200
-    plan_w = int(plan_h * (ROOM_W / ROOM_L)) + 40
-    hero = png_uri(draw_plan_lineart(cfg, plan_w, plan_h, stroke=4))
+    hero = png_uri(draw_plan_grid(CONFIGS, cell_h=470, label_h=44,
+                                  gap=30, stroke=3))
 
     key_a = "  ".join(f"{c['letter']} {c['short']}" for c in CONFIGS[:5])
     key_b = "  ".join(f"{c['letter']} {c['short']}" for c in CONFIGS[5:])
@@ -109,7 +107,7 @@ def main():
           font-size: 12px; letter-spacing: .12em; color: var(--muted);
           border-top: 2px solid var(--ink); padding-top: 12px; margin: 0;
           text-transform: uppercase; }}
-  .hero {{ display: block; margin: 0 auto; width: min(360px, 78%); }}
+  .hero {{ display: block; margin: 0 auto; width: min(480px, 92%); }}
   .hero img {{ width: 100%; display: block; }}
   .hero figcaption {{
     font-family: ui-monospace, Menlo, monospace; font-size: 11px;
@@ -156,8 +154,9 @@ def main():
     <p class="tag">Six tables · one room · see every option, then decide</p>
   </header>
   <figure class="hero">
-    <img src="{hero}" alt="Line drawing floor plan of layout D, Four On Top">
-    <figcaption>Layout "D · Four on top" — one of nine</figcaption>
+    <img src="{hero}" alt="Line drawing floor plans of all nine layouts,
+      lettered A through I">
+    <figcaption>All nine layouts, A to I — walk any of them below</figcaption>
   </figure>
   <nav class="cards">{cards}
   </nav>

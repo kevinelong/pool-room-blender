@@ -126,6 +126,31 @@ def draw_plan_lineart(cfg, pw, ph, stroke=5):
     return img
 
 
+def draw_plan_grid(configs, cell_h=560, label_h=48, gap=36, cols=3,
+                   stroke=4):
+    """All nine layouts as line art in a lettered grid (reading order
+    A..I, three per row — same order as every other document)."""
+    cell_w = int(cell_h * (ROOM_W / ROOM_L)) + 24
+    rows = (len(configs) + cols - 1) // cols
+    gw = cols * cell_w + (cols - 1) * gap
+    gh = rows * (cell_h + label_h) + (rows - 1) * gap
+    img = Image.new("L", (gw, gh), WHITE)
+    d = ImageDraw.Draw(img)
+    for i, cfg in enumerate(configs):
+        r, c = divmod(i, cols)
+        x = c * (cell_w + gap)
+        y = r * (cell_h + label_h + gap)
+        img.paste(draw_plan_lineart(cfg, cell_w, cell_h, stroke=stroke),
+                  (x, y))
+        text = f"{cfg['letter']} · {cfg['short'].upper()}"
+        size = int(label_h * 0.62)
+        while size > 12 and d.textlength(text, font=font(size)) > cell_w - 6:
+            size -= 2
+        d.text((x + cell_w // 2, y + cell_h + 8), text,
+               font=font(size), fill=BLACK, anchor="ma")
+    return img
+
+
 def qr_img(url, px):
     q = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M,
                       box_size=12, border=2)
@@ -154,19 +179,15 @@ def main():
            "SIX TABLES  ·  ONE ROOM  ·  SEE EVERY OPTION, THEN DECIDE",
            font=font(40, False), fill=BLACK, anchor="ma")
 
-    # hero line drawing: layout D
-    cfg = next(c for c in CONFIGS if c["key"] == "social")
-    plan_h = 1880
-    plan_w = int(plan_h * (ROOM_W / ROOM_L)) + 60
-    plan = draw_plan_lineart(cfg, plan_w, plan_h)
-    px0 = (W - plan_w) // 2
-    poster.paste(plan, (px0, 700))
-    d.text((W // 2, 700 + plan_h + 18),
-           'LAYOUT "D · FOUR ON TOP" — ONE OF NINE. SCAN TO SEE THEM ALL.',
+    # hero: all nine layouts as a lettered line-art grid
+    grid = draw_plan_grid(CONFIGS)
+    poster.paste(grid, ((W - grid.width) // 2, 690))
+    d.text((W // 2, 690 + grid.height + 22),
+           "ALL NINE LAYOUTS, A TO I — SCAN TO WALK EVERY ONE.",
            font=font(38), fill=BLACK, anchor="ma")
 
     # three QR panels
-    top = 700 + plan_h + 120
+    top = 690 + grid.height + 120
     panel_w = (W - 2 * M - 2 * 60) // 3
     qr_px = 560
     for i, (label, blurb, url) in enumerate(LINKS):
@@ -190,18 +211,11 @@ def main():
         d.text((cx, y + 36), u2, font=font(27, True, mono=True),
                fill=BLACK, anchor="ma")
 
-    # footer
-    d.line([M + 60, H - 320, W - M - 60, H - 320], fill=BLACK, width=4)
-    d.text((W // 2, H - 290),
-           "A  LEFT 4+2   B  WEST 1×6   C  WEST 1×6 LOW   D  CENTER 2×3   "
-           "E  CENTER 4+2",
-           font=font(30, False), fill=BLACK, anchor="ma")
-    d.text((W // 2, H - 240),
-           "F  CENTER 1×6   G  RIGHT 4+2   H  EAST 1×6   I  EAST 1×6 LOW",
-           font=font(30, False), fill=BLACK, anchor="ma")
-    d.text((W // 2, H - 170),
+    # footer (letter key lives on the grid labels now)
+    d.line([M + 60, H - 260, W - M - 60, H - 260], fill=BLACK, width=4)
+    d.text((W // 2, H - 215),
            "EVERY NUMBER COMPUTED FROM THE ROOM GEOMETRY — NOT ESTIMATED",
-           font=font(26), fill=BLACK, anchor="ma")
+           font=font(30), fill=BLACK, anchor="ma")
 
     out = os.path.join(ROOT, "docs", "pool_room_poster.pdf")
     poster.convert("RGB").save(out, resolution=float(DPI))
