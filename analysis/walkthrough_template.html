@@ -368,7 +368,9 @@ function buildScene(lay){
 
 /* -------------------------------------------------------------- state -- */
 let cur = 0, scene = {};
-let cam = {x:348, y:646, yaw:Math.PI/2, pitch:0};
+// v58: walk with purpose — 5.5ft eye, gaze tilted ~16 deg down
+const TOUR_PITCH = 0.28;
+let cam = {x:348, y:646, yaw:Math.PI/2, pitch:TOUR_PITCH};
 let manual = false, tourIdx = 0, tourT = 0;
 const keys = {};
 const fadeEl = document.getElementById('fade');
@@ -383,7 +385,7 @@ function floorAt(x,y){
   if (x>wl[0]+11 && y>wl[1]) return -7.5;
   return 0;
 }
-function eyeY(x,y){ return floorAt(x,y) + 64; }
+function eyeY(x,y){ return floorAt(x,y) + 66; }   // 5.5 ft
 
 function loadLayout(i, spawnOutside){
   cur = ((i % DATA.layouts.length) + DATA.layouts.length) % DATA.layouts.length;
@@ -391,7 +393,7 @@ function loadLayout(i, spawnOutside){
   scene = buildScene(lay);
   tourIdx = 0; tourT = 0;
   if (spawnOutside){ cam.x = lay.tour[0][0]; cam.y = lay.tour[0][1];
-                     cam.yaw = Math.PI/2; cam.pitch = 0; }
+                     cam.yaw = Math.PI/2; cam.pitch = TOUR_PITCH; }
   hudBig.textContent = lay.letter + ". " + lay.short;
   hudSub.textContent = lay.name;
   document.querySelectorAll('.card').forEach((c,j)=>
@@ -424,7 +426,7 @@ function stepTour(dt){
   while (d >  Math.PI) d -= 2*Math.PI;
   while (d < -Math.PI) d += 2*Math.PI;
   cam.yaw += d * Math.min(1, dt*2.4);
-  cam.pitch += (0 - cam.pitch) * Math.min(1, dt*2);
+  cam.pitch += (TOUR_PITCH - cam.pitch) * Math.min(1, dt*2);
 }
 
 /* ------------------------------------------------------------- manual -- */
