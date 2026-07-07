@@ -15,6 +15,7 @@ ROOT = os.path.abspath(os.path.join(HERE, ".."))
 sys.path.insert(0, ROOT)
 from configs.v16_configs import (  # noqa: E402
     CONFIGS, ROOM_W, ROOM_L, BEAM_Y, HVAC, ENTRY_WELL, table_rect,
+    tbl_rot,
 )
 sys.path.insert(0, HERE)
 from project_urls import WALKTHROUGH_URL, DOWNLOAD_URL, DECK_URL  # noqa: E402
@@ -25,7 +26,7 @@ BLACK, WHITE = 0, 255
 
 LINKS = [
     ("WALK IT",
-     "A first-person tour of all twelve layouts — auto-walks each room, "
+     "A first-person tour of all thirteen layouts — auto-walks each room, "
      "or take the controls. Downloads live at the top of the page.",
      WALKTHROUGH_URL),
     ("GET THE PDF",
@@ -34,7 +35,7 @@ LINKS = [
      DOWNLOAD_URL),
     ("WEIGH THE OPTIONS",
      "The interactive decision deck — set what the house values and "
-     "watch the twelve layouts re-rank live.",
+     "watch the thirteen layouts re-rank live.",
      DECK_URL),
 ]
 
@@ -96,9 +97,8 @@ def draw_plan_lineart(cfg, pw, ph, stroke=5):
     d.line([X(HVAC[0]), Y(HVAC[3]), X(HVAC[2]), Y(HVAC[1])],
            fill=BLACK, width=2)
     # tables: cabinet + playfield inner line
-    rot = cfg.get("rot90", False)
     for _n, tx, ty in cfg["tables"]:
-        x0, y0, x1, y1 = table_rect(tx, ty, rot)
+        x0, y0, x1, y1 = table_rect(tx, ty, tbl_rot(cfg, _n))
         rect(x0, y0, x1, y1, w=stroke)
         rect(x0 + 7.25, y0 + 7.25, x1 - 7.25, y1 - 7.25, w=2)
     # rounds + chairs
@@ -173,7 +173,7 @@ def main():
     # title block
     d.text((W // 2, 230), "THE POOL ROOM", font=font(150), fill=BLACK,
            anchor="ma")
-    d.text((W // 2, 420), "TWELVE WAYS TO RACK THE ROOM",
+    d.text((W // 2, 420), "THIRTEEN WAYS TO RACK THE ROOM",
            font=font(64), fill=BLACK, anchor="ma")
     d.line([W // 2 - 700, 540, W // 2 + 700, 540], fill=BLACK, width=6)
     d.text((W // 2, 570),
@@ -184,7 +184,7 @@ def main():
     grid = draw_plan_grid(CONFIGS, cols=4)   # 12 layouts, 3 rows
     poster.paste(grid, ((W - grid.width) // 2, 690))
     d.text((W // 2, 690 + grid.height + 22),
-           "ALL TWELVE LAYOUTS, A TO L — SCAN TO WALK EVERY ONE.",
+           "ALL THIRTEEN LAYOUTS, A TO M — SCAN TO WALK EVERY ONE.",
            font=font(38), fill=BLACK, anchor="ma")
 
     # three QR panels

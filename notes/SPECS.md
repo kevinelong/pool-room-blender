@@ -136,3 +136,18 @@ Applied in:
     re-read semantically: A left 4+2, B left 2×3, C west 1×6, D west
     1×6 low, E center 2×3, F center 4+2, G center 2×3 wide, H center
     1×6, I right 4+2, J right 2×3, K east 1×6, L east 1×6 low.
+
+23. **v55: thirteen layouts, A to M; mixed rotation; the ballot.**
+    (a) Layout I "Wide, Beam-Balanced" (user): the Wide Aisle grid with
+    the bottom pair 60" off the partition beam, matching the middle
+    pair; the quincunx becomes FOUR rounds in a staggered row (a
+    straight row of four 60" rounds needs 320" and the room is 316").
+    (b) Layout C "Slid Left, Turned Corner" (user): Slid Left with the
+    SE table TURNED and centered between its row-mate and the east
+    wall; the displaced east two-top moves to the south wall 30" west
+    of the entry landing (accepted approach squeeze). Configs support
+    per-table rotation via turned_tables. (c) vote.html: stakeholder
+    ballot (name, first-match stakeholder type, layout vote) — mailto
+    to the organizer today, ENDPOINT constant ready for server storage.
+    (d) Process (user): 2D surfaces publish FIRST; Blender renders
+    follow in the background with placeholders in the meantime.

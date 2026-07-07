@@ -152,9 +152,49 @@ CONFIGS = [
         ],
     ),
     dict(
+        key="gridleftturn",
+        name="C · Four On Top — Slid Left, Turned Corner",
+        letter="C",
+        short="left 2×3 turn",
+        tagline="Slid Left with the SE table turned toward the entry",
+        rot90=False,
+        turned_tables=("T2R",),
+        tables=[("T0L", 93.0, 233.5), ("T0R", 199.0, 233.5),
+                ("T1L", 93.0, 392.0), ("T1R", 199.0, 392.0),
+                ("T2L", 93.0, 537.0),
+                # turned: centered between T2L's east edge (119.75) and
+                # the east wall; vertically centered on the row band
+                ("T2R", 217.9, 556.5)],
+        rounds=[],
+        rounds_forced=[(93.0, 47.0), (199.0, 47.0),
+                       (93.0, 143.0), (199.0, 143.0), (146.0, 95.0)],
+        rounds_plus=[(146.0, 95.0)],
+        round_role="flex",
+        pack_grid=False,
+        twotops=[(12.0, 233.5), (12.0, 326.0), (12.0, 392.0),
+                 (12.0, 484.5), (12.0, 537.0), (12.0, 629.5),
+                 (304.0, 233.5), (304.0, 326.0), (304.0, 396.0),
+                 (304.0, 484.5),
+                 # v55: the obstructing east top moves to the south wall,
+                 # 30" west of the entry landing (user)
+                 (216.0, 671.0)],
+        twotop_role="flex",
+        hightops=[],
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=0,
+        notes=[
+            'The Slid Left grid with its top-right (southeast) table TURNED and centered between the top-left table and the east wall - a showcase corner table facing the entry.',
+            'The east-wall two-top that would block the turned table\'s east end moves to the south wall, 30" west of the Main Entry landing.',
+            'FLAG: that relocated two-top sits in the entry approach - the walk off the treads narrows past it (user-accepted).',
+            'FLAG: The round cluster runs deliberately tight, as in the base layout.',
+        ],
+    ),
+    dict(
         key="westline",
-        name="C · West Line + Wall Rounds",
-        letter="C", short="west 1×6",
+        name="D · West Line + Wall Rounds",
+        letter="D", short="west 1×6",
         tagline="Tables single-file west; a round beside each table on the east wall",
         rot90=True,
         # v23: stage removed entirely (user) — the west file needs no
@@ -198,8 +238,8 @@ CONFIGS = [
     ),
     dict(
         key="westshift",
-        name="D · West Line — Shifted Down",
-        letter="D", short="west 1×6 low",
+        name="E · West Line — Shifted Down",
+        letter="E", short="west 1×6 low",
         tagline="The west line slid down-wall: the sixth round reaches the wall",
         rot90=True,
         lane_x=213.0,
@@ -247,8 +287,8 @@ CONFIGS = [
         key="social",   # key kept for render-file continuity
         # v27: Social Hall and Tournament House became geometrically
         # identical once the bleachers left — merged into one option
-        name="E · Four On Top",
-        letter="E", short="center 2×3",
+        name="F · Four On Top",
+        letter="F", short="center 2×3",
         tagline="Six tables; four rounds + a center fifth on the north end",
         tables=_rows(ROWS_CURRENT),
         # v26: four aligned north rounds + a central fifth in PLUS chair
@@ -278,8 +318,8 @@ CONFIGS = [
     ),
     dict(
         key="fourturned",
-        name="F · Four On Top — Turned",
-        letter="F", short="center 4+2",
+        name="G · Four On Top — Turned",
+        letter="G", short="center 4+2",
         tagline="The Four On Top pattern with all six tables rotated 90°",
         rot90=True,
         # v27 second Four On Top (user): four tables 2x2 at the top (south)
@@ -325,8 +365,8 @@ CONFIGS = [
     ),
     dict(
         key="gridwide",
-        name="G · Four On Top — Wide Aisle",
-        letter="G",
+        name="H · Four On Top — Wide Aisle",
+        letter="H",
         short="center 2×3 wide",
         tagline="The straight 2x3 grid with its columns spread apart",
         rot90=False,
@@ -353,9 +393,41 @@ CONFIGS = [
         ],
     ),
     dict(
+        key="gridbal",
+        name="I · Four On Top — Wide, Beam-Balanced",
+        letter="I",
+        short="center 2×3 bal",
+        tagline="Wide aisle; rows equidistant from the beam; four rounds below",
+        rot90=False,
+        tables=[("T0L", 95.0, 179.5), ("T0R", 221.0, 179.5),
+                ("T1L", 95.0, 392.0), ("T1R", 221.0, 392.0),
+                ("T2L", 95.0, 537.0), ("T2R", 221.0, 537.0)],
+        rounds=[],
+        rounds_forced=[(48.0, 47.0), (121.3, 115.0),
+                       (194.7, 47.0), (268.0, 115.0)],
+        round_role="flex",
+        pack_grid=False,
+        twotops=[(12.0, 179.5), (12.0, 272.0), (12.0, 392.0),
+                 (12.0, 484.5), (12.0, 537.0), (12.0, 629.5),
+                 (304.0, 179.5), (304.0, 272.0), (304.0, 396.0),
+                 (304.0, 484.5), (304.0, 573.0)],
+        twotop_role="flex",
+        hightops=[],
+        rails=[],
+        bench=False, bench_role=None,
+        classroom=False, bleachers=[], stage_seats=0,
+        flip_minutes=0,
+        notes=[
+            'The Wide Aisle pattern with the rows balanced on the partition beam: the bottom pair sits 60" off the beam line, matching the middle pair on the other side.',
+            'The five-round quincunx becomes FOUR rounds in a staggered row along the bottom wall - a dead-straight row of four 60" rounds needs 320" of width and the room is 316", so alternate rounds offset 68" and the chairs interleave on the diagonal rule.',
+            'Wall two-tops follow the moved row ends.',
+            'FLAG: the bottom tables\' north ends face the round row - cue room there runs about 32", the shortest in the study.',
+        ],
+    ),
+    dict(
         key="centerline",
-        name="H · Center Line",
-        letter="H", short="center 1×6",
+        name="J · Center Line",
+        letter="J", short="center 1×6",
         tagline="Six tables turned 90°, end-to-end down the middle",
         rot90=True,
         # single file: cabinet gaps ~47.5" -> side swings land at the
@@ -394,8 +466,8 @@ CONFIGS = [
     ),
     dict(
         key="turnright",
-        name="I · Four On Top — Turned Right",
-        letter="I", short="right 4+2",
+        name="K · Four On Top — Turned Right",
+        letter="K", short="right 4+2",
         tagline="The turned pattern slid right: play opens from the west",
         rot90=True,
         # v29 (user): complementary RIGHT shift. Both columns slide east
@@ -429,37 +501,9 @@ CONFIGS = [
         ],
     ),
     dict(
-        key="gridright",
-        name="J · Four On Top — Slid Right",
-        letter="J",
-        short="right 2×3",
-        tagline="The straight 2x3 grid slid east; the west side opens up",
-        rot90=False,
-        tables=[("T0L", 117.0, 233.5), ("T0R", 223.0, 233.5),
-                ("T1L", 117.0, 392.0), ("T1R", 223.0, 392.0),
-                ("T2L", 117.0, 537.0), ("T2R", 223.0, 537.0)],
-        rounds=[],
-        rounds_forced=[(117.0, 47.0), (223.0, 47.0), (117.0, 143.0), (223.0, 143.0), (170.0, 95.0)],
-        rounds_plus=[(170.0, 95.0)],
-        round_role="flex",
-        pack_grid=False,
-        twotops=TWOTOPS_2X3,
-        twotop_role="flex",
-        hightops=[],
-        rails=[],
-        bench=False, bench_role=None,
-        classroom=False, bleachers=[], stage_seats=0,
-        flip_minutes=0,
-        notes=[
-            'The Four On Top pattern (straight 2x3 grid + the five-round quincunx) with the whole ensemble slid 12 inches east - the west side opens up.',
-            'Wall two-tops stay put on their walls; the grid and rounds move together, so every table keeps a two-top within reach.',
-            'FLAG: The center round of the north quincunx runs tight to its four neighbours - deliberate, as in the base layout.',
-        ],
-    ),
-    dict(
         key="eastline",
-        name="K · East Line + West Lounge",
-        letter="K", short="east 1×6",
+        name="L · East Line + West Lounge",
+        letter="L", short="east 1×6",
         tagline="Tables single-file on the east; full-length hospitality strip west",
         rot90=True,
         # cx=206 keeps the playfield clear of the NW stage (which blocks a
@@ -498,8 +542,8 @@ CONFIGS = [
     ),
     dict(
         key="eastshift",
-        name="L · East Line — Shifted Down",
-        letter="L", short="east 1×6 low",
+        name="M · East Line — Shifted Down",
+        letter="M", short="east 1×6 low",
         tagline="The east line slid down-wall: the top table rejoins the line",
         rot90=True,
         # v28 (user): slide the whole six-table line 33.5" toward the
@@ -548,6 +592,13 @@ def playfield_rect(cx, y_top, rot90=False):
     return (x0 + RAIL_W, y0 + RAIL_W, x1 - RAIL_W, y1 - RAIL_W)
 
 
+def tbl_rot(cfg, name):
+    """Per-table rotation (v55): whole-config rot90, or a straight
+    config's turned_tables exceptions (mixed layouts)."""
+    return bool(cfg.get("rot90", False)) or name in cfg.get(
+        "turned_tables", ())
+
+
 def cue_zone(cx, y_top, rot90=False):
     x0, y0, x1, y1 = playfield_rect(cx, y_top, rot90)
     return (x0 - CUE, y0 - CUE, x1 + CUE, y1 + CUE)
@@ -561,10 +612,10 @@ def obstacles(cfg, exclude_table=None):
         obs.append(("bench", BENCH))
     if cfg.get("classroom"):
         obs.append(("classroom", CLASSROOM))
-    rot = cfg.get("rot90", False)
     for name, cx, yt in cfg["tables"]:
         if name != exclude_table:
-            obs.append((f"table:{name}", table_rect(cx, yt, rot)))
+            obs.append((f"table:{name}",
+                        table_rect(cx, yt, tbl_rot(cfg, name))))
     for i, (cx, cy) in enumerate(cfg.get("rounds", [])):
         r = ROUND_D / 2 + 10   # + chair ring
         obs.append((f"round{i}", (cx - r, cy - r, cx + r, cy + r)))
@@ -685,7 +736,7 @@ def _round_ok(cx, cy, cfg, placed, lane_x, aligned=False):
     body = (cx - ROUND_BODY, cy - ROUND_BODY, cx + ROUND_BODY, cy + ROUND_BODY)
     rot = cfg.get("rot90", False)
     for _n, tx, ty in cfg["tables"]:
-        x0, y0, x1, y1 = table_rect(tx, ty, rot)
+        x0, y0, x1, y1 = table_rect(tx, ty, tbl_rot(cfg, _n))
         if _rect_overlap(body, (x0 - 32, y0 - 32, x1 + 32, y1 + 32)):
             return False
     for ko in KEEPOUTS_EGRESS:
@@ -751,7 +802,7 @@ def pack_rounds(cfg):
     # 1) alignment-seeded candidates on each table's centerline: sweep from
     #    the wall inboard to table-adjacent; first legal spot per side wins
     for _n, tx, ty in cfg["tables"]:
-        x0, y0, x1, y1 = table_rect(tx, ty, rot)
+        x0, y0, x1, y1 = table_rect(tx, ty, tbl_rot(cfg, _n))
         if rot:
             mid = (y0 + y1) / 2
             sides = [[(x, mid) for x in
@@ -791,7 +842,8 @@ def compute_paths(cfg):
     the entry-well floor cut). Returns floor rects."""
     lane_x = cfg.get("lane_x", 298.0)
     rot = cfg.get("rot90", False)
-    trects = [table_rect(tx, ty, rot) for _n, tx, ty in cfg["tables"]]
+    trects = [table_rect(tx, ty, tbl_rot(cfg, _n))
+              for _n, tx, ty in cfg["tables"]]
     obs = list(trects)
     obs += [(cx - ROUND_RING, cy - ROUND_RING, cx + ROUND_RING, cy + ROUND_RING)
             for cx, cy in cfg.get("rounds", [])]
@@ -900,10 +952,9 @@ def cue_clearance_stats(cfg):
     nearest obstruction or wall, across all table sides — same geometry as
     the analyzer's side_clearances. Values in inches."""
     from collections import Counter
-    rot = cfg.get("rot90", False)
     vals = []
     for name, cx, yt in cfg["tables"]:
-        px0, py0, px1, py1 = playfield_rect(cx, yt, rot)
+        px0, py0, px1, py1 = playfield_rect(cx, yt, tbl_rot(cfg, name))
         obs = obstacles(cfg, exclude_table=name)
         best = {"W": px0, "E": ROOM_W - px1, "N": py0, "S": ROOM_L - py1}
         for _n, (ox0, oy0, ox1, oy1) in obs:

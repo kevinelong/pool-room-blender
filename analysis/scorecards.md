@@ -4,16 +4,17 @@
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | A · Four On Top — Turned Left | 6 | 24 | 0 | 0 | 14 | 62% | 37.2 | 72.8 ft | 46.4 ft | 9 | 61.8 ft | 44.0 | $221 | 15 |
 | B · Four On Top — Slid Left | 6 | 24 | 0 | 0 | 62 | 79% | 44.5 | 68.6 ft | 52.0 ft | 12 | 59.8 ft | 38.5 | $773 | 0 |
-| C · West Line + Wall Rounds | 6 | 24 | 0 | 0 | 48 | 50% | 49.0 | 59.0 ft | 36.7 ft | 0 | 52.6 ft | 25.0 | $612 | 25 |
-| D · West Line — Shifted Down | 6 | 24 | 0 | 0 | 48 | 42% | 41.0 | 58.6 ft | 34.9 ft | 0 | 55.7 ft | 25.1 | $612 | 25 |
-| E · Four On Top | 6 | 24 | 0 | 0 | 62 | 67% | 56.5 | 67.6 ft | 52.0 ft | 12 | 58.8 ft | 38.5 | $773 | 0 |
-| F · Four On Top — Turned | 6 | 24 | 0 | 0 | 14 | 62% | 46.8 | 72.0 ft | 46.6 ft | 9 | 61.0 ft | 44.0 | $221 | 15 |
-| G · Four On Top — Wide Aisle | 6 | 24 | 0 | 0 | 62 | 67% | 46.5 | 68.4 ft | 52.0 ft | 32 | 57.9 ft | 38.5 | $773 | 0 |
-| H · Center Line | 6 | 24 | 24 | 0 | 0 | 58% | 54.8 | 70.0 ft | 0.0 ft | 12 | 56.6 ft | 47.5 | $276 | 0 |
-| I · Four On Top — Turned Right | 6 | 24 | 0 | 0 | 14 | 62% | 37.2 | 93.7 ft | 66.8 ft | 9 | 59.5 ft | 40.0 | $221 | 15 |
-| J · Four On Top — Slid Right | 6 | 24 | 0 | 0 | 62 | 79% | 44.5 | 66.6 ft | 52.0 ft | 32 | 57.9 ft | 38.5 | $773 | 0 |
-| K · East Line + West Lounge | 6 | 24 | 0 | 0 | 48 | 58% | 54.8 | 68.2 ft | 46.8 ft | 12 | 54.9 ft | 41.2 | $612 | 20 |
-| L · East Line — Shifted Down | 6 | 24 | 0 | 0 | 48 | 50% | 44.8 | 71.0 ft | 44.0 ft | 12 | 57.7 ft | 47.5 | $612 | 20 |
+| C · Four On Top — Slid Left, Turned Corner | 6 | 24 | 0 | 0 | 62 | 75% | 44.5 | 68.6 ft | 52.0 ft | 14 | 59.8 ft | 41.2 | $773 | 0 |
+| D · West Line + Wall Rounds | 6 | 24 | 0 | 0 | 48 | 50% | 49.0 | 59.0 ft | 36.7 ft | 0 | 52.6 ft | 25.0 | $612 | 25 |
+| E · West Line — Shifted Down | 6 | 24 | 0 | 0 | 48 | 42% | 41.0 | 58.6 ft | 34.9 ft | 0 | 55.7 ft | 25.1 | $612 | 25 |
+| F · Four On Top | 6 | 24 | 0 | 0 | 62 | 67% | 56.5 | 67.6 ft | 52.0 ft | 12 | 58.8 ft | 38.5 | $773 | 0 |
+| G · Four On Top — Turned | 6 | 24 | 0 | 0 | 14 | 62% | 46.8 | 72.0 ft | 46.6 ft | 9 | 61.0 ft | 44.0 | $221 | 15 |
+| H · Four On Top — Wide Aisle | 6 | 24 | 0 | 0 | 62 | 67% | 46.5 | 68.4 ft | 52.0 ft | 32 | 57.9 ft | 38.5 | $773 | 0 |
+| I · Four On Top — Wide, Beam-Balanced | 6 | 24 | 0 | 0 | 54 | 67% | 31.8 | 72.3 ft | 52.0 ft | 30 | 60.1 ft | 38.5 | $681 | 0 |
+| J · Center Line | 6 | 24 | 24 | 0 | 0 | 58% | 54.8 | 70.0 ft | 0.0 ft | 12 | 56.6 ft | 47.5 | $276 | 0 |
+| K · Four On Top — Turned Right | 6 | 24 | 0 | 0 | 14 | 62% | 37.2 | 93.7 ft | 66.8 ft | 9 | 59.5 ft | 40.0 | $221 | 15 |
+| L · East Line + West Lounge | 6 | 24 | 0 | 0 | 48 | 58% | 54.8 | 68.2 ft | 46.8 ft | 12 | 54.9 ft | 41.2 | $612 | 20 |
+| M · East Line — Shifted Down | 6 | 24 | 0 | 0 | 48 | 50% | 44.8 | 71.0 ft | 44.0 ft | 12 | 57.7 ft | 47.5 | $612 | 20 |
 
 ## Impact at a glance (− negative · neutral + positive)
 
@@ -21,16 +22,17 @@
 |---|---|---|---|---|---|---|
 | A · Four On Top — Turned Left | − | − | · | · | + | · |
 | B · Four On Top — Slid Left | + | + | − | · | + | + |
-| C · West Line + Wall Rounds | − | + | + | · | + | − |
-| D · West Line — Shifted Down | − | + | + | · | + | − |
-| E · Four On Top | + | + | − | · | + | + |
-| F · Four On Top — Turned | · | − | · | · | + | · |
-| G · Four On Top — Wide Aisle | + | + | − | · | + | + |
-| H · Center Line | · | − | − | + | + | + |
-| I · Four On Top — Turned Right | − | − | · | · | + | · |
-| J · Four On Top — Slid Right | + | + | − | · | + | + |
-| K · East Line + West Lounge | · | + | − | + | − | − |
-| L · East Line — Shifted Down | − | + | − | + | + | − |
+| C · Four On Top — Slid Left, Turned Corner | + | + | − | · | + | + |
+| D · West Line + Wall Rounds | − | + | + | · | + | − |
+| E · West Line — Shifted Down | − | + | + | · | + | − |
+| F · Four On Top | + | + | − | · | + | + |
+| G · Four On Top — Turned | · | − | · | · | + | · |
+| H · Four On Top — Wide Aisle | + | + | − | · | + | + |
+| I · Four On Top — Wide, Beam-Balanced | + | + | − | + | + | + |
+| J · Center Line | · | − | − | + | + | + |
+| K · Four On Top — Turned Right | − | − | · | · | + | · |
+| L · East Line + West Lounge | · | + | − | + | − | − |
+| M · East Line — Shifted Down | − | + | − | + | + | − |
 
 ## Walking-path anomalies (clear width < 36")
 
@@ -38,23 +40,26 @@
     - blocked: 0.0" (south-center: walk crosses a wall two-top)
 - **B · Four On Top — Slid Left** — narrowest walk 38.5":
     - blocked: 0.0" (center-east: walk crosses a wall two-top)
-- **C · West Line + Wall Rounds** — narrowest walk 25.0":
+- **C · Four On Top — Slid Left, Turned Corner** — narrowest walk 41.2":
+    - blocked: 0.0" (south-center: walk crosses a wall two-top)
+    - blocked: 0.0" (south-east: walk crosses a wall two-top)
+    - blocked: 0.0" (center-east: walk crosses a wall two-top)
+- **D · West Line + Wall Rounds** — narrowest walk 25.0":
     - pinch: 25.0" (center-east: between a round's chairs and a round's chairs)
-- **D · West Line — Shifted Down** — narrowest walk 25.1":
+- **E · West Line — Shifted Down** — narrowest walk 25.1":
     - pinch: 25.1" (center-east: between a round's chairs and a round's chairs)
-- **E · Four On Top** — narrowest walk 38.5":
+- **F · Four On Top** — narrowest walk 38.5":
     - blocked: 0.0" (center-east: walk crosses a wall two-top)
-- **F · Four On Top — Turned** — narrowest walk 44.0":
+- **G · Four On Top — Turned** — narrowest walk 44.0":
     - blocked: 0.0" (south-center: walk crosses a wall two-top)
-- **G · Four On Top — Wide Aisle** — narrowest walk 38.5":
+- **H · Four On Top — Wide Aisle** — narrowest walk 38.5":
     - blocked: 0.0" (center-east: walk crosses a wall two-top)
-- **H · Center Line** — none; narrowest walk 47.5"
-- **I · Four On Top — Turned Right** — narrowest walk 40.0":
+- **I · Four On Top — Wide, Beam-Balanced** — none; narrowest walk 38.5"
+- **J · Center Line** — none; narrowest walk 47.5"
+- **K · Four On Top — Turned Right** — narrowest walk 40.0":
     - blocked: 0.0" (south-center: walk crosses a wall two-top)
-- **J · Four On Top — Slid Right** — narrowest walk 38.5":
-    - blocked: 0.0" (center-east: walk crosses a wall two-top)
-- **K · East Line + West Lounge** — none; narrowest walk 41.2"
-- **L · East Line — Shifted Down** — none; narrowest walk 47.5"
+- **L · East Line + West Lounge** — none; narrowest walk 41.2"
+- **M · East Line — Shifted Down** — none; narrowest walk 47.5"
 
 ## Methodology & assumptions
 

@@ -22,9 +22,9 @@ GAP = 20
 
 # semantic columns: left-shifted | centered | right-shifted
 SHEET_COLS = [
-    ["turnleft", "gridleft", "westline", "westshift"],
-    ["social", "fourturned", "gridwide", "centerline"],
-    ["turnright", "gridright", "eastline", "eastshift"],
+    ["turnleft", "gridleft", "gridleftturn", "westline", "westshift"],
+    ["social", "fourturned", "gridwide", "gridbal", "centerline"],
+    ["turnright", "eastline", "eastshift"],
 ]
 
 

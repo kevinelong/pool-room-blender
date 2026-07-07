@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Pool Room — Cast Your Vote</title>
+<style>
+  :root { --paper:#f7f6f2; --ink:#17171a; --muted:#6a6a70; --rule:#c9c7c0;
+          --acc:#2e7d32; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink);
+         font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+         display:flex; justify-content:center; padding:28px 14px 48px; }
+  .frame { max-width:560px; width:100%; border:3px solid var(--ink);
+           outline:1px solid var(--ink); outline-offset:5px;
+           padding:clamp(20px,5vw,40px); display:flex;
+           flex-direction:column; gap:22px; }
+  h1 { margin:0; font-size:clamp(26px,6vw,40px); font-weight:900;
+       text-align:center; letter-spacing:.02em; }
+  .tag { font-family:ui-monospace,Menlo,monospace; font-size:11px;
+         letter-spacing:.12em; color:var(--muted); text-align:center;
+         text-transform:uppercase; margin:0; border-top:2px solid var(--ink);
+         padding-top:10px; }
+  .tag a { color:var(--muted); }
+  label { display:flex; flex-direction:column; gap:6px; font-weight:700;
+          font-size:14px; }
+  label .hint { font-weight:400; color:var(--muted); font-size:12px; }
+  input, select, textarea, button {
+    font:inherit; font-size:15px; padding:10px 12px; background:var(--paper);
+    color:var(--ink); border:2px solid var(--ink); border-radius:0; }
+  textarea { min-height:70px; resize:vertical; }
+  button { font-weight:900; font-size:17px; cursor:pointer; padding:14px; }
+  button:hover { background:var(--ink); color:var(--paper); }
+  #note { font-size:13px; color:var(--muted); line-height:1.5; margin:0; }
+  #done { display:none; text-align:center; font-weight:700;
+          color:var(--acc); }
+</style>
+</head>
+<body>
+<div class="frame">
+  <h1>CAST YOUR VOTE</h1>
+  <p class="tag">one ballot per person · <a href="https://kevinelong.github.io/pool-room-blender/">back to the
+    hub</a></p>
+  <form id="ballot">
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <label>Your name
+        <input id="name" required maxlength="60" placeholder="who's voting">
+      </label>
+      <label>What makes you most unique? <span class="hint">(pick the
+        first that matches)</span>
+        <select id="stakeholder" required><option>VI Staff</option><option>Tournament Director</option><option>Pool Player</option><option>Spectator</option><option>Other</option></select>
+      </label>
+      <label>Your layout vote
+        <select id="layout" required><option value="A · left 4+2">A · left 4+2 — Four On Top — Turned Left</option><option value="B · left 2×3">B · left 2×3 — Four On Top — Slid Left</option><option value="C · left 2×3 turn">C · left 2×3 turn — Four On Top — Slid Left, Turned Corner</option><option value="D · west 1×6">D · west 1×6 — West Line + Wall Rounds</option><option value="E · west 1×6 low">E · west 1×6 low — West Line — Shifted Down</option><option value="F · center 2×3">F · center 2×3 — Four On Top</option><option value="G · center 4+2">G · center 4+2 — Four On Top — Turned</option><option value="H · center 2×3 wide">H · center 2×3 wide — Four On Top — Wide Aisle</option><option value="I · center 2×3 bal">I · center 2×3 bal — Four On Top — Wide, Beam-Balanced</option><option value="J · center 1×6">J · center 1×6 — Center Line</option><option value="K · right 4+2">K · right 4+2 — Four On Top — Turned Right</option><option value="L · east 1×6">L · east 1×6 — East Line + West Lounge</option><option value="M · east 1×6 low">M · east 1×6 low — East Line — Shifted Down</option></select>
+      </label>
+      <label>Anything else? <span class="hint">(optional)</span>
+        <textarea id="comment" maxlength="500"
+          placeholder="what swung it for you"></textarea>
+      </label>
+      <button type="submit">Submit ballot</button>
+      <p id="done">Ballot sent — thank you!</p>
+      <p id="note">Submitting opens your email app with the ballot
+        addressed to the organizer — just press send. (No account or
+        login needed.)</p>
+    </div>
+  </form>
+</div>
+<script>
+"use strict";
+const ENDPOINT = "";
+const EMAIL = "kevinelong@gmail.com";
+document.getElementById("ballot").addEventListener("submit", ev => {
+  ev.preventDefault();
+  const ballot = {
+    name: document.getElementById("name").value.trim(),
+    stakeholder: document.getElementById("stakeholder").value,
+    layout: document.getElementById("layout").value,
+    comment: document.getElementById("comment").value.trim(),
+    ts: new Date().toISOString(),
+  };
+  const finish = () => {
+    document.getElementById("done").style.display = "block";
+  };
+  if (ENDPOINT) {
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(ballot),
+    }).then(r => { if (!r.ok) throw 0; finish(); })
+      .catch(() => mailtoFallback(ballot, finish));
+  } else {
+    mailtoFallback(ballot, finish);
+  }
+});
+function mailtoFallback(b, done){
+  const body = [
+    "POOL ROOM BALLOT",
+    "Name: " + b.name,
+    "Stakeholder: " + b.stakeholder,
+    "Vote: " + b.layout,
+    "Comment: " + (b.comment || "(none)"),
+    "Time: " + b.ts,
+  ].join("\n");
+  location.href = "mailto:" + EMAIL
+    + "?subject=" + encodeURIComponent("Pool Room vote: " + b.layout)
+    + "&body=" + encodeURIComponent(body);
+  done();
+}
+</script>
+</body>
+</html>

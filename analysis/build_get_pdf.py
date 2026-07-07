@@ -51,14 +51,14 @@ def main():
   a.alt {{ background:#31446e; }}
   a.alt:hover {{ background:#3c5488; }}
 </style>
-<h1>Pool Room — Twelve Layout Options</h1>
+<h1>Pool Room — Thirteen Layout Options</h1>
 <p>The complete study: overview scenarios, the lettered contents grid,
-twelve layout pages with sightlines and pros &amp; cons, and the
+thirteen layout pages with sightlines and pros &amp; cons, and the
 links QR page. Tap a button — the file saves directly, nothing
 else on this page.</p>
 <a class="btn" download="pool_room_options.pdf"
    href="{options}">
-   ⤓ Download the Options PDF<small>15 pages · {opt_mb:.1f} MB</small></a>
+   ⤓ Download the Options PDF<small>16 pages · {opt_mb:.1f} MB</small></a>
 <a class="btn alt" download="pool_room_topdowns.pdf"
    href="{sheet}">
    ⤓ Download the one-page top-down sheet<small>8.5×11 · {sheet_mb:.1f} MB</small></a>
@@ -66,7 +66,7 @@ else on this page.</p>
 <a style="color:#9ad0ff" href="{WALKTHROUGH_URL}">first-person walkthrough</a>
 has these same downloads at the top — and the
 <a style="color:#9ad0ff" href="{DECK_URL}">interactive decision deck</a>
-lets you set what the house values and watch the twelve layouts
+lets you set what the house values and watch the thirteen layouts
 re-rank live.</p>
 </body>
 </html>

@@ -21,13 +21,13 @@ sys.path.insert(0, ROOT)
 sys.path.insert(0, HERE)
 from configs.v16_configs import CONFIGS, ROOM_W, ROOM_L  # noqa: E402
 from project_urls import (  # noqa: E402
-    WALKTHROUGH_URL, DOWNLOAD_URL, DECK_URL, DESIGNER_URL,
+    WALKTHROUGH_URL, DOWNLOAD_URL, DECK_URL, DESIGNER_URL, VOTE_URL,
 )
 from build_poster import draw_plan_grid  # noqa: E402
 
 LINKS = [
     ("Walk it", "walkthrough",
-     "A first-person tour of all twelve layouts. It auto-walks each room "
+     "A first-person tour of all thirteen layouts. It auto-walks each room "
      "in from the Main Entrance — or click in and take the controls.",
      WALKTHROUGH_URL),
     ("Get the PDF", "download page",
@@ -36,13 +36,17 @@ LINKS = [
      DOWNLOAD_URL),
     ("Weigh the options", "decision deck",
      "Set the weights to what the house values — play, hospitality, "
-     "service, events — and watch the twelve layouts re-rank live.",
+     "service, events — and watch the thirteen layouts re-rank live.",
      DECK_URL),
     ("Design your own", "layout editor",
-     "Start from any of the twelve, then drag, rotate, add and remove "
+     "Start from any of the thirteen, then drag, rotate, add and remove "
      "pieces — snapped to the same 6-inch grid the study uses. Save "
      "and share your variations.",
      DESIGNER_URL),
+    ("Cast your vote", "ballot",
+     "Pick the layout you'd build. One ballot per person — name, "
+     "what you are to the room, and your letter.",
+     VOTE_URL),
 ]
 
 
@@ -65,8 +69,8 @@ def main():
     hero = png_uri(draw_plan_grid(CONFIGS, cell_h=470, label_h=44,
                                   gap=30, stroke=3))
 
-    key_a = "  ".join(f"{c['letter']} {c['short']}" for c in CONFIGS[:6])
-    key_b = "  ".join(f"{c['letter']} {c['short']}" for c in CONFIGS[6:])
+    key_a = "  ".join(f"{c['letter']} {c['short']}" for c in CONFIGS[:7])
+    key_b = "  ".join(f"{c['letter']} {c['short']}" for c in CONFIGS[7:])
 
     poster_pdf = os.path.join(ROOT, "docs", "pool_room_poster.pdf")
     with open(poster_pdf, "rb") as fh:
@@ -91,7 +95,7 @@ def main():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Pool Room — Twelve Ways to Rack the Room</title>
+<title>The Pool Room — Thirteen Ways to Rack the Room</title>
 </head>
 <body>
 <style>
@@ -164,13 +168,13 @@ def main():
 <div class="frame">
   <header>
     <h1>THE POOL ROOM</h1>
-    <p class="sub">TWELVE WAYS TO RACK THE ROOM</p>
+    <p class="sub">THIRTEEN WAYS TO RACK THE ROOM</p>
     <p class="tag">Six tables · one room · see every option, then decide</p>
   </header>
   <figure class="hero">
-    <img src="{hero}" alt="Line drawing floor plans of all twelve layouts,
-      lettered A through L">
-    <figcaption>All twelve layouts, A to L — walk any of them below</figcaption>
+    <img src="{hero}" alt="Line drawing floor plans of all thirteen layouts,
+      lettered A through M">
+    <figcaption>All thirteen layouts, A to M — walk any of them below</figcaption>
   </figure>
   <nav class="cards">{cards}
   </nav>

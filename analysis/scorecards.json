@@ -226,8 +226,130 @@
       }
     },
     {
+      "key": "gridleftturn",
+      "name": "C \u00b7 Four On Top \u2014 Slid Left, Turned Corner",
+      "tagline": "Slid Left with the SE table turned toward the entry",
+      "capacity": {
+        "tables": 6,
+        "players": 24,
+        "dine": 0,
+        "drink": 0,
+        "flex": 62,
+        "spectators": 0
+      },
+      "cue": {
+        "full_pct": 75,
+        "tight_pct": 8,
+        "blocked_pct": 17,
+        "min_clearance_in": 44.5,
+        "per_table": {
+          "T0L": {
+            "W": 44.5,
+            "E": 59.8,
+            "S": 73.2,
+            "N": 57.8
+          },
+          "T0R": {
+            "W": 59.8,
+            "E": 68.5,
+            "S": 73.2,
+            "N": 57.8
+          },
+          "T1L": {
+            "W": 44.5,
+            "E": 59.8,
+            "S": 59.8,
+            "N": 73.2
+          },
+          "T1R": {
+            "W": 59.8,
+            "E": 68.5,
+            "S": 79.2,
+            "N": 73.2
+          },
+          "T2L": {
+            "W": 44.5,
+            "E": 59.2,
+            "S": 59.8,
+            "N": 59.8
+          },
+          "T2R": {
+            "W": 59.2,
+            "E": 59.1,
+            "S": 48.2,
+            "N": 79.2
+          }
+        }
+      },
+      "service": {
+        "cocktail": {
+          "seats": 16,
+          "max_run_ft": 68.6,
+          "avg_run_ft": 42.1,
+          "conflicted_seats": 7
+        },
+        "food": {
+          "seats": 16,
+          "max_run_ft": 52.0,
+          "avg_run_ft": 28.9,
+          "conflicted_seats": 7
+        }
+      },
+      "egress": {
+        "exit_corridor_in": 141.0,
+        "exit_corridor_ok": true,
+        "worst_travel_ft": 59.8
+      },
+      "paths": {
+        "min_width_in": 41.2,
+        "anomalies": [
+          {
+            "severity": "blocked",
+            "width_in": 0.0,
+            "where": "south-center: walk crosses a wall two-top"
+          },
+          {
+            "severity": "blocked",
+            "width_in": 0.0,
+            "where": "south-east: walk crosses a wall two-top"
+          },
+          {
+            "severity": "blocked",
+            "width_in": 0.0,
+            "where": "center-east: walk crosses a wall two-top"
+          }
+        ]
+      },
+      "revenue_proxy_hr": 773,
+      "flip_minutes": 0,
+      "notes": [
+        "The Slid Left grid with its top-right (southeast) table TURNED and centered between the top-left table and the east wall - a showcase corner table facing the entry.",
+        "The east-wall two-top that would block the turned table's east end moves to the south wall, 30\" west of the Main Entry landing.",
+        "FLAG: that relocated two-top sits in the entry approach - the walk off the treads narrows past it (user-accepted).",
+        "FLAG: The round cluster runs deliberately tight, as in the base layout.",
+        "Cue room around the tables: most sides get about 60\"; the shortest clearance is 44.5\"."
+      ],
+      "pros": [
+        "The Slid Left grid with its top-right (southeast) table TURNED and centered between the top-left table and the east wall - a showcase corner table facing the entry.",
+        "The east-wall two-top that would block the turned table's east end moves to the south wall, 30\" west of the Main Entry landing."
+      ],
+      "cons": [
+        "That relocated two-top sits in the entry approach - the walk off the treads narrows past it (user-accepted).",
+        "The round cluster runs deliberately tight, as in the base layout."
+      ],
+      "measured": "Cue room around the tables: most sides get about 60\"; the shortest clearance is 44.5\".",
+      "impact": {
+        "play": "+",
+        "hosp": "+",
+        "svc": "-",
+        "walk": ".",
+        "entry": "+",
+        "flip": "+"
+      }
+    },
+    {
       "key": "westline",
-      "name": "C \u00b7 West Line + Wall Rounds",
+      "name": "D \u00b7 West Line + Wall Rounds",
       "tagline": "Tables single-file west; a round beside each table on the east wall",
       "capacity": {
         "tables": 6,
@@ -341,7 +463,7 @@
     },
     {
       "key": "westshift",
-      "name": "D \u00b7 West Line \u2014 Shifted Down",
+      "name": "E \u00b7 West Line \u2014 Shifted Down",
       "tagline": "The west line slid down-wall: the sixth round reaches the wall",
       "capacity": {
         "tables": 6,
@@ -457,7 +579,7 @@
     },
     {
       "key": "social",
-      "name": "E \u00b7 Four On Top",
+      "name": "F \u00b7 Four On Top",
       "tagline": "Six tables; four rounds + a center fifth on the north end",
       "capacity": {
         "tables": 6,
@@ -569,7 +691,7 @@
     },
     {
       "key": "fourturned",
-      "name": "F \u00b7 Four On Top \u2014 Turned",
+      "name": "G \u00b7 Four On Top \u2014 Turned",
       "tagline": "The Four On Top pattern with all six tables rotated 90\u00b0",
       "capacity": {
         "tables": 6,
@@ -681,7 +803,7 @@
     },
     {
       "key": "gridwide",
-      "name": "G \u00b7 Four On Top \u2014 Wide Aisle",
+      "name": "H \u00b7 Four On Top \u2014 Wide Aisle",
       "tagline": "The straight 2x3 grid with its columns spread apart",
       "capacity": {
         "tables": 6,
@@ -792,8 +914,114 @@
       }
     },
     {
+      "key": "gridbal",
+      "name": "I \u00b7 Four On Top \u2014 Wide, Beam-Balanced",
+      "tagline": "Wide aisle; rows equidistant from the beam; four rounds below",
+      "capacity": {
+        "tables": 6,
+        "players": 24,
+        "dine": 0,
+        "drink": 0,
+        "flex": 54,
+        "spectators": 0
+      },
+      "cue": {
+        "full_pct": 67,
+        "tight_pct": 0,
+        "blocked_pct": 33,
+        "min_clearance_in": 31.8,
+        "per_table": {
+          "T0L": {
+            "W": 46.5,
+            "E": 79.8,
+            "S": 127.2,
+            "N": 31.8
+          },
+          "T0R": {
+            "W": 79.8,
+            "E": 46.5,
+            "S": 127.2,
+            "N": 31.8
+          },
+          "T1L": {
+            "W": 46.5,
+            "E": 79.8,
+            "S": 59.8,
+            "N": 127.2
+          },
+          "T1R": {
+            "W": 79.8,
+            "E": 46.5,
+            "S": 59.8,
+            "N": 127.2
+          },
+          "T2L": {
+            "W": 46.5,
+            "E": 79.8,
+            "S": 59.8,
+            "N": 59.8
+          },
+          "T2R": {
+            "W": 79.8,
+            "E": 46.5,
+            "S": 59.8,
+            "N": 59.8
+          }
+        }
+      },
+      "service": {
+        "cocktail": {
+          "seats": 15,
+          "max_run_ft": 72.3,
+          "avg_run_ft": 42.0,
+          "conflicted_seats": 15
+        },
+        "food": {
+          "seats": 15,
+          "max_run_ft": 52.0,
+          "avg_run_ft": 28.6,
+          "conflicted_seats": 15
+        }
+      },
+      "egress": {
+        "exit_corridor_in": 141.0,
+        "exit_corridor_ok": true,
+        "worst_travel_ft": 60.1
+      },
+      "paths": {
+        "min_width_in": 38.5,
+        "anomalies": []
+      },
+      "revenue_proxy_hr": 681,
+      "flip_minutes": 0,
+      "notes": [
+        "The Wide Aisle pattern with the rows balanced on the partition beam: the bottom pair sits 60\" off the beam line, matching the middle pair on the other side.",
+        "The five-round quincunx becomes FOUR rounds in a staggered row along the bottom wall - a dead-straight row of four 60\" rounds needs 320\" of width and the room is 316\", so alternate rounds offset 68\" and the chairs interleave on the diagonal rule.",
+        "Wall two-tops follow the moved row ends.",
+        "FLAG: the bottom tables' north ends face the round row - cue room there runs about 32\", the shortest in the study.",
+        "Cue room around the tables: most sides get about 46\"; the shortest clearance is 31.8\"."
+      ],
+      "pros": [
+        "The Wide Aisle pattern with the rows balanced on the partition beam: the bottom pair sits 60\" off the beam line, matching the middle pair on the other side.",
+        "The five-round quincunx becomes FOUR rounds in a staggered row along the bottom wall - a dead-straight row of four 60\" rounds needs 320\" of width and the room is 316\", so alternate rounds offset 68\" and the chairs interleave on the diagonal rule.",
+        "Wall two-tops follow the moved row ends."
+      ],
+      "cons": [
+        "The bottom tables' north ends face the round row - cue room there runs about 32\", the shortest in the study."
+      ],
+      "measured": "Cue room around the tables: most sides get about 46\"; the shortest clearance is 31.8\".",
+      "impact": {
+        "play": "+",
+        "hosp": "+",
+        "svc": "-",
+        "walk": "+",
+        "entry": "+",
+        "flip": "+"
+      }
+    },
+    {
       "key": "centerline",
-      "name": "H \u00b7 Center Line",
+      "name": "J \u00b7 Center Line",
       "tagline": "Six tables turned 90\u00b0, end-to-end down the middle",
       "capacity": {
         "tables": 6,
@@ -897,7 +1125,7 @@
     },
     {
       "key": "turnright",
-      "name": "I \u00b7 Four On Top \u2014 Turned Right",
+      "name": "K \u00b7 Four On Top \u2014 Turned Right",
       "tagline": "The turned pattern slid right: play opens from the west",
       "capacity": {
         "tables": 6,
@@ -1006,118 +1234,8 @@
       }
     },
     {
-      "key": "gridright",
-      "name": "J \u00b7 Four On Top \u2014 Slid Right",
-      "tagline": "The straight 2x3 grid slid east; the west side opens up",
-      "capacity": {
-        "tables": 6,
-        "players": 24,
-        "dine": 0,
-        "drink": 0,
-        "flex": 62,
-        "spectators": 0
-      },
-      "cue": {
-        "full_pct": 79,
-        "tight_pct": 8,
-        "blocked_pct": 12,
-        "min_clearance_in": 44.5,
-        "per_table": {
-          "T0L": {
-            "W": 68.5,
-            "E": 59.8,
-            "S": 73.2,
-            "N": 57.8
-          },
-          "T0R": {
-            "W": 59.8,
-            "E": 44.5,
-            "S": 73.2,
-            "N": 57.8
-          },
-          "T1L": {
-            "W": 68.5,
-            "E": 59.8,
-            "S": 59.8,
-            "N": 73.2
-          },
-          "T1R": {
-            "W": 59.8,
-            "E": 44.5,
-            "S": 59.8,
-            "N": 73.2
-          },
-          "T2L": {
-            "W": 68.5,
-            "E": 59.8,
-            "S": 59.8,
-            "N": 59.8
-          },
-          "T2R": {
-            "W": 59.8,
-            "E": 44.5,
-            "S": 59.8,
-            "N": 59.8
-          }
-        }
-      },
-      "service": {
-        "cocktail": {
-          "seats": 16,
-          "max_run_ft": 66.6,
-          "avg_run_ft": 41.3,
-          "conflicted_seats": 16
-        },
-        "food": {
-          "seats": 16,
-          "max_run_ft": 52.0,
-          "avg_run_ft": 27.4,
-          "conflicted_seats": 16
-        }
-      },
-      "egress": {
-        "exit_corridor_in": 141.0,
-        "exit_corridor_ok": true,
-        "worst_travel_ft": 57.9
-      },
-      "paths": {
-        "min_width_in": 38.5,
-        "anomalies": [
-          {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "center-east: walk crosses a wall two-top"
-          }
-        ]
-      },
-      "revenue_proxy_hr": 773,
-      "flip_minutes": 0,
-      "notes": [
-        "The Four On Top pattern (straight 2x3 grid + the five-round quincunx) with the whole ensemble slid 12 inches east - the west side opens up.",
-        "Wall two-tops stay put on their walls; the grid and rounds move together, so every table keeps a two-top within reach.",
-        "FLAG: The center round of the north quincunx runs tight to its four neighbours - deliberate, as in the base layout.",
-        "Cue room around the tables: most sides get about 60\"; the shortest clearance is 44.5\"."
-      ],
-      "pros": [
-        "The Four On Top pattern (straight 2x3 grid + the five-round quincunx) with the whole ensemble slid 12 inches east - the west side opens up.",
-        "Wall two-tops stay put on their walls; the grid and rounds move together, so every table keeps a two-top within reach."
-      ],
-      "cons": [
-        "The center round of the north quincunx runs tight to its four neighbours - deliberate, as in the base layout."
-      ],
-      "measured": "Cue room around the tables: most sides get about 60\"; the shortest clearance is 44.5\".",
-      "impact": {
-        "play": "+",
-        "hosp": "+",
-        "svc": "-",
-        "walk": ".",
-        "entry": "+",
-        "flip": "+"
-      }
-    },
-    {
       "key": "eastline",
-      "name": "K \u00b7 East Line + West Lounge",
+      "name": "L \u00b7 East Line + West Lounge",
       "tagline": "Tables single-file on the east; full-length hospitality strip west",
       "capacity": {
         "tables": 6,
@@ -1223,7 +1341,7 @@
     },
     {
       "key": "eastshift",
-      "name": "L \u00b7 East Line \u2014 Shifted Down",
+      "name": "M \u00b7 East Line \u2014 Shifted Down",
       "tagline": "The east line slid down-wall: the top table rejoins the line",
       "capacity": {
         "tables": 6,

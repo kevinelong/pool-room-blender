@@ -24,6 +24,7 @@ ROOT = os.path.abspath(os.path.join(HERE, ".."))
 sys.path.insert(0, ROOT)
 from configs.v16_configs import (  # noqa: E402
     CONFIGS, ROOM_W, ROOM_L, BEAM_Y, HVAC, ENTRY_WELL, table_rect,
+    tbl_rot,
 )
 sys.path.insert(0, HERE)
 from project_urls import DOWNLOAD_URL, DECK_URL  # noqa: E402
@@ -31,18 +32,19 @@ from project_urls import DOWNLOAD_URL, DECK_URL  # noqa: E402
 # fallback only — configs carry letter/short as canonical fields (v39
 # letters follow the semantic page order: left, centered, right)
 SHORT = {
-    "turnleft":   ("A", "left 4+2"),
-    "gridleft":   ("B", "left 2×3"),
-    "westline":   ("C", "west 1×6"),
-    "westshift":  ("D", "west 1×6 low"),
-    "social":     ("E", "center 2×3"),
-    "fourturned": ("F", "center 4+2"),
-    "gridwide":   ("G", "center 2×3 wide"),
-    "centerline": ("H", "center 1×6"),
-    "turnright":  ("I", "right 4+2"),
-    "gridright":  ("J", "right 2×3"),
-    "eastline":   ("K", "east 1×6"),
-    "eastshift":  ("L", "east 1×6 low"),
+    "turnleft":     ("A", "left 4+2"),
+    "gridleft":     ("B", "left 2×3"),
+    "gridleftturn": ("C", "left 2×3 turn"),
+    "westline":     ("D", "west 1×6"),
+    "westshift":    ("E", "west 1×6 low"),
+    "social":       ("F", "center 2×3"),
+    "fourturned":   ("G", "center 4+2"),
+    "gridwide":     ("H", "center 2×3 wide"),
+    "gridbal":      ("I", "center 2×3 bal"),
+    "centerline":   ("J", "center 1×6"),
+    "turnright":    ("K", "right 4+2"),
+    "eastline":     ("L", "east 1×6"),
+    "eastshift":    ("M", "east 1×6 low"),
 }
 
 
@@ -82,8 +84,8 @@ def chairs_for(cx, cy, plus):
 
 def obstacle_rects(cfg):
     """Collision rects (also the A* occupancy source)."""
-    rot = cfg.get("rot90", False)
-    obs = [table_rect(tx, ty, rot) for _n, tx, ty in cfg["tables"]]
+    obs = [table_rect(tx, ty, tbl_rot(cfg, _n))
+           for _n, tx, ty in cfg["tables"]]
     for cx, cy in cfg.get("rounds", []):
         obs.append((cx - 36, cy - 36, cx + 36, cy + 36))
     for hx, hy in list(cfg.get("hightops", [])) + list(cfg.get("twotops", [])):
@@ -241,7 +243,7 @@ def layout_data(cfg):
         key=key, letter=letter, short=short,
         name=cfg["name"].split("·", 1)[-1].strip(),
         img=thumb_data_uri(key),
-        tables=[[round(v, 2) for v in table_rect(tx, ty, rot)]
+        tables=[[round(v, 2) for v in table_rect(tx, ty, tbl_rot(cfg, _n))]
                 for _n, tx, ty in cfg["tables"]],
         rounds=rounds, chairs=chairs, tops=tops,
         paths=[[round(v, 1) for v in p] for p in cfg.get("paths", [])],

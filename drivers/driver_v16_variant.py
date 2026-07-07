@@ -32,6 +32,7 @@ print(f"[v16:{KEY}] building variant: {cfg['name']}")
 # ---- relabel tables so the furniture module's row conventions hold -------
 ROT90 = cfg.get("rot90", False)
 TBL_W_, TBL_L_ = 53.5, 92.5
+turned_built = []
 if ROT90:
     # v20 line layouts: build each table unrotated with the same CENTER the
     # rotated table will have (config y_top is the rotated cabinet's north
@@ -39,8 +40,11 @@ if ROT90:
     tables = [(n, cx, yt + TBL_W_ / 2 - TBL_L_ / 2)
               for n, cx, yt in cfg["tables"]]
 else:
+    # v55: straight configs may turn individual tables (turned_tables)
+    TURNED = set(cfg.get("turned_tables", ()))
     ROW_NAMES = ["Back", "MainA", "MainB", "MainC"]
     tables = []
+    turned_built = []          # (built_name, cx, yt_turned)
     row = -1
     last_y = None
     for _n, cx, yt in cfg["tables"]:
@@ -48,7 +52,14 @@ else:
             row += 1
             last_y = yt
         suffix = "L" if cx < 130 else ("R" if cx > 185 else "C")
-        tables.append((f"{ROW_NAMES[row]}{suffix}", cx, yt))
+        bname = f"{ROW_NAMES[row]}{suffix}"
+        if _n in TURNED:
+            # build unrotated with the same center the turned cabinet
+            # will have (config yt = turned cabinet's north edge)
+            tables.append((bname, cx, yt + TBL_W_ / 2 - TBL_L_ / 2))
+            turned_built.append((bname, cx, yt))
+        else:
+            tables.append((bname, cx, yt))
 tables_src = "POOL_TABLES = [\n" + "".join(
     f"    ({n!r}, {cx!r}, {yt!r}),\n" for n, cx, yt in tables) + "]"
 
@@ -97,6 +108,20 @@ if ROT90:
                     or o.name.endswith(name)):
                 o.matrix_world = R @ o.matrix_world
     print(f"[v16:{KEY}] rotated {len(cfg['tables'])} tables 90°")
+elif cfg.get("turned_tables"):
+    # v55: rotate only the flagged tables in a straight config
+    from mathutils import Matrix
+    IN_ = 0.0254
+    for name, cx, yt in turned_built:
+        pivot = Vector((cx * IN_, (yt + TBL_W_ / 2) * IN_, 0.0))
+        R = (Matrix.Translation(pivot)
+             @ Matrix.Rotation(3.14159265 / 2, 4, 'Z')
+             @ Matrix.Translation(-pivot))
+        for o in bpy.data.objects:
+            if (f"_{name}_" in o.name or o.name.endswith(f"_{name}")
+                    or o.name.endswith(name)):
+                o.matrix_world = R @ o.matrix_world
+    print(f"[v16:{KEY}] rotated {len(turned_built)} turned tables 90°")
 
 STAGE_DEFAULT = (0, 0, 96, 48)
 stage_rect = cfg.get("stage_rect")

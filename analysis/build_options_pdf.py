@@ -50,14 +50,25 @@ CLEAN = {
                   "two-tops stay on their walls.",
                   "FLAG: The side aisles give a little back to pay for the "
                   "center — both stay above the walking standard."]),
-    "gridright": ("Four On Top — Slid Right",
-                  "The straight grid and its round cluster slid east",
-                  ["The whole ensemble slides a foot east, opening the "
-                   "west side as the roomy aisle.",
-                   "Wall two-tops stay on their walls, so every table "
-                   "keeps seating at arm's reach.",
-                   "FLAG: The round cluster runs deliberately tight, as in "
-                   "the base layout."]),
+    "gridbal": ("Four On Top — Wide, Beam-Balanced",
+                ("The wide grid with its rows balanced on the beam; "
+                 "four rounds below"),
+                ["The bottom pair sits the same distance off the beam "
+                 "line as the middle pair on the other side.",
+                 "The quincunx becomes four rounds in a staggered row "
+                 "along the bottom wall — a straight row of four needs "
+                 "320 inches and the room is 316.",
+                 "FLAG: The bottom tables' north ends face the round "
+                 "row — the shortest cue room in the study (~32\")."]),
+    "gridleftturn": ("Four On Top — Slid Left, Turned Corner",
+                     "Slid Left with the SE table turned toward the entry",
+                     ["The southeast table turns sideways and centers "
+                      "between its row-mate and the east wall — a "
+                      "showcase corner facing the Main Entry.",
+                      "The east-wall two-top it displaced moves to the "
+                      "south wall, 30 inches west of the entry landing.",
+                      "FLAG: that relocated two-top narrows the walk off "
+                      "the entry treads (user-accepted)."]),
     "fourturned": ("Four On Top — Turned",
                    "The same pattern with every table rotated sideways",
                    ["Four tables in a block at the top, two at the bottom, "
@@ -261,9 +272,9 @@ def page_for(cfg):
 # v34: fairness order — pages run down the semantic columns (left-shifted,
 # then centered, then right-shifted), which lands the strong Four On Top
 # pair mid-deck instead of leading the document.
-PAGE_ORDER = ["turnleft", "gridleft", "westline", "westshift",
-              "social", "fourturned", "gridwide", "centerline",
-              "turnright", "gridright", "eastline", "eastshift"]
+PAGE_ORDER = ["turnleft", "gridleft", "gridleftturn", "westline",
+              "westshift", "social", "fourturned", "gridwide", "gridbal",
+              "centerline", "turnright", "eastline", "eastshift"]
 
 
 def overview_page(ordered):
@@ -271,15 +282,15 @@ def overview_page(ordered):
     page = Image.new("RGB", (PAGE_W, PAGE_H), PAPER)
     d = ImageDraw.Draw(page)
     d.rectangle([0, 0, PAGE_W, 104], fill=INK)
-    d.text((M, 18), "Pool Room — Twelve Layout Options",
+    d.text((M, 18), "Pool Room — Thirteen Layout Options",
            font=fnt(38), fill=(255, 255, 255))
     d.text((M, 68), "Contents — letters read in presentation order; "
            "columns group where the tables sit: left · centered · right",
            font=fnt(19, False), fill=(205, 205, 210))
-    cols = [ordered[0:4], ordered[4:8], ordered[8:12]]
-    top, lblh, gap = 130, 40, 12
+    cols = [ordered[0:5], ordered[5:10], ordered[10:13]]
+    top, lblh, gap = 130, 36, 10
     col_w = (PAGE_W - 2 * M - 2 * gap) // 3
-    tile_h = (PAGE_H - top - M - 4 * lblh - 3 * gap) // 4
+    tile_h = (PAGE_H - top - M - 5 * lblh - 4 * gap) // 5
     for ci, col in enumerate(cols):
         x0 = M + ci * (col_w + gap)
         y = top
@@ -305,34 +316,36 @@ def overview_page(ordered):
 
 SCENARIOS = [
     ("If bar and kitchen revenue leads",
-     "The Four On Top family (E, B, G, J) — by far the most seated "
-     "hospitality, a two-top at every row end, and it flips to a banquet "
-     "for free. Runner-up: any of the line layouts (C, D, K, L)."),
+     "The Four On Top family (F and its variants B, C, H, I) — by far "
+     "the most seated hospitality, a two-top at every row end, and it "
+     "flips to a banquet for free. Runner-up: the lines (D, E, L, M)."),
     ("If serious play leads",
-     "Center Line (H) — every table on display with the roomiest typical "
+     "Center Line (J) — every table on display with the roomiest typical "
      "clearance in the set, at the price of tight side-to-side between "
-     "neighbours; E is the classic-room alternative with the fewest "
-     "compromised sides, and its slid variants (B, J) keep that while "
-     "opening a wider service side."),
+     "neighbours; F is the classic-room alternative with the fewest "
+     "compromised sides, and Slid Left (B) keeps that while opening a "
+     "wider service side."),
     ("If service simplicity leads",
-     "West Line (C, D) — zero cue-crossing service conflicts and the "
+     "West Line (D, E) — zero cue-crossing service conflicts and the "
      "shortest food runs anywhere: hospitality sits along the service "
      "wall. Among the grids, Slid Left (B) keeps conflicts lowest."),
     ("If a clear, welcoming entry leads",
-     "The shifted lines (D, L) — the whole line slides away from the "
+     "The shifted lines (E, M) — the whole line slides away from the "
      "entrance, so the door end opens up and every entry-side compromise "
-     "dissolves; L audits cleanest of the whole set."),
+     "dissolves; M audits cleanest of the whole set. The Turned Corner "
+     "(C) instead puts a showcase table square in the entry sightline."),
     ("If the clustered showroom look leads",
-     "The turned trio (A, F, I) — four tables in a block reads dramatic "
+     "The turned trio (A, G, K) — four tables in a block reads dramatic "
      "from the door and every cluster gets its own seating band; accept "
      "the tightest end swings and the thinnest seating in the set."),
     ("If events and spectating lead",
-     "Four On Top (E) — the five-round cluster doubles as a gallery "
-     "facing the nearest row; East Line (K, L) seats a watching row the "
-     "full length of the room. Wide Aisle (G) adds a center promenade "
-     "for a crowd to circulate."),
+     "Four On Top (F) — the five-round cluster doubles as a gallery "
+     "facing the nearest row; East Line (L, M) seats a watching row the "
+     "full length of the room. Wide Aisle (H) adds a center promenade "
+     "for a crowd to circulate; Beam-Balanced (I) trades a round for "
+     "breathing room on the beam line."),
     ("If nothing is settled yet",
-     "Hold E and one line layout (D or L) as the short list: they bracket "
+     "Hold F and one line layout (E or M) as the short list: they bracket "
      "the trade-space — maximum hospitality vs maximum play-and-service "
      "clarity — and both pass every safety and walking audit."),
 ]
@@ -419,7 +432,7 @@ def walkthrough_page():
     d.rectangle([0, 0, PAGE_W, 104], fill=INK)
     d.text((M, 18), "Walk it — then weigh it", font=fnt(38),
            fill=(255, 255, 255))
-    d.text((M, 68), "A first-person walkthrough of all twelve layouts, and an "
+    d.text((M, 68), "A first-person walkthrough of all thirteen layouts, and an "
            "interactive deck that re-ranks them live — any browser, "
            "no install", font=fnt(19, False), fill=(205, 205, 210))
 
@@ -450,19 +463,19 @@ def walkthrough_page():
     d.text((M, y), "What to expect", font=fnt(24), fill=(20, 20, 24))
     y += 44
     for item in [
-        "The walkthrough opens on a gallery of all twelve layouts — one "
-        "overhead view each, lettered A through L with its short name. "
+        "The walkthrough opens on a gallery of all thirteen layouts — one "
+        "overhead view each, lettered A through M with its short name. "
         "Click any card to jump straight into that room.",
         "By default an auto-tour walks in through the Main Entrance steps, "
         "loops the whole room on a collision-checked path, walks back out, "
-        "and fades to the next layout — A through L, then it starts over.",
+        "and fades to the next layout — A through M, then it starts over.",
         "Click the 3-D view to take the controls: WASD or arrow keys to "
         "walk, mouse to look, Shift to hurry, Esc to hand back to the "
         "tour. You collide with every table, round, and chair — walk the "
         "aisles the servers would.",
         "The decision deck holds every computed number in one comparison "
         "matrix. Set the weights to what the house values — play, "
-        "hospitality, service, events — and watch the twelve layouts "
+        "hospitality, service, events — and watch the thirteen layouts "
         "re-rank live. Presets cover the common priorities.",
         "Both pages are single self-contained files: they load instantly, "
         "work offline, and live in the repository under docs/. The "

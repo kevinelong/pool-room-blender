@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from configs.v16_configs import (  # noqa: E402
     CONFIGS, RATES, ROOM_W, ROOM_L, CUE, CUE_TIGHT,
     DOOR_MAIN, DOOR_KITCHEN, EXIT_FRONTAGE, SERVICE_LANE_X,
-    table_rect, playfield_rect, cue_zone, obstacles, seat_positions,
+    table_rect, playfield_rect, cue_zone, obstacles, tbl_rot, seat_positions,
     capacities,
 )
 
@@ -39,7 +39,7 @@ def _overlap(a0, a1, b0, b1):
 
 def side_clearances(cfg, name, cx, yt):
     """Clearance from each playfield edge to the nearest obstruction/wall."""
-    px0, py0, px1, py1 = playfield_rect(cx, yt, cfg.get("rot90", False))
+    px0, py0, px1, py1 = playfield_rect(cx, yt, tbl_rot(cfg, name))
     obs = obstacles(cfg, exclude_table=name)
     out = {}
     for side in "WESN":
@@ -164,7 +164,7 @@ def path_audit(cfg):
     from configs.v16_configs import (ROUND_RING, ROUND_BODY, HVAC,
                                      ENTRY_WELL, KITCHEN_FRONT)
     rot = cfg.get("rot90", False)
-    named = [("a pool table", table_rect(tx, ty, rot))
+    named = [("a pool table", table_rect(tx, ty, tbl_rot(cfg, _n)))
              for _n, tx, ty in cfg["tables"]]
     # rounds measured at the tucked-chair body — the same convention every
     # placement rule uses (a 2" wider halo created phantom pinches)

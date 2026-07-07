@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Build design.html — the "design your own layout" page.
 
-Start from any of the twelve study layouts, then drag pieces around the
+Start from any of the thirteen study layouts, then drag pieces around the
 room, rotate them, add and remove them. Positions snap to 6-inch
 increments and rotations to 45 degrees (snap on by default, toggleable).
 Designs are named and saved in the browser (localStorage) and can be
 exported/imported as small JSON files for sharing.
 
-The twelve templates are generated straight from configs/v16_configs.py,
+The thirteen templates are generated straight from configs/v16_configs.py,
 so they are exactly the study layouts. Room fixtures (doors, entry
 well, beam, HVAC) are fixed scenery. Same paper-and-ink visual language
 as the hub and print poster.
@@ -22,17 +22,18 @@ sys.path.insert(0, ROOT)
 sys.path.insert(0, HERE)
 from configs.v16_configs import (  # noqa: E402
     CONFIGS, ROOM_W, ROOM_L, BEAM_Y, HVAC, ENTRY_WELL, table_rect,
+    tbl_rot,
 )
 from project_urls import HUB_URL  # noqa: E402
 
 
 def elements_for(cfg):
     els = []
-    rot90 = cfg.get("rot90", False)
     for _n, tx, ty in cfg["tables"]:
-        x0, y0, x1, y1 = table_rect(tx, ty, rot90)
+        trot = tbl_rot(cfg, _n)
+        x0, y0, x1, y1 = table_rect(tx, ty, trot)
         els.append(dict(t="table", x=round((x0 + x1) / 2, 1),
-                        y=round((y0 + y1) / 2, 1), rot=90 if rot90 else 0))
+                        y=round((y0 + y1) / 2, 1), rot=90 if trot else 0))
     plus = {(round(px, 1), round(py, 1))
             for px, py in cfg.get("rounds_plus", [])}
     for cx, cy in cfg.get("rounds", []):

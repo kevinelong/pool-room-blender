@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.join(HERE, ".."))
 from configs.v16_configs import (  # noqa: E402
     CONFIGS, ROOM_W, ROOM_L, BEAM_Y, ROUND_D, STAGE, BENCH, HVAC, LOCKERS,
     CLASSROOM, SERVICE_LANE_X, DOOR_MAIN, DOOR_KITCHEN, DOOR_EXIT,
-    table_rect, playfield_rect, cue_zone, seat_positions,
+    table_rect, playfield_rect, cue_zone, seat_positions, tbl_rot,
 )
 from analysis.analyze_config import analyze, route, seg_hits_rect  # noqa: E402
 
@@ -111,8 +111,9 @@ def draw_plan(cfg, score, clean=False, title=None, tagline=None):
 
     # pool tables
     for name, cx, yt in cfg["tables"]:
-        rect(d, table_rect(cx, yt, rot), fill=COL_TABLE)
-        rect(d, playfield_rect(cx, yt, rot), fill=COL_FELT)
+        trot = tbl_rot(cfg, name)
+        rect(d, table_rect(cx, yt, trot), fill=COL_TABLE)
+        rect(d, playfield_rect(cx, yt, trot), fill=COL_FELT)
 
     # rounds / two-tops / high-tops / rails
     for cx, cy in cfg.get("rounds", []):
