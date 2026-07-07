@@ -128,10 +128,10 @@
         "spectators": 0
       },
       "cue": {
-        "full_pct": 46,
+        "full_pct": 50,
         "tight_pct": 46,
-        "blocked_pct": 8,
-        "min_clearance_in": 39.3,
+        "blocked_pct": 4,
+        "min_clearance_in": 49.0,
         "per_table": {
           "Line0": {
             "W": 71.0,
@@ -165,7 +165,7 @@
           },
           "Line5": {
             "W": 71.0,
-            "E": 39.3,
+            "E": 81.0,
             "S": 59.8,
             "N": 54.8
           }
@@ -175,13 +175,13 @@
         "cocktail": {
           "seats": 6,
           "max_run_ft": 59.0,
-          "avg_run_ft": 36.5,
+          "avg_run_ft": 37.3,
           "conflicted_seats": 0
         },
         "food": {
           "seats": 6,
-          "max_run_ft": 34.3,
-          "avg_run_ft": 24.4,
+          "max_run_ft": 36.7,
+          "avg_run_ft": 24.8,
           "conflicted_seats": 0
         }
       },
@@ -204,28 +204,28 @@
       "flip_minutes": 25,
       "notes": [
         "Each of the six tables gets its own 5-ft round at matching height on the east side \u2014 table service at arm's reach.",
-        "FLAG: the sixth (south) round crowds the Main Entry approach beside the stair rail.",
+        "The sixth (south) round sits on the east wall with the rest \u2014 the corrected entry well freed the band above the stair channel (v50).",
         "The kitchen-door table and its round nudge left, clearing the door frontage entirely.",
         "FLAG: that table's inboard swing tightens \u2014 the cost of clearing the door.",
         "FLAG: Another round pulls inboard of the HVAC chase.",
-        "Cue room around the tables: most sides get about 55\"; the shortest clearance is 39.3\"."
+        "Cue room around the tables: most sides get about 55\"; the shortest clearance is 49.0\"."
       ],
       "pros": [
         "Each of the six tables gets its own 5-ft round at matching height on the east side \u2014 table service at arm's reach.",
+        "The sixth (south) round sits on the east wall with the rest \u2014 the corrected entry well freed the band above the stair channel (v50).",
         "The kitchen-door table and its round nudge left, clearing the door frontage entirely."
       ],
       "cons": [
-        "The sixth (south) round crowds the Main Entry approach beside the stair rail.",
         "That table's inboard swing tightens \u2014 the cost of clearing the door.",
         "Another round pulls inboard of the HVAC chase."
       ],
-      "measured": "Cue room around the tables: most sides get about 55\"; the shortest clearance is 39.3\".",
+      "measured": "Cue room around the tables: most sides get about 55\"; the shortest clearance is 49.0\".",
       "impact": {
         "play": "-",
         "hosp": "+",
         "svc": "+",
         "walk": ".",
-        "entry": "-",
+        "entry": "+",
         "flip": "-"
       }
     },
@@ -318,7 +318,7 @@
       "flip_minutes": 25,
       "notes": [
         "The whole line slides toward the bottom wall, freeing the entry end: the sixth round reaches the east wall like the rest instead of pulling far inboard.",
-        "FLAG: the sixth round's chairs still graze the Main Entry approach corner (accepted).",
+        "The sixth round reaches the east wall cleanly \u2014 the corrected entry well (v50) leaves its chairs well clear of the stair channel.",
         "The kitchen-door table and its round nudge left, clearing the door frontage entirely and keeping the wall approach open.",
         "FLAG: kitchen service still threads a tight squeeze between the third and fourth rounds' chairs.",
         "FLAG: The fourth round pulls inboard of the HVAC chase; the first pulls inboard of the storage-door frontage.",
@@ -327,10 +327,10 @@
       ],
       "pros": [
         "The whole line slides toward the bottom wall, freeing the entry end: the sixth round reaches the east wall like the rest instead of pulling far inboard.",
+        "The sixth round reaches the east wall cleanly \u2014 the corrected entry well (v50) leaves its chairs well clear of the stair channel.",
         "The kitchen-door table and its round nudge left, clearing the door frontage entirely and keeping the wall approach open."
       ],
       "cons": [
-        "The sixth round's chairs still graze the Main Entry approach corner (accepted).",
         "Kitchen service still threads a tight squeeze between the third and fourth rounds' chairs.",
         "The fourth round pulls inboard of the HVAC chase; the first pulls inboard of the storage-door frontage.",
         "The bottom table's end swing runs tight against the bottom wall \u2014 the cost of the slide."
@@ -341,7 +341,7 @@
         "hosp": "+",
         "svc": "+",
         "walk": ".",
-        "entry": "-",
+        "entry": "+",
         "flip": "-"
       }
     },

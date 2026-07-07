@@ -3,7 +3,7 @@
 | Config | Tables | Players | Drink | Dine | Flex | Cue full% | Min clr" | Cocktail max run | Food max run | Svc conflicts | Egress worst | Path min" | $/hr proxy | Flip min |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | A · Four On Top — Turned Left | 6 | 24 | 0 | 0 | 14 | 62% | 37.2 | 72.8 ft | 46.4 ft | 9 | 61.8 ft | 44.0 | $221 | 15 |
-| B · West Line + Wall Rounds | 6 | 24 | 0 | 0 | 48 | 46% | 39.3 | 59.0 ft | 34.3 ft | 0 | 52.6 ft | 25.0 | $612 | 25 |
+| B · West Line + Wall Rounds | 6 | 24 | 0 | 0 | 48 | 50% | 49.0 | 59.0 ft | 36.7 ft | 0 | 52.6 ft | 25.0 | $612 | 25 |
 | C · West Line — Shifted Down | 6 | 24 | 0 | 0 | 48 | 42% | 41.0 | 58.6 ft | 34.9 ft | 0 | 55.7 ft | 25.1 | $612 | 25 |
 | D · Four On Top | 6 | 24 | 0 | 0 | 62 | 67% | 56.5 | 67.6 ft | 52.0 ft | 12 | 58.8 ft | 52.5 | $773 | 0 |
 | E · Four On Top — Turned | 6 | 24 | 0 | 0 | 14 | 62% | 46.8 | 72.0 ft | 46.6 ft | 9 | 61.0 ft | 44.0 | $221 | 15 |
@@ -17,8 +17,8 @@
 | Layout | Play room | Hospitality $ | Service | Walkability | Entry/egress | Flip |
 |---|---|---|---|---|---|---|
 | A · Four On Top — Turned Left | − | − | · | · | + | · |
-| B · West Line + Wall Rounds | − | + | + | · | − | − |
-| C · West Line — Shifted Down | − | + | + | · | − | − |
+| B · West Line + Wall Rounds | − | + | + | · | + | − |
+| C · West Line — Shifted Down | − | + | + | · | + | − |
 | D · Four On Top | + | + | − | · | + | + |
 | E · Four On Top — Turned | · | − | · | · | + | · |
 | F · Center Line | · | − | − | + | + | + |

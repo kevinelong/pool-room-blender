@@ -141,11 +141,11 @@ CONFIGS = [
                 ("Line4", 110.0, 475), ("Line5", 110.0, 576)],
         # v26: ALL SIX tables get their round (user). Rows 1-3 and 5 reach
         # the wall (row 3 partially fronts the kitchen door — accepted,
-        # noted); row 4 pulls inboard of the HVAC chase; row 6 is forced
-        # inboard beside the entry well and crowds the Main Entry approach
-        # — accepted, noted.
+        # noted); row 4 pulls inboard of the HVAC chase; row 6 sits on
+        # the east wall like the rest — the v50 well re-measure freed the
+        # band north of the relocated entry channel.
         rounds=[],   # auto-packed below
-        rounds_forced=[(228.3, 602.75)],
+        rounds_forced=[(270.0, 590.0)],
         round_role="flex",
         twotops=[], hightops=[],
         rails=[],
@@ -155,8 +155,9 @@ CONFIGS = [
         notes=[
             "Each of the six tables gets its own 5-ft round at matching "
             "height on the east side — table service at arm's reach.",
-            "FLAG: the sixth (south) round crowds the Main Entry approach "
-            "beside the stair rail.",
+            "The sixth (south) round sits on the east wall with the "
+            "rest — the corrected entry well freed the band above the "
+            "stair channel (v50).",
             "The kitchen-door table and its round nudge left, clearing "
             "the door frontage entirely.",
             "FLAG: that table's inboard swing tightens — the cost of "
@@ -197,8 +198,9 @@ CONFIGS = [
             "The whole line slides toward the bottom wall, freeing the "
             "entry end: the sixth round reaches the east wall like the "
             "rest instead of pulling far inboard.",
-            "FLAG: the sixth round's chairs still graze the Main Entry "
-            "approach corner (accepted).",
+            "The sixth round reaches the east wall cleanly — the "
+            "corrected entry well (v50) leaves its chairs well clear of "
+            "the stair channel.",
             "The kitchen-door table and its round nudge left, clearing "
             "the door frontage entirely and keeping the wall approach "
             "open.",
