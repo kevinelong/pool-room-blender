@@ -20,7 +20,9 @@ ROOT = os.path.abspath(os.path.join(HERE, ".."))
 sys.path.insert(0, ROOT)
 sys.path.insert(0, HERE)
 from configs.v16_configs import CONFIGS, ROOM_W, ROOM_L  # noqa: E402
-from project_urls import WALKTHROUGH_URL, DOWNLOAD_URL, DECK_URL  # noqa: E402
+from project_urls import (  # noqa: E402
+    WALKTHROUGH_URL, DOWNLOAD_URL, DECK_URL, DESIGNER_URL,
+)
 from build_poster import draw_plan_grid  # noqa: E402
 
 LINKS = [
@@ -36,6 +38,11 @@ LINKS = [
      "Set the weights to what the house values — play, hospitality, "
      "service, events — and watch the nine layouts re-rank live.",
      DECK_URL),
+    ("Design your own", "layout editor",
+     "Start from any of the nine, then drag, rotate, add and remove "
+     "pieces — snapped to the same 6-inch grid the study uses. Save "
+     "and share your variations.",
+     DESIGNER_URL),
 ]
 
 

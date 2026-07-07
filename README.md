@@ -12,6 +12,7 @@ Public site (GitHub Pages, no login): **https://kevinelong.github.io/pool-room-b
 - **Walk it** — first-person walkthrough of all nine layouts: https://kevinelong.github.io/pool-room-blender/walk.html
 - **Get the PDF** — one-tap download page (options study + one-page sheet): https://kevinelong.github.io/pool-room-blender/get_pdf.html
 - **Weigh the options** — interactive decision deck: https://kevinelong.github.io/pool-room-blender/deck.html
+- **Design your own** — drag-and-drop layout editor (6″/45° snapping): https://kevinelong.github.io/pool-room-blender/design.html
 
 The print poster (`docs/pool_room_poster.pdf`) carries the same URLs as QR
 codes. URLs are defined once in `analysis/project_urls.py`.
