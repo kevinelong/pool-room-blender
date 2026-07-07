@@ -115,3 +115,24 @@ Applied in:
     1×6 low, D center 2×3, E center 4+2, F center 1×6, G right 4+2,
     H east 1×6, I east 1×6 low. Config keys (render filenames) are
     unchanged.
+
+21. **v50: entry well re-measured from the reference video (transposed).**
+    The sunken Main Entry channel runs E-W ALONG the south wall — 70"
+    run x 40" wide (N-S): door at the east end of the channel, 48" wood
+    landing, two 11" treads climbing WEST to the room floor, rails
+    flanking. ENTRY_WELL = (246, 642, 316, 682); egress keepout
+    (210, 642, 316, 682). Previously modeled 70" along the east wall.
+    Knock-ons applied: A/E/G-family SE south-wall two-tops nudged west
+    clear of the top of the treads; west-line sixth round returned to
+    the east wall in the freed band; H/I-family HVAC-row table jogs 12"
+    west; D/F-family southmost east-wall seat slid south into the freed
+    band (move, not add — the old keepout had compressed those pairs).
+
+22. **v54: the straight 2x3 family (user) — twelve layouts, A to L.**
+    The center 2x3 grid + five-round quincunx (Four On Top) gains three
+    variations: Slid Left (cols 93/199), Wide Aisle (cols 95/221 — a
+    72" center promenade), and Slid Right (cols 117/223). Wall two-tops
+    stay on their walls; the grid and rounds move together. Letters
+    re-read semantically: A left 4+2, B left 2×3, C west 1×6, D west
+    1×6 low, E center 2×3, F center 4+2, G center 2×3 wide, H center
+    1×6, I right 4+2, J right 2×3, K east 1×6, L east 1×6 low.

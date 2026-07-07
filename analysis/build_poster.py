@@ -25,16 +25,16 @@ BLACK, WHITE = 0, 255
 
 LINKS = [
     ("WALK IT",
-     "A first-person tour of all nine layouts — auto-walks each room, "
+     "A first-person tour of all twelve layouts — auto-walks each room, "
      "or take the controls. Downloads live at the top of the page.",
      WALKTHROUGH_URL),
     ("GET THE PDF",
-     "One tap, one file: the twelve-page options study with sightlines, "
+     "One tap, one file: the full options study with sightlines, "
      "pros & cons, and the one-page comparison sheet.",
      DOWNLOAD_URL),
     ("WEIGH THE OPTIONS",
      "The interactive decision deck — set what the house values and "
-     "watch the nine layouts re-rank live.",
+     "watch the twelve layouts re-rank live.",
      DECK_URL),
 ]
 
@@ -129,7 +129,7 @@ def draw_plan_lineart(cfg, pw, ph, stroke=5):
 
 def draw_plan_grid(configs, cell_h=560, label_h=48, gap=36, cols=3,
                    stroke=4):
-    """All nine layouts as line art in a lettered grid (reading order
+    """All twelve layouts as line art in a lettered grid (reading order
     A..I, three per row — same order as every other document)."""
     cell_w = int(cell_h * (ROOM_W / ROOM_L)) + 24
     rows = (len(configs) + cols - 1) // cols
@@ -173,18 +173,18 @@ def main():
     # title block
     d.text((W // 2, 230), "THE POOL ROOM", font=font(150), fill=BLACK,
            anchor="ma")
-    d.text((W // 2, 420), "NINE WAYS TO RACK THE ROOM",
+    d.text((W // 2, 420), "TWELVE WAYS TO RACK THE ROOM",
            font=font(64), fill=BLACK, anchor="ma")
     d.line([W // 2 - 700, 540, W // 2 + 700, 540], fill=BLACK, width=6)
     d.text((W // 2, 570),
            "SIX TABLES  ·  ONE ROOM  ·  SEE EVERY OPTION, THEN DECIDE",
            font=font(40, False), fill=BLACK, anchor="ma")
 
-    # hero: all nine layouts as a lettered line-art grid
-    grid = draw_plan_grid(CONFIGS)
+    # hero: all twelve layouts as a lettered line-art grid
+    grid = draw_plan_grid(CONFIGS, cols=4)   # 12 layouts, 3 rows
     poster.paste(grid, ((W - grid.width) // 2, 690))
     d.text((W // 2, 690 + grid.height + 22),
-           "ALL NINE LAYOUTS, A TO I — SCAN TO WALK EVERY ONE.",
+           "ALL TWELVE LAYOUTS, A TO L — SCAN TO WALK EVERY ONE.",
            font=font(38), fill=BLACK, anchor="ma")
 
     # three QR panels

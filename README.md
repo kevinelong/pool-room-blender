@@ -9,7 +9,7 @@ site, then rendered top-down + several perspective angles for layout planning.
 Public site (GitHub Pages, no login): **https://kevinelong.github.io/pool-room-blender/**
 
 - **Hub** (start here — the web poster): https://kevinelong.github.io/pool-room-blender/
-- **Walk it** — first-person walkthrough of all nine layouts: https://kevinelong.github.io/pool-room-blender/walk.html
+- **Walk it** — first-person walkthrough of all twelve layouts: https://kevinelong.github.io/pool-room-blender/walk.html
 - **Get the PDF** — one-tap download page (options study + one-page sheet): https://kevinelong.github.io/pool-room-blender/get_pdf.html
 - **Weigh the options** — interactive decision deck: https://kevinelong.github.io/pool-room-blender/deck.html
 - **Design your own** — drag-and-drop layout editor (6″/45° snapping): https://kevinelong.github.io/pool-room-blender/design.html

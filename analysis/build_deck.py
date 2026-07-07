@@ -140,7 +140,7 @@ ul.notes li { margin-bottom: 5px; max-width: 75ch; }
   ranking follows. Prefer to see it on your feet? Take the
   <a href="__WALKTHROUGH_URL__"
   style="color:#8fe08f">first-person walkthrough</a> — an auto-tour enters each
-  layout through the Main Entrance and loops the room, A to I. Want it on
+  layout through the Main Entrance and loops the room, A to L. Want it on
   paper? The <a href="__DOWNLOAD_URL__" style="color:#8fe08f">download
   page</a> has the full options PDF and the one-page sheet, one tap each.</p>
 

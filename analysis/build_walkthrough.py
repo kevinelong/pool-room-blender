@@ -32,14 +32,17 @@ from project_urls import DOWNLOAD_URL, DECK_URL  # noqa: E402
 # letters follow the semantic page order: left, centered, right)
 SHORT = {
     "turnleft":   ("A", "left 4+2"),
-    "westline":   ("B", "west 1×6"),
-    "westshift":  ("C", "west 1×6 low"),
-    "social":     ("D", "center 2×3"),
-    "fourturned": ("E", "center 4+2"),
-    "centerline": ("F", "center 1×6"),
-    "turnright":  ("G", "right 4+2"),
-    "eastline":   ("H", "east 1×6"),
-    "eastshift":  ("I", "east 1×6 low"),
+    "gridleft":   ("B", "left 2×3"),
+    "westline":   ("C", "west 1×6"),
+    "westshift":  ("D", "west 1×6 low"),
+    "social":     ("E", "center 2×3"),
+    "fourturned": ("F", "center 4+2"),
+    "gridwide":   ("G", "center 2×3 wide"),
+    "centerline": ("H", "center 1×6"),
+    "turnright":  ("I", "right 4+2"),
+    "gridright":  ("J", "right 2×3"),
+    "eastline":   ("K", "east 1×6"),
+    "eastshift":  ("L", "east 1×6 low"),
 }
 
 
