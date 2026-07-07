@@ -1,16 +1,16 @@
-"""Single source of truth for the three public artifact URLs.
+"""Single source of truth for the public URLs.
 
 Every generated surface (poster, options PDF, walkthrough, download page,
-decision deck, README) cross-links these; import from here so they can
-never drift apart.
+decision deck, hub, README) cross-links these; import from here so they
+can never drift apart.
+
+v47: URLs point at GitHub Pages (public — no login needed), served from
+docs/ on main. The hub is the site root. claude.ai artifact copies still
+exist but are workspace-only, so nothing printed should reference them.
 """
-WALKTHROUGH_URL = (
-    "https://claude.ai/code/artifact/29c21156-ee9c-46b8-96b3-bf32162aacfe")
-DOWNLOAD_URL = (
-    "https://claude.ai/code/artifact/13ae99fe-5608-405e-b746-cdbad72873cd")
-DECK_URL = (
-    "https://claude.ai/code/artifact/5a9942da-0297-48fe-8acb-24d5e81baa24")
-# the one-stop landing page (web poster) that wraps the three above —
-# this is THE link to share
-HUB_URL = (
-    "https://claude.ai/code/artifact/4762f49c-6200-4062-8f9d-91f69d3c0aca")
+PAGES_ROOT = "https://kevinelong.github.io/pool-room-blender"
+
+HUB_URL = PAGES_ROOT + "/"
+WALKTHROUGH_URL = PAGES_ROOT + "/walk.html"
+DOWNLOAD_URL = PAGES_ROOT + "/get_pdf.html"
+DECK_URL = PAGES_ROOT + "/deck.html"

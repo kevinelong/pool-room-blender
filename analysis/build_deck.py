@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Assemble docs/decision_deck_v16.html — a self-contained decision deck.
+"""Assemble docs/deck.html — a self-contained decision deck.
 
 Embeds the six plan PNGs (base64) and scorecards.json, and gives decision
 makers weight sliders that re-rank the options live. Regenerate after any
@@ -315,7 +315,8 @@ def main():
             .replace("__PERSPS_JSON__", json.dumps(persps))
             .replace("__WALKTHROUGH_URL__", WALKTHROUGH_URL)
             .replace("__DOWNLOAD_URL__", DOWNLOAD_URL))
-    out = os.path.join(ROOT, "docs", "decision_deck_v16.html")
+    # v47: friendly public filename on GitHub Pages
+    out = os.path.join(ROOT, "docs", "deck.html")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w") as fh:
         fh.write(html)

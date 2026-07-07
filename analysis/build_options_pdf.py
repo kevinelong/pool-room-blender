@@ -408,11 +408,12 @@ def walkthrough_page():
         page.paste(qr_im(url, qpx), (cx - qpx // 2, 205))
         d.text((cx, 205 + qpx + 12), "scan to open",
                font=fnt(16, False), fill=MUTED, anchor="ma")
-        # the URL in large print, split to fit half the page
-        u1, u2 = url.split("/artifact/")
-        d.text((cx, 205 + qpx + 52), u1 + "/artifact/",
+        # the URL in large print, host / path split to fit half the page
+        from urllib.parse import urlsplit
+        parts = urlsplit(url)
+        d.text((cx, 205 + qpx + 52), parts.scheme + "://" + parts.netloc,
                font=fnt(25), fill=(20, 20, 24), anchor="ma")
-        d.text((cx, 205 + qpx + 88), u2,
+        d.text((cx, 205 + qpx + 88), parts.path,
                font=fnt(25), fill=(20, 20, 24), anchor="ma")
     d.line([half, 160, half, 205 + qpx + 120], fill=(210, 208, 202),
            width=2)

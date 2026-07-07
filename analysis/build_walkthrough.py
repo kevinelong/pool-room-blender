@@ -265,7 +265,8 @@ def main():
         tpl = fh.read()
     html = tpl.replace("/*__DATA__*/", "const DATA = "
                        + json.dumps(data, separators=(",", ":")) + ";")
-    out = os.path.join(ROOT, "docs", "index.html")
+    # v47: walk.html — the hub owns index.html (the GitHub Pages root)
+    out = os.path.join(ROOT, "docs", "walk.html")
     with open(out, "w") as fh:
         fh.write(html)
     print(f"wrote {out} ({os.path.getsize(out)/1e6:.1f} MB, "

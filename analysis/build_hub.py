@@ -74,7 +74,7 @@ def main():
     <span class="card-kind">{kind}</span>
     <span class="card-title">{title} →</span>
     <span class="card-blurb">{blurb}</span>
-    <span class="card-url">{url.replace('/artifact/', '/artifact/&#8203;')}</span>
+    <span class="card-url">{url}</span>
   </span>
   <img class="card-qr" src="{qr_uri(url)}" alt="QR code for {title}">
 </a>"""
@@ -171,7 +171,8 @@ def main():
   </footer>
 </div>
 """
-    out = os.path.join(ROOT, "docs", "hub.html")
+    # v47: the hub is the GitHub Pages site root
+    out = os.path.join(ROOT, "docs", "index.html")
     with open(out, "w") as fh:
         fh.write(html)
     print(f"wrote {out} ({os.path.getsize(out)/1e6:.2f} MB)")

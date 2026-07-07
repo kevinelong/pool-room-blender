@@ -6,20 +6,15 @@ site, then rendered top-down + several perspective angles for layout planning.
 
 ## Live links
 
-**One link to share — the hub (web poster, wraps everything below):**
-https://claude.ai/code/artifact/4762f49c-6200-4062-8f9d-91f69d3c0aca
+Public site (GitHub Pages, no login): **https://kevinelong.github.io/pool-room-blender/**
 
-All pages are single self-contained files and cross-link each other:
+- **Hub** (start here — the web poster): https://kevinelong.github.io/pool-room-blender/
+- **Walk it** — first-person walkthrough of all nine layouts: https://kevinelong.github.io/pool-room-blender/walk.html
+- **Get the PDF** — one-tap download page (options study + one-page sheet): https://kevinelong.github.io/pool-room-blender/get_pdf.html
+- **Weigh the options** — interactive decision deck: https://kevinelong.github.io/pool-room-blender/deck.html
 
-- **Walk it** — first-person walkthrough of all nine layouts:
-  https://claude.ai/code/artifact/29c21156-ee9c-46b8-96b3-bf32162aacfe
-- **Get the PDF** — one-tap download page (options study + one-page sheet):
-  https://claude.ai/code/artifact/13ae99fe-5608-405e-b746-cdbad72873cd
-- **Weigh the options** — interactive decision deck (set weights, re-rank live):
-  https://claude.ai/code/artifact/5a9942da-0297-48fe-8acb-24d5e81baa24
-
-The print poster (`docs/pool_room_poster.pdf`) carries the same three URLs
-as QR codes. URLs are defined once in `analysis/project_urls.py`.
+The print poster (`docs/pool_room_poster.pdf`) carries the same URLs as QR
+codes. URLs are defined once in `analysis/project_urls.py`.
 
 ## Room
 

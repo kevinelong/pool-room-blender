@@ -205,10 +205,11 @@ def main():
                    anchor="ma")
             y += 38
         y += 14
-        u1, u2 = url.split("/artifact/")
-        d.text((cx, y), u1 + "/artifact/", font=font(27, True, mono=True),
-               fill=BLACK, anchor="ma")
-        d.text((cx, y + 36), u2, font=font(27, True, mono=True),
+        from urllib.parse import urlsplit
+        parts = urlsplit(url)
+        d.text((cx, y), parts.scheme + "://" + parts.netloc,
+               font=font(30, True, mono=True), fill=BLACK, anchor="ma")
+        d.text((cx, y + 42), parts.path, font=font(30, True, mono=True),
                fill=BLACK, anchor="ma")
 
     # footer (letter key lives on the grid labels now)
