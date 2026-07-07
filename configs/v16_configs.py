@@ -376,7 +376,10 @@ CONFIGS = [
         # west-hugging file) and clear of the east service lane and entry well
         # v23: the top (south) table shifts west, centered between the
         # sixth round and the entry-stair railing (well edge x=276)
-        tables=([(f"Line{i}", 206.0, yt)
+        # v52: the HVAC-row table (yt=374) jogs 12" west so its cabinet
+        # corner clears the chase; stroke room splits ~55/55 between the
+        # chase face and the west lounge rounds
+        tables=([(f"Line{i}", 194.0 if yt == 374 else 206.0, yt)
                  for i, yt in enumerate([71, 172, 273, 374, 475])]
                 + [("Line5", 185.5, 576)]),
         # v26: the sixth round moves IN LINE with the column (user), on
@@ -415,7 +418,10 @@ CONFIGS = [
         # line at cx=206 (no westward shift) and its round no longer
         # fights the Emergency Exit corridor. The cost: the bottom
         # table's end swing runs ~45" against the bottom wall.
-        tables=[(f"Line{i}", 206.0, yt)
+        # v52: the HVAC-row table (yt=340.5) jogs 12" west — its east
+        # end faced the chase across 40", pinning the shortest cue room
+        # at 43"; the jog balances it ~55/55 with the west lounge
+        tables=[(f"Line{i}", 194.0 if yt == 340.5 else 206.0, yt)
                 for i, yt in enumerate(
                     [37.5, 138.5, 239.5, 340.5, 441.5, 542.5])],
         aisle_x=110.0,

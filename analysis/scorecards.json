@@ -820,8 +820,8 @@
             "N": 54.8
           },
           "Line3": {
-            "W": 80.0,
-            "E": 71.0,
+            "W": 68.0,
+            "E": 83.0,
             "S": 54.8,
             "N": 54.8
           },
@@ -903,9 +903,9 @@
       },
       "cue": {
         "full_pct": 50,
-        "tight_pct": 42,
-        "blocked_pct": 8,
-        "min_clearance_in": 43.0,
+        "tight_pct": 46,
+        "blocked_pct": 4,
+        "min_clearance_in": 44.8,
         "per_table": {
           "Line0": {
             "W": 80.0,
@@ -926,8 +926,8 @@
             "N": 54.8
           },
           "Line3": {
-            "W": 80.0,
-            "E": 43.0,
+            "W": 68.0,
+            "E": 55.0,
             "S": 54.8,
             "N": 54.8
           },
@@ -974,7 +974,7 @@
         "The whole line slides toward the bottom wall: the top table rejoins the straight line and every compromise at the entry end dissolves.",
         "All six rounds sit on their tables' centerlines at the west wall, fully clear of the Emergency Exit approach.",
         "FLAG: the bottom table's end swing runs tight against the bottom wall \u2014 the cost of the slide.",
-        "Cue room around the tables: most sides get about 55\"; the shortest clearance is 43.0\"."
+        "Cue room around the tables: most sides get about 55\"; the shortest clearance is 44.8\"."
       ],
       "pros": [
         "The whole line slides toward the bottom wall: the top table rejoins the straight line and every compromise at the entry end dissolves.",
@@ -983,7 +983,7 @@
       "cons": [
         "The bottom table's end swing runs tight against the bottom wall \u2014 the cost of the slide."
       ],
-      "measured": "Cue room around the tables: most sides get about 55\"; the shortest clearance is 43.0\".",
+      "measured": "Cue room around the tables: most sides get about 55\"; the shortest clearance is 44.8\".",
       "impact": {
         "play": "-",
         "hosp": "+",

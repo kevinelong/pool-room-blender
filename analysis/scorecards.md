@@ -10,7 +10,7 @@
 | F · Center Line | 6 | 24 | 24 | 0 | 0 | 58% | 54.8 | 70.0 ft | 0.0 ft | 12 | 56.6 ft | 47.5 | $276 | 0 |
 | G · Four On Top — Turned Right | 6 | 24 | 0 | 0 | 14 | 62% | 37.2 | 93.7 ft | 66.8 ft | 9 | 59.5 ft | 40.0 | $221 | 15 |
 | H · East Line + West Lounge | 6 | 24 | 0 | 0 | 48 | 58% | 54.8 | 68.2 ft | 46.8 ft | 12 | 54.9 ft | 41.2 | $612 | 20 |
-| I · East Line — Shifted Down | 6 | 24 | 0 | 0 | 48 | 50% | 43.0 | 71.0 ft | 44.0 ft | 12 | 57.7 ft | 47.5 | $612 | 20 |
+| I · East Line — Shifted Down | 6 | 24 | 0 | 0 | 48 | 50% | 44.8 | 71.0 ft | 44.0 ft | 12 | 57.7 ft | 47.5 | $612 | 20 |
 
 ## Impact at a glance (− negative · neutral + positive)
 
