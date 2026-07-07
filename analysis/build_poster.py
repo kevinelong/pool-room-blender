@@ -16,6 +16,8 @@ sys.path.insert(0, ROOT)
 from configs.v16_configs import (  # noqa: E402
     CONFIGS, ROOM_W, ROOM_L, BEAM_Y, HVAC, ENTRY_WELL, table_rect,
 )
+sys.path.insert(0, HERE)
+from project_urls import WALKTHROUGH_URL, DOWNLOAD_URL, DECK_URL  # noqa: E402
 
 DPI = 300
 W, H = int(8.5 * DPI), 14 * DPI          # 2550 x 4200
@@ -25,15 +27,15 @@ LINKS = [
     ("WALK IT",
      "A first-person tour of all nine layouts — auto-walks each room, "
      "or take the controls. Downloads live at the top of the page.",
-     "https://claude.ai/code/artifact/29c21156-ee9c-46b8-96b3-bf32162aacfe"),
+     WALKTHROUGH_URL),
     ("GET THE PDF",
      "One tap, one file: the twelve-page options study with sightlines, "
      "pros & cons, and the one-page comparison sheet.",
-     "https://claude.ai/code/artifact/13ae99fe-5608-405e-b746-cdbad72873cd"),
+     DOWNLOAD_URL),
     ("WEIGH THE OPTIONS",
      "The interactive decision deck — set what the house values and "
      "watch the nine layouts re-rank live.",
-     "https://claude.ai/code/artifact/5a9942da-0297-48fe-8acb-24d5e81baa24"),
+     DECK_URL),
 ]
 
 

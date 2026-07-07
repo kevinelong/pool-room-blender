@@ -507,12 +507,17 @@ DATA.layouts.forEach((lay, i)=>{
 // v42: embedded downloads — the page is self-contained, so the PDFs and
 // each overhead image download straight from it (no repo access needed)
 const dls = DATA.downloads || {};
+const lnk = DATA.links || {};
 const dlBar = document.getElementById('downloads');
-let dlHtml = 'Downloads: ';
+let dlHtml = 'Downloads &amp; links: ';
 if (dls.options_pdf) dlHtml +=
   `<a href="${dls.options_pdf}" download="pool_room_options.pdf">⤓ Options PDF (12 pages)</a>`;
 if (dls.sheet_pdf) dlHtml +=
   `<a href="${dls.sheet_pdf}" download="pool_room_topdowns.pdf">⤓ One-page top-down sheet</a>`;
+if (lnk.deck) dlHtml +=
+  `<a href="${lnk.deck}" target="_blank" rel="noopener">⚖ Weigh the options — interactive decision deck</a>`;
+if (lnk.download) dlHtml +=
+  `<a href="${lnk.download}" target="_blank" rel="noopener">🔗 shareable download page</a>`;
 dlHtml += '<span style="color:#77777f">each layout card also has its own ⤓</span>';
 dlBar.innerHTML = dlHtml;
 

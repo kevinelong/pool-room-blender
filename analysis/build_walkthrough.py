@@ -25,6 +25,8 @@ sys.path.insert(0, ROOT)
 from configs.v16_configs import (  # noqa: E402
     CONFIGS, ROOM_W, ROOM_L, BEAM_Y, HVAC, ENTRY_WELL, table_rect,
 )
+sys.path.insert(0, HERE)
+from project_urls import DOWNLOAD_URL, DECK_URL  # noqa: E402
 
 # fallback only — configs carry letter/short as canonical fields (v39
 # letters follow the semantic page order: left, centered, right)
@@ -256,6 +258,7 @@ def main():
             sheet_pdf=file_data_uri("docs/pool_room_topdowns.pdf",
                                     "application/pdf"),
         ),
+        links=dict(deck=DECK_URL, download=DOWNLOAD_URL),
     )
     tpl_path = os.path.join(HERE, "walkthrough_template.html")
     with open(tpl_path) as fh:

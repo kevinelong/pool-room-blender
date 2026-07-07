@@ -13,6 +13,9 @@ import os
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+import sys  # noqa: E402
+sys.path.insert(0, HERE)
+from project_urls import WALKTHROUGH_URL, DOWNLOAD_URL  # noqa: E402
 ROOT = os.path.join(HERE, "..")
 
 data = json.load(open(os.path.join(HERE, "scorecards.json")))
@@ -135,9 +138,11 @@ ul.notes li { margin-bottom: 5px; max-width: 75ch; }
   in through the kitchen door. Every number below is computed from the room
   geometry, not estimated. Set the weights to what the house values; the
   ranking follows. Prefer to see it on your feet? Take the
-  <a href="https://claude.ai/code/artifact/29c21156-ee9c-46b8-96b3-bf32162aacfe"
+  <a href="__WALKTHROUGH_URL__"
   style="color:#8fe08f">first-person walkthrough</a> — an auto-tour enters each
-  layout through the Main Entrance and loops the room, A to I.</p>
+  layout through the Main Entrance and loops the room, A to I. Want it on
+  paper? The <a href="__DOWNLOAD_URL__" style="color:#8fe08f">download
+  page</a> has the full options PDF and the one-page sheet, one tap each.</p>
 
   <div class="mixer">
     <p class="eyebrow">Weight mixer — what do we value?</p>
@@ -307,7 +312,9 @@ def main():
             .replace("__RATES_SENTENCE__", rates_sentence)
             .replace("__DATA_JSON__", json.dumps(data))
             .replace("__IMGS_JSON__", json.dumps(imgs))
-            .replace("__PERSPS_JSON__", json.dumps(persps)))
+            .replace("__PERSPS_JSON__", json.dumps(persps))
+            .replace("__WALKTHROUGH_URL__", WALKTHROUGH_URL)
+            .replace("__DOWNLOAD_URL__", DOWNLOAD_URL))
     out = os.path.join(ROOT, "docs", "decision_deck_v16.html")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w") as fh:

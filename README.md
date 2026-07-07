@@ -4,6 +4,20 @@ Procedural Blender build of a real pool room at Village Inn Restaurant & Lounge
 (Portland, OR area). The room is modeled from measurements and photos taken on
 site, then rendered top-down + several perspective angles for layout planning.
 
+## Live links
+
+All three are single self-contained pages/files and cross-link each other:
+
+- **Walk it** — first-person walkthrough of all nine layouts:
+  https://claude.ai/code/artifact/29c21156-ee9c-46b8-96b3-bf32162aacfe
+- **Get the PDF** — one-tap download page (options study + one-page sheet):
+  https://claude.ai/code/artifact/13ae99fe-5608-405e-b746-cdbad72873cd
+- **Weigh the options** — interactive decision deck (set weights, re-rank live):
+  https://claude.ai/code/artifact/5a9942da-0297-48fe-8acb-24d5e81baa24
+
+The print poster (`docs/pool_room_poster.pdf`) carries the same three URLs
+as QR codes. URLs are defined once in `analysis/project_urls.py`.
+
 ## Room
 
 - Interior: **316" wide (W) x 682" long (L)** — ~26'4" x ~56'10"
