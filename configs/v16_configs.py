@@ -77,12 +77,15 @@ def _rows(y_tops, cols=(XL, XR)):
 # table row's END LINES (the tables' north/south short sides), pushed
 # against the wall; each top's two stools sit north and south, facing it.
 # East-wall exceptions: the row-2 north end nudges 4" south to clear the
-# HVAC chase; the row-3 south end is SKIPPED (it would sit in the sunken
-# Main Entry well); the top by the kitchen door partially fronts it —
-# user-accepted, noted.
+# HVAC chase; the row-3 south end is SKIPPED (the sunken Main Entry well
+# still owns that corner); v53: the southmost east top slides down to
+# 573 in the band the corrected well freed — matching the column's own
+# 88.5" rhythm and keeping 36"+ clear of the well. The bottom pair had
+# been compressed to 52.5" c-c (8" between stool backs) by the old
+# keepout.
 TT_ROW_ENDS = [233.5, 326.0, 392.0, 484.5, 537.0, 629.5]
 TWOTOPS_2X3 = ([(12.0, y) for y in TT_ROW_ENDS]
-               + [(304.0, y) for y in (233.5, 326.0, 396.0, 484.5, 537.0)])
+               + [(304.0, y) for y in (233.5, 326.0, 396.0, 484.5, 573.0)])
 
 CONFIGS = [
     dict(
@@ -314,8 +317,10 @@ CONFIGS = [
         lane_x=241.0,
         hightops=([(25, cy) for cy in
                    (97.75, 198.75, 299.75, 400.75, 501.75, 590)]
+                  # v53: southmost east hightop slides to 588 — the old
+                  # well keepout had compressed the bottom pair to 43" c-c
                   + [(291, cy) for cy in
-                     (97.75, 198.75, 265, 410, 501.75, 545)]),
+                     (97.75, 198.75, 265, 410, 501.75, 588)]),
         twotops=[],
         twotop_role=None,
         rails=[],

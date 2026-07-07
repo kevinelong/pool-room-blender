@@ -405,13 +405,13 @@
         "cocktail": {
           "seats": 16,
           "max_run_ft": 67.6,
-          "avg_run_ft": 41.8,
+          "avg_run_ft": 41.6,
           "conflicted_seats": 6
         },
         "food": {
           "seats": 16,
           "max_run_ft": 52.0,
-          "avg_run_ft": 27.5,
+          "avg_run_ft": 27.7,
           "conflicted_seats": 6
         }
       },
@@ -421,7 +421,7 @@
         "worst_travel_ft": 58.8
       },
       "paths": {
-        "min_width_in": 52.5,
+        "min_width_in": 38.5,
         "anomalies": [
           {
             "severity": "blocked",
@@ -619,7 +619,7 @@
           },
           "Line5": {
             "W": 74.0,
-            "E": 119.0,
+            "E": 74.0,
             "S": 59.8,
             "N": 54.8
           }
@@ -629,7 +629,7 @@
         "cocktail": {
           "seats": 12,
           "max_run_ft": 70.0,
-          "avg_run_ft": 42.7,
+          "avg_run_ft": 42.4,
           "conflicted_seats": 12
         },
         "food": {
