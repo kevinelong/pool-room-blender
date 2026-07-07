@@ -6,7 +6,10 @@ site, then rendered top-down + several perspective angles for layout planning.
 
 ## Live links
 
-All three are single self-contained pages/files and cross-link each other:
+**One link to share — the hub (web poster, wraps everything below):**
+https://claude.ai/code/artifact/4762f49c-6200-4062-8f9d-91f69d3c0aca
+
+All pages are single self-contained files and cross-link each other:
 
 - **Walk it** — first-person walkthrough of all nine layouts:
   https://claude.ai/code/artifact/29c21156-ee9c-46b8-96b3-bf32162aacfe
