@@ -437,13 +437,18 @@ function collide(nx, ny){
   if (ny > L - r) ny = L - r;
   if (nx > W - r && !(ny > wl[1]+6 && ny < L-6)) nx = W - r;
   if (nx > W + 30) nx = W + 30;
+  // v59: treat every obstacle as an AABB grown by the body radius; if the
+  // player centre lands inside it (edge OR deep interior), eject along the
+  // shallowest axis. The old nearest-point test returned distance 0 for
+  // interior points, so you could stand on / walk through a table.
   for (const o of lay.obstacles){
-    const cx = Math.max(o[0], Math.min(nx, o[2]));
-    const cy = Math.max(o[1], Math.min(ny, o[3]));
-    const dx = nx-cx, dy = ny-cy, d2 = dx*dx+dy*dy;
-    if (d2 < r*r && d2 > 1e-9){
-      const d = Math.sqrt(d2); nx = cx + dx/d*r; ny = cy + dy/d*r;
-    } else if (d2 <= 1e-9){ nx += r; }
+    const x0=o[0]-r, y0=o[1]-r, x1=o[2]+r, y1=o[3]+r;
+    if (nx > x0 && nx < x1 && ny > y0 && ny < y1){
+      const pL = nx-x0, pR = x1-nx, pD = ny-y0, pU = y1-ny;
+      const m = Math.min(pL, pR, pD, pU);
+      if (m === pL) nx = x0; else if (m === pR) nx = x1;
+      else if (m === pD) ny = y0; else ny = y1;
+    }
   }
   return [nx, ny];
 }
