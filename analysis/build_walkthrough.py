@@ -116,11 +116,11 @@ def build_grid(obs, clearance=11.0):
         for gy in range(ay0, ay1 + 1):
             for gx in range(ax0, ax1 + 1):
                 blocked[gy * GW + gx] = 1
-    # keep the entry corridor between the well rails walkable
-    for gy in range(int(618 / CELL), int(676 / CELL)):
-        for gx in range(int(280 / CELL), GW):
+    # keep the entry channel (S wall, v50 orientation) walkable
+    for gy in range(int(646 / CELL), int(678 / CELL)):
+        for gx in range(int(236 / CELL), GW):
             cx, cy = (gx + 0.5) * CELL, (gy + 0.5) * CELL
-            if 280 < cx < ROOM_W - 2 and 618 < cy < 676:
+            if 236 < cx < ROOM_W - 2 and 646 < cy < 678:
                 blocked[gy * GW + gx] = 0
     return blocked
 
@@ -198,7 +198,7 @@ def smooth(blocked, cells):
 def tour_for(cfg):
     obs = obstacle_rects(cfg)
     blocked = build_grid(obs)
-    inside_entry = (296.0, 646.0)
+    inside_entry = (238.0, 662.0)   # room floor at the top of the treads
     targets = [(280.0, 588.0), (260.0, 56.0), (52.0, 56.0),
                (52.0, 600.0), (160.0, 350.0), inside_entry]
     cur = nearest_free(blocked, *inside_entry)
@@ -212,8 +212,8 @@ def tour_for(cfg):
             cells += smooth(blocked, leg)[1:]
     pts = [((gx + 0.5) * CELL, (gy + 0.5) * CELL) for gx, gy in cells]
     # scripted door legs: spawn outside, enter; exit at the end
-    entry_out = (348.0, 646.0)
-    return [entry_out, (316.0, 646.0)] + pts + [(316.0, 646.0), entry_out]
+    entry_out = (348.0, 662.0)
+    return [entry_out, (316.0, 662.0)] + pts + [(316.0, 662.0), entry_out]
 
 
 # ------------------------------------------------------------------- data --

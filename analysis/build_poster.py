@@ -79,11 +79,12 @@ def draw_plan_lineart(cfg, pw, ph, stroke=5):
                              (276, 0, 312, 3),                    # storage A
                              (ROOM_W - 3, 4, ROOM_W, 40)]:        # storage B
         d.rectangle([X(x0), Y(y1), X(x1), Y(y0)], fill=BLACK)
-    # entry well: opening gap + treads
-    d.rectangle([X(ENTRY_WELL[0]), Y(682), X(316), Y(612)],
+    # entry well: sunken channel along the S wall, treads at the west end
+    ew = ENTRY_WELL
+    d.rectangle([X(ew[0]), Y(ew[3]), X(ew[2]), Y(ew[1])],
                 outline=BLACK, width=2)
-    for tx in (287, 298):
-        d.line([X(tx), Y(682), X(tx), Y(612)], fill=BLACK, width=2)
+    for tx in (ew[0] + 11, ew[0] + 22):
+        d.line([X(tx), Y(ew[3]), X(tx), Y(ew[1])], fill=BLACK, width=2)
     # beam (dashed)
     xx = 0
     while xx < ROOM_W:

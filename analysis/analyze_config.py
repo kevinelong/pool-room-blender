@@ -189,8 +189,8 @@ def path_audit(cfg):
     # The painted strips PLUS the three door approaches — a strip clipped
     # short of an obstacle hides the pinch at its seam, so the approaches
     # are audited as corridors in their own right.
-    corridors = [(30.0, 650.0, 276.0, 680.0),    # EE / south-wall walk
-                 (250.0, 588.0, 316.0, 612.0),   # Main Entry approach
+    corridors = [(30.0, 650.0, 240.0, 680.0),    # EE / south-wall walk (ends at well, v50)
+                 (196.0, 642.0, 246.0, 682.0),   # Main Entry approach (v50: top of treads, W end)
                  (262.0, 298.0, 316.0, 322.0)]   # kitchen door approach
     for (x0, y0, x1, y1) in list(cfg.get("paths", [])) + corridors:
         horiz = (x1 - x0) >= (y1 - y0)

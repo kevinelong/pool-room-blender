@@ -104,7 +104,8 @@ CONFIGS = [
         hightops=[],
         twotops=[(76.0, 13.0), (208.0, 13.0),
                  (72.0, 250.0), (142.0, 250.0), (212.0, 250.0),
-                 (120.0, 671.0), (208.0, 671.0)],
+                 # v50: SE top nudged west clear of the entry approach
+                 (120.0, 671.0), (190.0, 671.0)],
         twotop_role="flex",
         rails=[],
         bench=False, bench_role=None,
@@ -269,7 +270,8 @@ CONFIGS = [
         # slides east clear of the Emergency Exit corridor
         twotops=[(86.0, 13.0), (218.0, 13.0),
                  (82.0, 250.0), (152.0, 250.0), (222.0, 250.0),
-                 (130.0, 671.0), (218.0, 671.0)],
+                 # v50: SE top nudged west clear of the entry approach
+                 (118.0, 671.0), (190.0, 671.0)],
         twotop_role="flex",
         rails=[],
         bench=False, bench_role=None,
@@ -345,7 +347,8 @@ CONFIGS = [
         hightops=[],
         twotops=[(108.0, 13.0), (240.0, 13.0),
                  (104.0, 250.0), (174.0, 250.0), (244.0, 250.0),
-                 (136.0, 671.0), (226.0, 671.0)],
+                 # v50: SE top nudged west clear of the entry approach
+                 (124.0, 671.0), (190.0, 671.0)],
         twotop_role="flex",
         rails=[],
         bench=False, bench_role=None,
@@ -557,7 +560,7 @@ ROUND_DIAG_BAND = 34.0     # |dx-dy| band where the diagonal rule applies
 # for the per-table aligned rounds and noted in the layout notes.
 KITCHEN_FRONT = (262, 282, 316, 338)   # kitchen door frontage, 54" deep
 KEEPOUTS_EGRESS = [
-    (250, 596, 316, 682),   # Main Entry well + rails + approach
+    (210, 642, 316, 682),   # Main Entry well + rails + west approach (v50)
     EXIT_FRONTAGE,          # Emergency Exit corridor (36", v26)
 ]
 KEEPOUTS_FRONTAGE = [
@@ -567,7 +570,8 @@ KEEPOUTS_FRONTAGE = [
     HVAC,
 ]
 KEEPOUTS = KEEPOUTS_EGRESS + KEEPOUTS_FRONTAGE   # for path clipping et al.
-ENTRY_WELL = (276, 612, 316, 682)   # sunken entry: floor cut, treads, landing
+ENTRY_WELL = (246, 642, 316, 682)   # sunken entry along the S wall (v50:
+# video re-measure — 70" E-W run x 40" N-S; door east end, treads west end)
 
 
 def _rect_overlap(a, b):

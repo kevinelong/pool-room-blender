@@ -62,7 +62,7 @@ DOOR_H = 80
 #                 end. Old west-wall "Staff/Storage" door is REMOVED.
 DOORS = [
     # Main entry, RIGHT wall, top-right corner (matches railed stair landing)
-    ('R', ROOM_L - 70, 70, DOOR_H, "Main Entry (36\")"),
+    ('R', ROOM_L - 40, 40, DOOR_H, "Main Entry (36\")"),
     # Kitchen, RIGHT wall, north of HVAC chase.
     ('R', 290, 40, DOOR_H, "Kitchen (32\")"),
     # Emergency exit, FRONT (south) wall, right side.
@@ -78,8 +78,8 @@ DOORS = [
 # Stair landing & 2 steps inside main entry
 STAIR_RISE = 7.5    # inches per riser
 STAIR_TREAD = 11    # tread depth (X projection into room)
-LANDING_DEPTH = 18  # outside-grade landing depth at door (lower elevation)
-STAIR_WIDTH = 70    # matches main door width
+LANDING_DEPTH = 48  # v50: wood vestibule at the door (video re-measure)
+STAIR_WIDTH = 40    # v50: channel runs E-W along the S wall, 40" wide N-S
 
 # ============================================================================
 # HELPERS
@@ -278,8 +278,8 @@ mat_concrete = make_pbr_material("Concrete_Step", None, None, None,
 # v17: the slab stops at the Main Entry well so the sunken landing and the
 # two treads (build_entry_alcove) are visible — previously the full-room
 # slab buried them (and z-fought with the top tread in top-down renders).
-ENTRY_WELL_X0 = ROOM_W - LANDING_DEPTH - 2 * STAIR_TREAD   # 276
-ENTRY_WELL_Y0 = ROOM_L - 70                                 # 612
+ENTRY_WELL_X0 = ROOM_W - LANDING_DEPTH - 2 * STAIR_TREAD   # 246
+ENTRY_WELL_Y0 = ROOM_L - 40                                 # 642
 make_box("Floor",
          x=0, y=0, z=-1,
          w=ROOM_W, l=ENTRY_WELL_Y0, h=1,
@@ -436,17 +436,21 @@ def build_back_wall():
 
 def build_entry_alcove():
     """v17: sunken Main Entry well, matching the reference video.
+    v50: re-measured from the video — the channel runs E-W along the
+    SOUTH wall (70" run x 40" wide), door at the east end, two treads
+    climbing west to the room floor. Previously transposed (70 along
+    the east wall).
     From the room floor two treads step DOWN to a landing at the door,
     flanked by two wrought-iron rails, with a wood door leaf standing
     open against the wall beside the opening. The floor slab stops at
     the well edge (see Floor / Floor_S_strip) so all of it is visible.
     Treads are solid to the well bottom — no floating 1\" slabs."""
-    door_y0 = ROOM_L - 70
-    door_y_span = 70
+    door_y0 = ROOM_L - 40
+    door_y_span = 40
     landing_z = -2 * STAIR_RISE  # -15"
-    x_step2 = ROOM_W - LANDING_DEPTH - 2 * STAIR_TREAD   # 276
-    x_step1 = ROOM_W - LANDING_DEPTH - STAIR_TREAD       # 287
-    x_landing = ROOM_W - LANDING_DEPTH                   # 298
+    x_step2 = ROOM_W - LANDING_DEPTH - 2 * STAIR_TREAD   # 246
+    x_step1 = ROOM_W - LANDING_DEPTH - STAIR_TREAD       # 257
+    x_landing = ROOM_W - LANDING_DEPTH                   # 268
     # Landing at east wall (door side), the well bottom
     build_wall_segment("Entry_Landing",
                        x=x_landing, y=door_y0, z=landing_z,
@@ -529,7 +533,7 @@ def build_entry_alcove():
                                       tile_size_m=1.0,
                                       flat_color=(0.42, 0.26, 0.13, 1.0))
     build_wall_segment("Entry_Door_Leaf_Open",
-                       x=ROOM_W - 36 - 1, y=ROOM_L - 2.5, z=0,
+                       x=ROOM_W - 36 - 1, y=ROOM_L - 2.5, z=landing_z + 1,
                        w=36, l=1.75,
                        h=80, material=mat_wood_door)
 

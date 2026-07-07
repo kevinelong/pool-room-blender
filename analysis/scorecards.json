@@ -65,13 +65,13 @@
         "cocktail": {
           "seats": 7,
           "max_run_ft": 72.8,
-          "avg_run_ft": 43.8,
+          "avg_run_ft": 44.0,
           "conflicted_seats": 5
         },
         "food": {
           "seats": 7,
           "max_run_ft": 46.4,
-          "avg_run_ft": 31.8,
+          "avg_run_ft": 32.0,
           "conflicted_seats": 4
         }
       },
@@ -87,11 +87,6 @@
             "severity": "blocked",
             "width_in": 0.0,
             "where": "south-center: walk crosses a wall two-top"
-          },
-          {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "south-east: walk crosses a wall two-top"
           }
         ]
       },
@@ -198,11 +193,6 @@
       "paths": {
         "min_width_in": 25.0,
         "anomalies": [
-          {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "south-east: walk crosses a round's chairs"
-          },
           {
             "severity": "pinch",
             "width_in": 25.0,
@@ -318,11 +308,6 @@
         "min_width_in": 25.1,
         "anomalies": [
           {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "south-east: walk crosses a round's chairs"
-          },
-          {
             "severity": "pinch",
             "width_in": 25.1,
             "where": "center-east: between a round's chairs and a round's chairs"
@@ -436,7 +421,7 @@
         "worst_travel_ft": 58.8
       },
       "paths": {
-        "min_width_in": 38.2,
+        "min_width_in": 52.5,
         "anomalies": [
           {
             "severity": "blocked",
@@ -532,18 +517,18 @@
         "cocktail": {
           "seats": 7,
           "max_run_ft": 72.0,
-          "avg_run_ft": 43.0,
+          "avg_run_ft": 43.5,
           "conflicted_seats": 5
         },
         "food": {
           "seats": 7,
-          "max_run_ft": 45.6,
-          "avg_run_ft": 31.0,
+          "max_run_ft": 46.6,
+          "avg_run_ft": 31.4,
           "conflicted_seats": 4
         }
       },
       "egress": {
-        "exit_corridor_in": 113.0,
+        "exit_corridor_in": 101.0,
         "exit_corridor_ok": true,
         "worst_travel_ft": 61.0
       },
@@ -554,11 +539,6 @@
             "severity": "blocked",
             "width_in": 0.0,
             "where": "south-center: walk crosses a wall two-top"
-          },
-          {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "south-east: walk crosses a wall two-top"
           }
         ]
       },
@@ -665,7 +645,7 @@
         "worst_travel_ft": 56.6
       },
       "paths": {
-        "min_width_in": 42,
+        "min_width_in": 47.5,
         "anomalies": []
       },
       "revenue_proxy_hr": 276,
@@ -753,33 +733,28 @@
         "cocktail": {
           "seats": 7,
           "max_run_ft": 93.7,
-          "avg_run_ft": 65.3,
+          "avg_run_ft": 64.8,
           "conflicted_seats": 5
         },
         "food": {
           "seats": 7,
-          "max_run_ft": 69.8,
-          "avg_run_ft": 53.3,
+          "max_run_ft": 66.8,
+          "avg_run_ft": 52.7,
           "conflicted_seats": 4
         }
       },
       "egress": {
-        "exit_corridor_in": 119.0,
+        "exit_corridor_in": 107.0,
         "exit_corridor_ok": true,
         "worst_travel_ft": 59.5
       },
       "paths": {
-        "min_width_in": 37.0,
+        "min_width_in": 40.0,
         "anomalies": [
           {
             "severity": "blocked",
             "width_in": 0.0,
             "where": "south-center: walk crosses a wall two-top"
-          },
-          {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "south-east: walk crosses a wall two-top"
           }
         ]
       },

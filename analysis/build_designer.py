@@ -209,12 +209,13 @@ function drawRoom(){
   ctx.fillRect(R.w - 4, Y(330), 4, 40);       // kitchen (east)
   ctx.fillRect(276, Y(4), 36, 4);             // storage A (north)
   ctx.fillRect(R.w - 4, Y(40), 4, 36);        // storage B (east)
-  // entry well + treads
+  // entry well: sunken channel along the S wall, treads at the west end
   ctx.lineWidth = 1;
-  ctx.strokeRect(R.well[0], Y(682) + 1, R.w - R.well[0] - 1, 70 - 1);
-  for (const tx of [287, 298]){
-    ctx.beginPath(); ctx.moveTo(tx, Y(682) + 1); ctx.lineTo(tx, Y(612));
-    ctx.stroke();
+  const wd = R.well[3] - R.well[1];
+  ctx.strokeRect(R.well[0], Y(R.well[3]) + 1, R.w - R.well[0] - 1, wd - 1);
+  for (const tx of [R.well[0] + 11, R.well[0] + 22]){
+    ctx.beginPath(); ctx.moveTo(tx, Y(R.well[3]) + 1);
+    ctx.lineTo(tx, Y(R.well[1])); ctx.stroke();
   }
   // beam
   ctx.save();
@@ -233,7 +234,8 @@ function drawRoom(){
   ctx.fillStyle = MUTED;
   ctx.font = "9px ui-monospace, Menlo, monospace";
   ctx.textAlign = "center";
-  ctx.fillText("ENTRY", (R.well[0] + R.w) / 2, Y(647) + 3);
+  ctx.fillText("ENTRY", (R.well[0] + 22 + R.w) / 2,
+               Y((R.well[1] + R.well[3]) / 2) + 3);
   ctx.fillText("EXIT", 62, Y(668));
   ctx.fillText("HVAC", (R.hvac[0] + R.hvac[2]) / 2, Y((R.hvac[1] + R.hvac[3]) / 2) + 3);
   ctx.save();
