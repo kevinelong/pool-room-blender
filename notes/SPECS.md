@@ -151,3 +151,11 @@ Applied in:
     to the organizer today, ENDPOINT constant ready for server storage.
     (d) Process (user): 2D surfaces publish FIRST; Blender renders
     follow in the background with placeholders in the meantime.
+
+24. **v56/v57: 2x3 family two-top cleanup (user).** C's turned SE table
+    recentered between the entry rail and the table above it (52" each
+    side). Two-tops that spanned the center partition beam (y=332) or
+    touched the HVAC chase are removed; the surviving row-mate recenters
+    on its pool-table row (row-1 tops at row center 279.75 both walls;
+    east row-2 top at 438.25). Applies to the 2x3 family (B, C, F, H, I).
+    Flex-seat counts drop accordingly (F/B/C/H 62->56, I 54->52).

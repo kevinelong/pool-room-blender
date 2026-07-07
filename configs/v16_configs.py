@@ -83,9 +83,13 @@ def _rows(y_tops, cols=(XL, XR)):
 # 88.5" rhythm and keeping 36"+ clear of the well. The bottom pair had
 # been compressed to 52.5" c-c (8" between stool backs) by the old
 # keepout.
-TT_ROW_ENDS = [233.5, 326.0, 392.0, 484.5, 537.0, 629.5]
-TWOTOPS_2X3 = ([(12.0, y) for y in TT_ROW_ENDS]
-               + [(304.0, y) for y in (233.5, 326.0, 396.0, 484.5, 573.0)])
+# v57 (user): two-tops that spanned the partition beam (y=332) or
+# touched the HVAC chase are removed, and the surviving row-mate
+# recenters on its pool-table row: row-1 tops sit at the row CENTER
+# (279.75) on both walls; the east row-2 top centers at 438.25.
+TT_WEST = [279.75, 392.0, 484.5, 537.0, 629.5]
+TWOTOPS_2X3 = ([(12.0, y) for y in TT_WEST]
+               + [(304.0, y) for y in (279.75, 438.25, 573.0)])
 
 CONFIGS = [
     dict(
@@ -163,18 +167,18 @@ CONFIGS = [
                 ("T1L", 93.0, 392.0), ("T1R", 199.0, 392.0),
                 ("T2L", 93.0, 537.0),
                 # turned: centered between T2L's east edge (119.75) and
-                # the east wall; vertically centered on the row band
-                ("T2R", 217.9, 556.5)],
+                # the east wall; v56: vertically centered between T1R's
+                # south end (484.5) and the entry rail (642) — 52" each side
+                ("T2R", 217.9, 536.5)],
         rounds=[],
         rounds_forced=[(93.0, 47.0), (199.0, 47.0),
                        (93.0, 143.0), (199.0, 143.0), (146.0, 95.0)],
         rounds_plus=[(146.0, 95.0)],
         round_role="flex",
         pack_grid=False,
-        twotops=[(12.0, 233.5), (12.0, 326.0), (12.0, 392.0),
+        twotops=[(12.0, 279.75), (12.0, 392.0),
                  (12.0, 484.5), (12.0, 537.0), (12.0, 629.5),
-                 (304.0, 233.5), (304.0, 326.0), (304.0, 396.0),
-                 (304.0, 484.5),
+                 (304.0, 279.75), (304.0, 438.25),
                  # v55: the obstructing east top moves to the south wall,
                  # 30" west of the entry landing (user)
                  (216.0, 671.0)],
@@ -409,8 +413,9 @@ CONFIGS = [
         pack_grid=False,
         twotops=[(12.0, 179.5), (12.0, 272.0), (12.0, 392.0),
                  (12.0, 484.5), (12.0, 537.0), (12.0, 629.5),
-                 (304.0, 179.5), (304.0, 272.0), (304.0, 396.0),
-                 (304.0, 484.5), (304.0, 573.0)],
+                 (304.0, 179.5), (304.0, 272.0),
+                 # v57: the HVAC-touching top recenters on row 2
+                 (304.0, 438.25), (304.0, 573.0)],
         twotop_role="flex",
         hightops=[],
         rails=[],

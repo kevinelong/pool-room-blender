@@ -317,7 +317,7 @@ def overview_page(ordered):
 SCENARIOS = [
     ("If bar and kitchen revenue leads",
      "The Four On Top family (F and its variants B, C, H, I) — by far "
-     "the most seated hospitality, a two-top at every row end, and it "
+     "the most seated hospitality, wall two-tops on every table row, and it "
      "flips to a banquet for free. Runner-up: the lines (D, E, L, M)."),
     ("If serious play leads",
      "Center Line (J) — every table on display with the roomiest typical "

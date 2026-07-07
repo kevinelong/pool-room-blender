@@ -124,7 +124,7 @@
         "players": 24,
         "dine": 0,
         "drink": 0,
-        "flex": 62,
+        "flex": 56,
         "spectators": 0
       },
       "cue": {
@@ -173,16 +173,16 @@
       },
       "service": {
         "cocktail": {
-          "seats": 16,
+          "seats": 13,
           "max_run_ft": 68.6,
-          "avg_run_ft": 42.0,
-          "conflicted_seats": 6
+          "avg_run_ft": 43.4,
+          "conflicted_seats": 5
         },
         "food": {
-          "seats": 16,
+          "seats": 13,
           "max_run_ft": 52.0,
-          "avg_run_ft": 28.0,
-          "conflicted_seats": 6
+          "avg_run_ft": 30.6,
+          "conflicted_seats": 5
         }
       },
       "egress": {
@@ -191,16 +191,16 @@
         "worst_travel_ft": 59.8
       },
       "paths": {
-        "min_width_in": 38.5,
+        "min_width_in": 33.2,
         "anomalies": [
           {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "center-east: walk crosses a wall two-top"
+            "severity": "pinch",
+            "width_in": 33.2,
+            "where": "center-east: between a wall two-top and the HVAC chase"
           }
         ]
       },
-      "revenue_proxy_hr": 773,
+      "revenue_proxy_hr": 704,
       "flip_minutes": 0,
       "notes": [
         "The Four On Top pattern (straight 2x3 grid + the five-round quincunx) with the whole ensemble slid 12 inches west - the east service lane widens.",
@@ -234,13 +234,13 @@
         "players": 24,
         "dine": 0,
         "drink": 0,
-        "flex": 62,
+        "flex": 56,
         "spectators": 0
       },
       "cue": {
-        "full_pct": 75,
+        "full_pct": 79,
         "tight_pct": 8,
-        "blocked_pct": 17,
+        "blocked_pct": 12,
         "min_clearance_in": 44.5,
         "per_table": {
           "T0L": {
@@ -264,7 +264,7 @@
           "T1R": {
             "W": 59.8,
             "E": 68.5,
-            "S": 79.2,
+            "S": 59.2,
             "N": 73.2
           },
           "T2L": {
@@ -276,23 +276,23 @@
           "T2R": {
             "W": 59.2,
             "E": 59.1,
-            "S": 48.2,
-            "N": 79.2
+            "S": 68.2,
+            "N": 59.2
           }
         }
       },
       "service": {
         "cocktail": {
-          "seats": 16,
+          "seats": 13,
           "max_run_ft": 68.6,
-          "avg_run_ft": 42.1,
-          "conflicted_seats": 7
+          "avg_run_ft": 43.5,
+          "conflicted_seats": 6
         },
         "food": {
-          "seats": 16,
+          "seats": 13,
           "max_run_ft": 52.0,
-          "avg_run_ft": 28.9,
-          "conflicted_seats": 7
+          "avg_run_ft": 31.7,
+          "conflicted_seats": 6
         }
       },
       "egress": {
@@ -301,7 +301,7 @@
         "worst_travel_ft": 59.8
       },
       "paths": {
-        "min_width_in": 41.2,
+        "min_width_in": 33.2,
         "anomalies": [
           {
             "severity": "blocked",
@@ -314,13 +314,13 @@
             "where": "south-east: walk crosses a wall two-top"
           },
           {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "center-east: walk crosses a wall two-top"
+            "severity": "pinch",
+            "width_in": 33.2,
+            "where": "center-east: between a wall two-top and the HVAC chase"
           }
         ]
       },
-      "revenue_proxy_hr": 773,
+      "revenue_proxy_hr": 704,
       "flip_minutes": 0,
       "notes": [
         "The Slid Left grid with its top-right (southeast) table TURNED and centered between the top-left table and the east wall - a showcase corner table facing the entry.",
@@ -586,7 +586,7 @@
         "players": 24,
         "dine": 0,
         "drink": 0,
-        "flex": 62,
+        "flex": 56,
         "spectators": 0
       },
       "cue": {
@@ -635,16 +635,16 @@
       },
       "service": {
         "cocktail": {
-          "seats": 16,
+          "seats": 13,
           "max_run_ft": 67.6,
-          "avg_run_ft": 41.6,
-          "conflicted_seats": 6
+          "avg_run_ft": 43.0,
+          "conflicted_seats": 5
         },
         "food": {
-          "seats": 16,
+          "seats": 13,
           "max_run_ft": 52.0,
-          "avg_run_ft": 27.7,
-          "conflicted_seats": 6
+          "avg_run_ft": 30.2,
+          "conflicted_seats": 5
         }
       },
       "egress": {
@@ -653,16 +653,16 @@
         "worst_travel_ft": 58.8
       },
       "paths": {
-        "min_width_in": 38.5,
+        "min_width_in": 33.2,
         "anomalies": [
           {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "center-east: walk crosses a wall two-top"
+            "severity": "pinch",
+            "width_in": 33.2,
+            "where": "center-east: between a wall two-top and the HVAC chase"
           }
         ]
       },
-      "revenue_proxy_hr": 773,
+      "revenue_proxy_hr": 704,
       "flip_minutes": 0,
       "notes": [
         "The four aligned rounds and center fifth double as a tournament gallery \u2014 they face the nearest table row.",
@@ -810,7 +810,7 @@
         "players": 24,
         "dine": 0,
         "drink": 0,
-        "flex": 62,
+        "flex": 56,
         "spectators": 0
       },
       "cue": {
@@ -859,16 +859,16 @@
       },
       "service": {
         "cocktail": {
-          "seats": 16,
+          "seats": 13,
           "max_run_ft": 68.4,
-          "avg_run_ft": 41.6,
-          "conflicted_seats": 16
+          "avg_run_ft": 43.0,
+          "conflicted_seats": 13
         },
         "food": {
-          "seats": 16,
+          "seats": 13,
           "max_run_ft": 52.0,
-          "avg_run_ft": 27.7,
-          "conflicted_seats": 16
+          "avg_run_ft": 30.2,
+          "conflicted_seats": 13
         }
       },
       "egress": {
@@ -877,16 +877,16 @@
         "worst_travel_ft": 57.9
       },
       "paths": {
-        "min_width_in": 38.5,
+        "min_width_in": 33.2,
         "anomalies": [
           {
-            "severity": "blocked",
-            "width_in": 0.0,
-            "where": "center-east: walk crosses a wall two-top"
+            "severity": "pinch",
+            "width_in": 33.2,
+            "where": "center-east: between a wall two-top and the HVAC chase"
           }
         ]
       },
-      "revenue_proxy_hr": 773,
+      "revenue_proxy_hr": 704,
       "flip_minutes": 0,
       "notes": [
         "The Four On Top pattern (straight 2x3 grid + the five-round quincunx) with the whole ensemble columns spread apart - a wide center promenade.",
@@ -922,7 +922,7 @@
         "players": 24,
         "dine": 0,
         "drink": 0,
-        "flex": 54,
+        "flex": 52,
         "spectators": 0
       },
       "cue": {
@@ -971,16 +971,16 @@
       },
       "service": {
         "cocktail": {
-          "seats": 15,
+          "seats": 14,
           "max_run_ft": 72.3,
-          "avg_run_ft": 42.0,
-          "conflicted_seats": 15
+          "avg_run_ft": 43.6,
+          "conflicted_seats": 14
         },
         "food": {
-          "seats": 15,
+          "seats": 14,
           "max_run_ft": 52.0,
-          "avg_run_ft": 28.6,
-          "conflicted_seats": 15
+          "avg_run_ft": 29.8,
+          "conflicted_seats": 14
         }
       },
       "egress": {
@@ -989,10 +989,10 @@
         "worst_travel_ft": 60.1
       },
       "paths": {
-        "min_width_in": 38.5,
+        "min_width_in": 41.0,
         "anomalies": []
       },
-      "revenue_proxy_hr": 681,
+      "revenue_proxy_hr": 658,
       "flip_minutes": 0,
       "notes": [
         "The Wide Aisle pattern with the rows balanced on the partition beam: the bottom pair sits 60\" off the beam line, matching the middle pair on the other side.",

@@ -3,14 +3,14 @@
 | Config | Tables | Players | Drink | Dine | Flex | Cue full% | Min clr" | Cocktail max run | Food max run | Svc conflicts | Egress worst | Path min" | $/hr proxy | Flip min |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | A · Four On Top — Turned Left | 6 | 24 | 0 | 0 | 14 | 62% | 37.2 | 72.8 ft | 46.4 ft | 9 | 61.8 ft | 44.0 | $221 | 15 |
-| B · Four On Top — Slid Left | 6 | 24 | 0 | 0 | 62 | 79% | 44.5 | 68.6 ft | 52.0 ft | 12 | 59.8 ft | 38.5 | $773 | 0 |
-| C · Four On Top — Slid Left, Turned Corner | 6 | 24 | 0 | 0 | 62 | 75% | 44.5 | 68.6 ft | 52.0 ft | 14 | 59.8 ft | 41.2 | $773 | 0 |
+| B · Four On Top — Slid Left | 6 | 24 | 0 | 0 | 56 | 79% | 44.5 | 68.6 ft | 52.0 ft | 10 | 59.8 ft | 33.2 | $704 | 0 |
+| C · Four On Top — Slid Left, Turned Corner | 6 | 24 | 0 | 0 | 56 | 79% | 44.5 | 68.6 ft | 52.0 ft | 12 | 59.8 ft | 33.2 | $704 | 0 |
 | D · West Line + Wall Rounds | 6 | 24 | 0 | 0 | 48 | 50% | 49.0 | 59.0 ft | 36.7 ft | 0 | 52.6 ft | 25.0 | $612 | 25 |
 | E · West Line — Shifted Down | 6 | 24 | 0 | 0 | 48 | 42% | 41.0 | 58.6 ft | 34.9 ft | 0 | 55.7 ft | 25.1 | $612 | 25 |
-| F · Four On Top | 6 | 24 | 0 | 0 | 62 | 67% | 56.5 | 67.6 ft | 52.0 ft | 12 | 58.8 ft | 38.5 | $773 | 0 |
+| F · Four On Top | 6 | 24 | 0 | 0 | 56 | 67% | 56.5 | 67.6 ft | 52.0 ft | 10 | 58.8 ft | 33.2 | $704 | 0 |
 | G · Four On Top — Turned | 6 | 24 | 0 | 0 | 14 | 62% | 46.8 | 72.0 ft | 46.6 ft | 9 | 61.0 ft | 44.0 | $221 | 15 |
-| H · Four On Top — Wide Aisle | 6 | 24 | 0 | 0 | 62 | 67% | 46.5 | 68.4 ft | 52.0 ft | 32 | 57.9 ft | 38.5 | $773 | 0 |
-| I · Four On Top — Wide, Beam-Balanced | 6 | 24 | 0 | 0 | 54 | 67% | 31.8 | 72.3 ft | 52.0 ft | 30 | 60.1 ft | 38.5 | $681 | 0 |
+| H · Four On Top — Wide Aisle | 6 | 24 | 0 | 0 | 56 | 67% | 46.5 | 68.4 ft | 52.0 ft | 26 | 57.9 ft | 33.2 | $704 | 0 |
+| I · Four On Top — Wide, Beam-Balanced | 6 | 24 | 0 | 0 | 52 | 67% | 31.8 | 72.3 ft | 52.0 ft | 28 | 60.1 ft | 41.0 | $658 | 0 |
 | J · Center Line | 6 | 24 | 24 | 0 | 0 | 58% | 54.8 | 70.0 ft | 0.0 ft | 12 | 56.6 ft | 47.5 | $276 | 0 |
 | K · Four On Top — Turned Right | 6 | 24 | 0 | 0 | 14 | 62% | 37.2 | 93.7 ft | 66.8 ft | 9 | 59.5 ft | 40.0 | $221 | 15 |
 | L · East Line + West Lounge | 6 | 24 | 0 | 0 | 48 | 58% | 54.8 | 68.2 ft | 46.8 ft | 12 | 54.9 ft | 41.2 | $612 | 20 |
@@ -38,23 +38,23 @@
 
 - **A · Four On Top — Turned Left** — narrowest walk 44.0":
     - blocked: 0.0" (south-center: walk crosses a wall two-top)
-- **B · Four On Top — Slid Left** — narrowest walk 38.5":
-    - blocked: 0.0" (center-east: walk crosses a wall two-top)
-- **C · Four On Top — Slid Left, Turned Corner** — narrowest walk 41.2":
+- **B · Four On Top — Slid Left** — narrowest walk 33.2":
+    - pinch: 33.2" (center-east: between a wall two-top and the HVAC chase)
+- **C · Four On Top — Slid Left, Turned Corner** — narrowest walk 33.2":
     - blocked: 0.0" (south-center: walk crosses a wall two-top)
     - blocked: 0.0" (south-east: walk crosses a wall two-top)
-    - blocked: 0.0" (center-east: walk crosses a wall two-top)
+    - pinch: 33.2" (center-east: between a wall two-top and the HVAC chase)
 - **D · West Line + Wall Rounds** — narrowest walk 25.0":
     - pinch: 25.0" (center-east: between a round's chairs and a round's chairs)
 - **E · West Line — Shifted Down** — narrowest walk 25.1":
     - pinch: 25.1" (center-east: between a round's chairs and a round's chairs)
-- **F · Four On Top** — narrowest walk 38.5":
-    - blocked: 0.0" (center-east: walk crosses a wall two-top)
+- **F · Four On Top** — narrowest walk 33.2":
+    - pinch: 33.2" (center-east: between a wall two-top and the HVAC chase)
 - **G · Four On Top — Turned** — narrowest walk 44.0":
     - blocked: 0.0" (south-center: walk crosses a wall two-top)
-- **H · Four On Top — Wide Aisle** — narrowest walk 38.5":
-    - blocked: 0.0" (center-east: walk crosses a wall two-top)
-- **I · Four On Top — Wide, Beam-Balanced** — none; narrowest walk 38.5"
+- **H · Four On Top — Wide Aisle** — narrowest walk 33.2":
+    - pinch: 33.2" (center-east: between a wall two-top and the HVAC chase)
+- **I · Four On Top — Wide, Beam-Balanced** — none; narrowest walk 41.0"
 - **J · Center Line** — none; narrowest walk 47.5"
 - **K · Four On Top — Turned Right** — narrowest walk 40.0":
     - blocked: 0.0" (south-center: walk crosses a wall two-top)
