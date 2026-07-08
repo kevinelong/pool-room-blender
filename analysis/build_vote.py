@@ -54,11 +54,13 @@ def families():
 
 
 def opts(cfgs, blank):
+    # value = immutable config key (letters get reassigned as variants are
+    # added; the key never does), so a vote can always be resolved later
     out = [f'<option value="">{blank}</option>']
     for c in cfgs:
         name = c["name"].split("·", 1)[-1].strip()
-        val = f'{c["letter"]} · {c["short"]}'
-        out.append(f'<option value="{val}">{val} — {name}</option>')
+        label = f'{c["letter"]} · {c["short"]} — {name}'
+        out.append(f'<option value="{c["key"]}">{label}</option>')
     return "".join(out)
 
 
@@ -155,6 +157,8 @@ TPL = r"""<!doctype html>
 "use strict";
 const ENDPOINT = __ENDPOINT__;
 const EMAIL = __EMAIL__;
+const LABEL = __LABELS__;          // key -> "F · center 2×3 — name"
+const BALLOT_VER = __BALLOTVER__;  // lettering era at build time
 const g = id => document.getElementById(id);
 g("ballot").addEventListener("submit", ev => {
   ev.preventDefault();
@@ -181,7 +185,8 @@ g("ballot").addEventListener("submit", ev => {
   } else { mailto(ballot, done); }
 });
 function mailto(b, done){
-  const rank = a => a.length ? a.map((v,i)=>`  ${i+1}. ${v}`).join("\n")
+  const lab = k => LABEL[k] || k;
+  const rank = a => a.length ? a.map((k,i)=>`  ${i+1}. ${lab(k)}`).join("\n")
                              : "  (none)";
   const body = [
     "POOL ROOM BALLOT",
@@ -195,11 +200,19 @@ function mailto(b, done){
     rank(b.threeThree),
     "",
     "Comment: " + (b.comment || "(none)"),
+    "",
+    // machine-readable tally line (stable keys, > = preference order) —
+    // grep 'TALLY:' across the inbox to aggregate without hand-parsing
+    "TALLY: 4+2=" + (b.fourTwo.join(">") || "-")
+      + " ; 3+3=" + (b.threeThree.join(">") || "-"),
+    "Stakeholder-code: " + b.stakeholder,
+    "Ballot: " + BALLOT_VER,
     "Time: " + b.ts,
   ].join("\n");
+  const first = b.fourTwo[0] || b.threeThree[0];
   location.href = "mailto:" + EMAIL
     + "?subject=" + encodeURIComponent(
-        "Pool Room vote: " + (b.fourTwo[0] || b.threeThree[0] || "ballot"))
+        "Pool Room vote: " + (first ? lab(first) : "ballot"))
     + "&body=" + encodeURIComponent(body);
   done();
 }
@@ -212,12 +225,18 @@ function mailto(b, done){
 def main():
     four_two, three_three = families()
     stak = "".join(f"<option>{s}</option>" for s in STAKEHOLDERS)
+    labels = {c["key"]: f'{c["letter"]} · {c["short"]} — '
+              f'{c["name"].split(chr(183), 1)[-1].strip()}' for c in CONFIGS}
+    letters = "".join(c["letter"] for c in CONFIGS)
+    ballot_ver = f'{len(CONFIGS)} layouts, {letters[0]}-{letters[-1]}'
     html = (TPL.replace("__STAKEHOLDERS__", stak)
                .replace("__FT__", opts(four_two, "— pick a 4+2 layout —"))
                .replace("__TT__", opts(three_three, "— pick a 3+3 layout —"))
                .replace("__HUB_URL__", HUB_URL)
                .replace("__ENDPOINT__", json.dumps(ENDPOINT))
-               .replace("__EMAIL__", json.dumps(VOTE_EMAIL)))
+               .replace("__EMAIL__", json.dumps(VOTE_EMAIL))
+               .replace("__LABELS__", json.dumps(labels))
+               .replace("__BALLOTVER__", json.dumps(ballot_ver)))
     out = os.path.join(ROOT, "vote.html")
     with open(out, "w") as fh:
         fh.write(html)
