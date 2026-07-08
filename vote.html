@@ -11,7 +11,7 @@
   body { margin:0; background:var(--paper); color:var(--ink);
          font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
          display:flex; justify-content:center; padding:28px 14px 48px; }
-  .frame { max-width:560px; width:100%; border:3px solid var(--ink);
+  .frame { max-width:600px; width:100%; border:3px solid var(--ink);
            outline:1px solid var(--ink); outline-offset:5px;
            padding:clamp(20px,5vw,40px); display:flex;
            flex-direction:column; gap:22px; }
@@ -22,15 +22,21 @@
          text-transform:uppercase; margin:0; border-top:2px solid var(--ink);
          padding-top:10px; }
   .tag a { color:var(--muted); }
+  fieldset { border:2px solid var(--ink); padding:14px 16px 16px;
+             display:flex; flex-direction:column; gap:12px; margin:0; }
+  legend { font-weight:900; font-size:15px; padding:0 8px; }
+  .lede { font-size:13px; color:var(--muted); line-height:1.5; margin:0; }
   label { display:flex; flex-direction:column; gap:6px; font-weight:700;
           font-size:14px; }
   label .hint { font-weight:400; color:var(--muted); font-size:12px; }
   input, select, textarea, button {
     font:inherit; font-size:15px; padding:10px 12px; background:var(--paper);
     color:var(--ink); border:2px solid var(--ink); border-radius:0; }
-  textarea { min-height:70px; resize:vertical; }
+  textarea { min-height:60px; resize:vertical; }
   button { font-weight:900; font-size:17px; cursor:pointer; padding:14px; }
   button:hover { background:var(--ink); color:var(--paper); }
+  .err { color:#b22222; font-size:13px; font-weight:700; min-height:1em;
+         margin:0; }
   #note { font-size:13px; color:var(--muted); line-height:1.5; margin:0; }
   #done { display:none; text-align:center; font-weight:700;
           color:var(--acc); }
@@ -39,70 +45,97 @@
 <body>
 <div class="frame">
   <h1>CAST YOUR VOTE</h1>
-  <p class="tag">one ballot per person · <a href="https://kevinelong.github.io/pool-room-blender/">back to the
+  <p class="tag">ranked · two families · <a href="https://kevinelong.github.io/pool-room-blender/">back to the
     hub</a></p>
-  <form id="ballot">
-    <div style="display:flex;flex-direction:column;gap:18px">
-      <label>Your name
-        <input id="name" required maxlength="60" placeholder="who's voting">
-      </label>
-      <label>What makes you most unique? <span class="hint">(pick the
-        first that matches)</span>
-        <select id="stakeholder" required><option>VI Staff</option><option>Tournament Director</option><option>Pool Player</option><option>Spectator</option><option>Other</option></select>
-      </label>
-      <label>Your layout vote
-        <select id="layout" required><option value="A · left 4+2">A · left 4+2 — Four On Top — Turned Left</option><option value="B · left 2×3">B · left 2×3 — Four On Top — Slid Left</option><option value="C · left 2×3 turn">C · left 2×3 turn — Four On Top — Slid Left, Turned Corner</option><option value="D · west 1×6">D · west 1×6 — West Line + Wall Rounds</option><option value="E · west 1×6 low">E · west 1×6 low — West Line — Shifted Down</option><option value="F · center 2×3">F · center 2×3 — Four On Top</option><option value="G · center 4+2">G · center 4+2 — Four On Top — Turned</option><option value="H · center 2×3 wide">H · center 2×3 wide — Four On Top — Wide Aisle</option><option value="I · center 2×3 bal">I · center 2×3 bal — Four On Top — Wide, Beam-Balanced</option><option value="J · center 1×6">J · center 1×6 — Center Line</option><option value="K · right 4+2">K · right 4+2 — Four On Top — Turned Right</option><option value="L · east 1×6">L · east 1×6 — East Line + West Lounge</option><option value="M · east 1×6 low">M · east 1×6 low — East Line — Shifted Down</option></select>
-      </label>
-      <label>Anything else? <span class="hint">(optional)</span>
-        <textarea id="comment" maxlength="500"
-          placeholder="what swung it for you"></textarea>
-      </label>
-      <button type="submit">Submit ballot</button>
-      <p id="done">Ballot sent — thank you!</p>
-      <p id="note">Submitting opens your email app with the ballot
-        addressed to the organizer — just press send. (No account or
-        login needed.)</p>
-    </div>
+  <form id="ballot" style="display:flex;flex-direction:column;gap:20px">
+    <label>Your name
+      <input id="name" required maxlength="60" placeholder="who's voting">
+    </label>
+    <label>What makes you most unique? <span class="hint">(pick the first
+      that matches)</span>
+      <select id="stakeholder" required><option>VI Staff</option><option>Tournament Director</option><option>Pool Player</option><option>Spectator</option><option>Other</option></select>
+    </label>
+
+    <fieldset>
+      <legend>4 in one room, 2 in the other</legend>
+      <p class="lede">The Four On Top family — a four-table cluster in one
+        room, a pair in the other. Rank your top two.</p>
+      <label>1st choice
+        <select id="ft1" required><option value="">— pick a 4+2 layout —</option><option value="A · left 4+2">A · left 4+2 — Four On Top — Turned Left</option><option value="B · left 2×3">B · left 2×3 — Four On Top — Slid Left</option><option value="C · left 2×3 turn">C · left 2×3 turn — Four On Top — Slid Left, Turned Corner</option><option value="F · center 2×3">F · center 2×3 — Four On Top</option><option value="G · center 4+2">G · center 4+2 — Four On Top — Turned</option><option value="H · center 2×3 wide">H · center 2×3 wide — Four On Top — Wide Aisle</option><option value="I · center 2×3 bal">I · center 2×3 bal — Four On Top — Wide, Beam-Balanced</option><option value="K · right 4+2">K · right 4+2 — Four On Top — Turned Right</option></select></label>
+      <label>2nd choice <span class="hint">(optional)</span>
+        <select id="ft2"><option value="">— pick a 4+2 layout —</option><option value="A · left 4+2">A · left 4+2 — Four On Top — Turned Left</option><option value="B · left 2×3">B · left 2×3 — Four On Top — Slid Left</option><option value="C · left 2×3 turn">C · left 2×3 turn — Four On Top — Slid Left, Turned Corner</option><option value="F · center 2×3">F · center 2×3 — Four On Top</option><option value="G · center 4+2">G · center 4+2 — Four On Top — Turned</option><option value="H · center 2×3 wide">H · center 2×3 wide — Four On Top — Wide Aisle</option><option value="I · center 2×3 bal">I · center 2×3 bal — Four On Top — Wide, Beam-Balanced</option><option value="K · right 4+2">K · right 4+2 — Four On Top — Turned Right</option></select></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>3 in each room</legend>
+      <p class="lede">The single-file lines — three tables in each room.
+        Management may not go for these, so rank your top two here too.</p>
+      <label>1st choice
+        <select id="tt1" required><option value="">— pick a 3+3 layout —</option><option value="D · west 1×6">D · west 1×6 — West Line + Wall Rounds</option><option value="E · west 1×6 low">E · west 1×6 low — West Line — Shifted Down</option><option value="J · center 1×6">J · center 1×6 — Center Line</option><option value="L · east 1×6">L · east 1×6 — East Line + West Lounge</option><option value="M · east 1×6 low">M · east 1×6 low — East Line — Shifted Down</option></select></label>
+      <label>2nd choice <span class="hint">(optional)</span>
+        <select id="tt2"><option value="">— pick a 3+3 layout —</option><option value="D · west 1×6">D · west 1×6 — West Line + Wall Rounds</option><option value="E · west 1×6 low">E · west 1×6 low — West Line — Shifted Down</option><option value="J · center 1×6">J · center 1×6 — Center Line</option><option value="L · east 1×6">L · east 1×6 — East Line + West Lounge</option><option value="M · east 1×6 low">M · east 1×6 low — East Line — Shifted Down</option></select></label>
+    </fieldset>
+
+    <label>Anything else? <span class="hint">(optional)</span>
+      <textarea id="comment" maxlength="500"
+        placeholder="what swung it for you"></textarea>
+    </label>
+    <p class="err" id="err"></p>
+    <button type="submit">Submit ballot</button>
+    <p id="done">Ballot sent — thank you!</p>
+    <p id="note">Submitting opens your email app with the ballot addressed
+      to the organizer — just press send. (No account or login needed.)</p>
   </form>
 </div>
 <script>
 "use strict";
 const ENDPOINT = "";
 const EMAIL = "kevinelong@gmail.com";
-document.getElementById("ballot").addEventListener("submit", ev => {
+const g = id => document.getElementById(id);
+g("ballot").addEventListener("submit", ev => {
   ev.preventDefault();
+  g("err").textContent = "";
+  if (g("ft1").value && g("ft2").value && g("ft1").value === g("ft2").value){
+    g("err").textContent = "Your two 4+2 choices must differ."; return; }
+  if (g("tt1").value && g("tt2").value && g("tt1").value === g("tt2").value){
+    g("err").textContent = "Your two 3+3 choices must differ."; return; }
   const ballot = {
-    name: document.getElementById("name").value.trim(),
-    stakeholder: document.getElementById("stakeholder").value,
-    layout: document.getElementById("layout").value,
-    comment: document.getElementById("comment").value.trim(),
+    name: g("name").value.trim(),
+    stakeholder: g("stakeholder").value,
+    fourTwo: [g("ft1").value, g("ft2").value].filter(Boolean),
+    threeThree: [g("tt1").value, g("tt2").value].filter(Boolean),
+    comment: g("comment").value.trim(),
     ts: new Date().toISOString(),
   };
-  const finish = () => {
-    document.getElementById("done").style.display = "block";
-  };
-  if (ENDPOINT) {
-    fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(ballot),
-    }).then(r => { if (!r.ok) throw 0; finish(); })
-      .catch(() => mailtoFallback(ballot, finish));
-  } else {
-    mailtoFallback(ballot, finish);
-  }
+  const done = () => { g("done").style.display = "block"; };
+  if (ENDPOINT){
+    fetch(ENDPOINT, { method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(ballot) })
+      .then(r => { if (!r.ok) throw 0; done(); })
+      .catch(() => mailto(ballot, done));
+  } else { mailto(ballot, done); }
 });
-function mailtoFallback(b, done){
+function mailto(b, done){
+  const rank = a => a.length ? a.map((v,i)=>`  ${i+1}. ${v}`).join("\n")
+                             : "  (none)";
   const body = [
     "POOL ROOM BALLOT",
     "Name: " + b.name,
     "Stakeholder: " + b.stakeholder,
-    "Vote: " + b.layout,
+    "",
+    "4 in one room, 2 in the other — ranked:",
+    rank(b.fourTwo),
+    "",
+    "3 in each room — ranked:",
+    rank(b.threeThree),
+    "",
     "Comment: " + (b.comment || "(none)"),
     "Time: " + b.ts,
   ].join("\n");
   location.href = "mailto:" + EMAIL
-    + "?subject=" + encodeURIComponent("Pool Room vote: " + b.layout)
+    + "?subject=" + encodeURIComponent(
+        "Pool Room vote: " + (b.fourTwo[0] || b.threeThree[0] || "ballot"))
     + "&body=" + encodeURIComponent(body);
   done();
 }
