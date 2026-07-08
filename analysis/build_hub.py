@@ -27,7 +27,7 @@ from build_poster import draw_plan_grid  # noqa: E402
 
 LINKS = [
     ("Walk it", "walkthrough",
-     "A first-person tour of all thirteen layouts. It auto-walks each room "
+     "A first-person tour of all fourteen layouts. It auto-walks each room "
      "in from the Main Entrance — or click in and take the controls.",
      WALKTHROUGH_URL),
     ("Get the PDF", "download page",
@@ -36,10 +36,10 @@ LINKS = [
      DOWNLOAD_URL),
     ("Weigh the options", "decision deck",
      "Set the weights to what the house values — play, hospitality, "
-     "service, events — and watch the thirteen layouts re-rank live.",
+     "service, events — and watch the fourteen layouts re-rank live.",
      DECK_URL),
     ("Design your own", "layout editor",
-     "Start from any of the thirteen, then drag, rotate, add and remove "
+     "Start from any of the fourteen, then drag, rotate, add and remove "
      "pieces — snapped to the same 6-inch grid the study uses. Save "
      "and share your variations.",
      DESIGNER_URL),
@@ -95,7 +95,7 @@ def main():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Pool Room — Thirteen Ways to Rack the Room</title>
+<title>The Pool Room — Fourteen Ways to Rack the Room</title>
 </head>
 <body>
 <style>
@@ -168,13 +168,13 @@ def main():
 <div class="frame">
   <header>
     <h1>THE POOL ROOM</h1>
-    <p class="sub">THIRTEEN WAYS TO RACK THE ROOM</p>
+    <p class="sub">FOURTEEN WAYS TO RACK THE ROOM</p>
     <p class="tag">Six tables · one room · see every option, then decide</p>
   </header>
   <figure class="hero">
-    <img src="{hero}" alt="Line drawing floor plans of all thirteen layouts,
-      lettered A through M">
-    <figcaption>All thirteen layouts, A to M — walk any of them below</figcaption>
+    <img src="{hero}" alt="Line drawing floor plans of all fourteen layouts,
+      lettered A through N">
+    <figcaption>All fourteen layouts, A to N — walk any of them below</figcaption>
   </figure>
   <nav class="cards">{cards}
   </nav>

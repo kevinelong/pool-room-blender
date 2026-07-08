@@ -42,9 +42,10 @@ SHORT = {
     "gridwide":     ("H", "center 2×3 wide"),
     "gridbal":      ("I", "center 2×3 bal"),
     "centerline":   ("J", "center 1×6"),
-    "turnright":    ("K", "right 4+2"),
-    "eastline":     ("L", "east 1×6"),
-    "eastshift":    ("M", "east 1×6 low"),
+    "centershift":  ("K", "center 1×6 low"),
+    "turnright":    ("L", "right 4+2"),
+    "eastline":     ("M", "east 1×6"),
+    "eastshift":    ("N", "east 1×6 low"),
 }
 
 

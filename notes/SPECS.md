@@ -159,3 +159,13 @@ Applied in:
     on its pool-table row (row-1 tops at row center 279.75 both walls;
     east row-2 top at 438.25). Applies to the 2x3 family (B, C, F, H, I).
     Flex-seat counts drop accordingly (F/B/C/H 62->56, I 54->52).
+
+25. **v60/v61: split ranked-choice ballot + six 3+3 layouts.** The
+    partition beam divides the hall into two rooms, so every layout is
+    "4 in one room, 2 in the other" (Four On Top family) or "3 in each
+    room" (single-file lines). vote.html now collects a RANKED top-two
+    in EACH family (hedge: mgmt may veto 3-in-each). "Add only" balance
+    (user): added K "Center Line — Shifted Down" (the centerline slid
+    33.5" toward the north wall, mirroring the west/east low variants) so
+    the 3+3 family is six — west×2 (D,E), center×2 (J,K), east×2 (M,N).
+    The 4+2 family stays at eight. Fourteen layouts total, A–N.

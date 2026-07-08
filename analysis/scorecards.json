@@ -1124,8 +1124,112 @@
       }
     },
     {
+      "key": "centershift",
+      "name": "K \u00b7 Center Line \u2014 Shifted Down",
+      "tagline": "The center line slid down-wall; the entry end opens up",
+      "capacity": {
+        "tables": 6,
+        "players": 24,
+        "dine": 0,
+        "drink": 24,
+        "flex": 0,
+        "spectators": 0
+      },
+      "cue": {
+        "full_pct": 54,
+        "tight_pct": 42,
+        "blocked_pct": 4,
+        "min_clearance_in": 44.8,
+        "per_table": {
+          "Line0": {
+            "W": 74.0,
+            "E": 74.0,
+            "S": 54.8,
+            "N": 44.8
+          },
+          "Line1": {
+            "W": 74.0,
+            "E": 74.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line2": {
+            "W": 74.0,
+            "E": 74.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line3": {
+            "W": 74.0,
+            "E": 74.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line4": {
+            "W": 74.0,
+            "E": 74.0,
+            "S": 54.8,
+            "N": 54.8
+          },
+          "Line5": {
+            "W": 74.0,
+            "E": 74.0,
+            "S": 93.2,
+            "N": 54.8
+          }
+        }
+      },
+      "service": {
+        "cocktail": {
+          "seats": 12,
+          "max_run_ft": 72.8,
+          "avg_run_ft": 45.2,
+          "conflicted_seats": 12
+        },
+        "food": {
+          "seats": 0,
+          "max_run_ft": 0.0,
+          "avg_run_ft": 0.0,
+          "conflicted_seats": 0
+        }
+      },
+      "egress": {
+        "exit_corridor_in": 170.0,
+        "exit_corridor_ok": true,
+        "worst_travel_ft": 59.4
+      },
+      "paths": {
+        "min_width_in": 47.5,
+        "anomalies": []
+      },
+      "revenue_proxy_hr": 276,
+      "flip_minutes": 0,
+      "notes": [
+        "The Center Line slid down-wall (v56 low): the whole file slides about 33 inches toward the north wall, freeing the entry end so the south approach opens up.",
+        "Six tables end-to-end down the middle; wall drink rails flank both sides, staff work the two side aisles.",
+        "FLAG: the rotated ends run tight side-to-side \u2014 the side aisles are the practical maximum, not the cue standard.",
+        "Cue room around the tables: most sides get about 74\"; the shortest clearance is 44.8\"."
+      ],
+      "pros": [
+        "The Center Line slid down-wall (v56 low): the whole file slides about 33 inches toward the north wall, freeing the entry end so the south approach opens up.",
+        "Six tables end-to-end down the middle; wall drink rails flank both sides, staff work the two side aisles."
+      ],
+      "cons": [
+        "The rotated ends run tight side-to-side \u2014 the side aisles are the practical maximum, not the cue standard."
+      ],
+      "measured": "Cue room around the tables: most sides get about 74\"; the shortest clearance is 44.8\".",
+      "impact": {
+        "play": "-",
+        "hosp": "-",
+        "svc": "-",
+        "walk": "+",
+        "entry": "+",
+        "flip": "+"
+      }
+    },
+    {
       "key": "turnright",
-      "name": "K \u00b7 Four On Top \u2014 Turned Right",
+      "name": "L \u00b7 Four On Top \u2014 Turned Right",
       "tagline": "The turned pattern slid right: play opens from the west",
       "capacity": {
         "tables": 6,
@@ -1235,7 +1339,7 @@
     },
     {
       "key": "eastline",
-      "name": "L \u00b7 East Line + West Lounge",
+      "name": "M \u00b7 East Line + West Lounge",
       "tagline": "Tables single-file on the east; full-length hospitality strip west",
       "capacity": {
         "tables": 6,
@@ -1341,7 +1445,7 @@
     },
     {
       "key": "eastshift",
-      "name": "M \u00b7 East Line \u2014 Shifted Down",
+      "name": "N \u00b7 East Line \u2014 Shifted Down",
       "tagline": "The east line slid down-wall: the top table rejoins the line",
       "capacity": {
         "tables": 6,

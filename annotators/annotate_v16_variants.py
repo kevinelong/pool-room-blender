@@ -32,11 +32,13 @@ META = {
                 "rows balanced on the beam · four rounds in a staggered row below"),
     "centerline": ("J · Center Line",
                    "six tables turned 90°, end-to-end down the middle · wall two-tops both sides"),
-    "turnright": ("K · Four On Top — Turned Right",
+    "centershift": ("K · Center Line — Shifted Down",
+                    "the center line slid down-wall · the entry end opens up"),
+    "turnright": ("L · Four On Top — Turned Right",
                   "the turned pattern slid right · play and service open from the west"),
-    "eastline": ("L · East Line + West Lounge",
+    "eastline": ("M · East Line + West Lounge",
                  "six tables single-file east · six aligned rounds down the west"),
-    "eastshift": ("M · East Line — Shifted Down",
+    "eastshift": ("N · East Line — Shifted Down",
                   "the east line slid down-wall · top table rejoins the line · all rounds clear"),
 }
 

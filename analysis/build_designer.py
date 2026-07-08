@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Build design.html — the "design your own layout" page.
 
-Start from any of the thirteen study layouts, then drag pieces around the
+Start from any of the fourteen study layouts, then drag pieces around the
 room, rotate them, add and remove them. Positions snap to 6-inch
 increments and rotations to 45 degrees (snap on by default, toggleable).
 Designs are named and saved in the browser (localStorage) and can be
 exported/imported as small JSON files for sharing.
 
-The thirteen templates are generated straight from configs/v16_configs.py,
+The fourteen templates are generated straight from configs/v16_configs.py,
 so they are exactly the study layouts. Room fixtures (doors, entry
 well, beam, HVAC) are fixed scenery. Same paper-and-ink visual language
 as the hub and print poster.

@@ -26,7 +26,7 @@ BLACK, WHITE = 0, 255
 
 LINKS = [
     ("WALK IT",
-     "A first-person tour of all thirteen layouts — auto-walks each room, "
+     "A first-person tour of all fourteen layouts — auto-walks each room, "
      "or take the controls. Downloads live at the top of the page.",
      WALKTHROUGH_URL),
     ("GET THE PDF",
@@ -35,7 +35,7 @@ LINKS = [
      DOWNLOAD_URL),
     ("WEIGH THE OPTIONS",
      "The interactive decision deck — set what the house values and "
-     "watch the thirteen layouts re-rank live.",
+     "watch the fourteen layouts re-rank live.",
      DECK_URL),
 ]
 
@@ -173,7 +173,7 @@ def main():
     # title block
     d.text((W // 2, 230), "THE POOL ROOM", font=font(150), fill=BLACK,
            anchor="ma")
-    d.text((W // 2, 420), "THIRTEEN WAYS TO RACK THE ROOM",
+    d.text((W // 2, 420), "FOURTEEN WAYS TO RACK THE ROOM",
            font=font(64), fill=BLACK, anchor="ma")
     d.line([W // 2 - 700, 540, W // 2 + 700, 540], fill=BLACK, width=6)
     d.text((W // 2, 570),
@@ -181,10 +181,10 @@ def main():
            font=font(40, False), fill=BLACK, anchor="ma")
 
     # hero: all twelve layouts as a lettered line-art grid
-    grid = draw_plan_grid(CONFIGS, cols=4)   # 12 layouts, 3 rows
+    grid = draw_plan_grid(CONFIGS, cols=4, cell_h=430)  # 14 layouts, 4 rows
     poster.paste(grid, ((W - grid.width) // 2, 690))
     d.text((W // 2, 690 + grid.height + 22),
-           "ALL THIRTEEN LAYOUTS, A TO M — SCAN TO WALK EVERY ONE.",
+           "ALL FOURTEEN LAYOUTS, A TO N — SCAN TO WALK EVERY ONE.",
            font=font(38), fill=BLACK, anchor="ma")
 
     # three QR panels
