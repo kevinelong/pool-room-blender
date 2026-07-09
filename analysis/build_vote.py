@@ -25,9 +25,9 @@ from configs.v16_configs import (  # noqa: E402
 from project_urls import HUB_URL  # noqa: E402
 
 VOTE_EMAIL = "kevinelong@gmail.com"
-# Set to a URL (e.g. https://vote.codeonline.io/poolroom) that accepts
-# POST application/json to switch to server storage; mailto stays fallback.
-ENDPOINT = ""
+# Live server endpoint (Node route on codeonline.io) — ballots POST here
+# as JSON; mailto stays the automatic fallback on any failure.
+ENDPOINT = "https://codeonline.io/api/poolroom/vote"
 
 STAKEHOLDERS = ["VI Staff", "Tournament Director", "Pool Player",
                 "Spectator", "Other"]
@@ -149,8 +149,9 @@ TPL = r"""<!doctype html>
     <p class="err" id="err"></p>
     <button type="submit">Submit ballot</button>
     <p id="done">Ballot sent — thank you!</p>
-    <p id="note">Submitting opens your email app with the ballot addressed
-      to the organizer — just press send. (No account or login needed.)</p>
+    <p id="note">Your ballot is recorded the moment you submit — no
+      account or login needed. (If the server is ever unreachable, it
+      falls back to your email app instead.)</p>
   </form>
 </div>
 <script>
@@ -177,10 +178,13 @@ g("ballot").addEventListener("submit", ev => {
   };
   const done = () => { g("done").style.display = "block"; };
   if (ENDPOINT){
+    // single attempt (endpoint is rate-limited — no auto-retry); any
+    // non-2xx, {ok:false}, or network error falls back to mailto
     fetch(ENDPOINT, { method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify(ballot) })
-      .then(r => { if (!r.ok) throw 0; done(); })
+      .then(r => r.ok ? r.json().catch(() => ({ok:true})) : Promise.reject())
+      .then(j => { if (j && j.ok === false) throw 0; done(); })
       .catch(() => mailto(ballot, done));
   } else { mailto(ballot, done); }
 });

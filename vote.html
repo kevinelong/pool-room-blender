@@ -83,13 +83,14 @@
     <p class="err" id="err"></p>
     <button type="submit">Submit ballot</button>
     <p id="done">Ballot sent — thank you!</p>
-    <p id="note">Submitting opens your email app with the ballot addressed
-      to the organizer — just press send. (No account or login needed.)</p>
+    <p id="note">Your ballot is recorded the moment you submit — no
+      account or login needed. (If the server is ever unreachable, it
+      falls back to your email app instead.)</p>
   </form>
 </div>
 <script>
 "use strict";
-const ENDPOINT = "";
+const ENDPOINT = "https://codeonline.io/api/poolroom/vote";
 const EMAIL = "kevinelong@gmail.com";
 const LABEL = {"turnleft": "A \u00b7 left 4+2 \u2014 Four On Top \u2014 Turned Left", "gridleft": "B \u00b7 left 2\u00d73 \u2014 Four On Top \u2014 Slid Left", "gridleftturn": "C \u00b7 left 2\u00d73 turn \u2014 Four On Top \u2014 Slid Left, Turned Corner", "westline": "D \u00b7 west 1\u00d76 \u2014 West Line + Wall Rounds", "westshift": "E \u00b7 west 1\u00d76 low \u2014 West Line \u2014 Shifted Down", "social": "F \u00b7 center 2\u00d73 \u2014 Four On Top", "fourturned": "G \u00b7 center 4+2 \u2014 Four On Top \u2014 Turned", "gridwide": "H \u00b7 center 2\u00d73 wide \u2014 Four On Top \u2014 Wide Aisle", "gridbal": "I \u00b7 center 2\u00d73 bal \u2014 Four On Top \u2014 Wide, Beam-Balanced", "centerline": "J \u00b7 center 1\u00d76 \u2014 Center Line", "centershift": "K \u00b7 center 1\u00d76 low \u2014 Center Line \u2014 Shifted Down", "turnright": "L \u00b7 right 4+2 \u2014 Four On Top \u2014 Turned Right", "eastline": "M \u00b7 east 1\u00d76 \u2014 East Line + West Lounge", "eastshift": "N \u00b7 east 1\u00d76 low \u2014 East Line \u2014 Shifted Down"};          // key -> "F · center 2×3 — name"
 const BALLOT_VER = "14 layouts, A-N";  // lettering era at build time
@@ -111,10 +112,13 @@ g("ballot").addEventListener("submit", ev => {
   };
   const done = () => { g("done").style.display = "block"; };
   if (ENDPOINT){
+    // single attempt (endpoint is rate-limited — no auto-retry); any
+    // non-2xx, {ok:false}, or network error falls back to mailto
     fetch(ENDPOINT, { method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify(ballot) })
-      .then(r => { if (!r.ok) throw 0; done(); })
+      .then(r => r.ok ? r.json().catch(() => ({ok:true})) : Promise.reject())
+      .then(j => { if (j && j.ok === false) throw 0; done(); })
       .catch(() => mailto(ballot, done));
   } else { mailto(ballot, done); }
 });
