@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Pool Room — Vote Results (private)</title>
+<style>
+  :root { --paper:#f7f6f2; --ink:#17171a; --muted:#6a6a70; --rule:#c9c7c0;
+          --acc:#2e7d32; --bar:#2e7d32; --bar2:#9bb39c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink);
+         font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+         display:flex; justify-content:center; padding:26px 14px 60px; }
+  .frame { max-width:720px; width:100%; border:3px solid var(--ink);
+           outline:1px solid var(--ink); outline-offset:5px;
+           padding:clamp(20px,5vw,40px); display:flex;
+           flex-direction:column; gap:24px; }
+  h1 { margin:0; font-size:clamp(24px,5.5vw,36px); font-weight:900;
+       text-align:center; letter-spacing:.02em; }
+  .sub { text-align:center; margin:0; color:var(--muted); font-size:14px; }
+  .priv { font-family:ui-monospace,Menlo,monospace; font-size:11px;
+          letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+          text-align:center; border-top:2px solid var(--ink); padding-top:10px;
+          margin:0; }
+  .explain { background:#efeee9; border-left:4px solid var(--acc);
+             padding:12px 16px; font-size:14px; line-height:1.55; }
+  .explain b { color:var(--ink); }
+  h2 { margin:6px 0 0; font-size:20px; }
+  .fam-note { font-size:13.5px; color:var(--muted); line-height:1.5;
+              margin:0 0 6px; }
+  .headline { background:var(--ink); color:var(--paper); padding:12px 16px;
+              font-size:15px; line-height:1.5; }
+  .headline b { color:#8fe08f; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--rule);
+           vertical-align:middle; }
+  th { font-size:11px; text-transform:uppercase; letter-spacing:.08em;
+       color:var(--muted); }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; width:52px; }
+  .barcell { width:44%; }
+  .bar { height:15px; background:var(--bar); border-radius:2px; min-width:2px; }
+  .lbl { font-weight:700; }
+  .stk td { border-bottom:1px dashed var(--rule); }
+  .foot { font-size:12.5px; color:var(--muted); line-height:1.55; }
+  #status { text-align:center; font-size:15px; color:var(--muted);
+            padding:20px; }
+  .pill { display:inline-block; font-size:11px; font-weight:700;
+          background:var(--acc); color:#fff; padding:2px 8px; border-radius:10px;
+          vertical-align:middle; margin-left:6px; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <h1>The Pool Room — Vote Results</h1>
+  <p class="sub">Live tally of the stakeholder ballot</p>
+  <p class="priv">Private page · not linked anywhere · refresh to update</p>
+
+  <div class="explain">
+    <b>What you're looking at.</b> Everyone was asked to rank layouts in
+    <b>two separate groups</b>, because a ceiling beam splits the hall into
+    two rooms and the six tables can be arranged two ways:
+    <br>• <b>“4 in one room, 2 in the other”</b> — four tables clustered
+    in one half, a pair in the other (the “Four On Top” family).
+    <br>• <b>“3 in each room”</b> — the tables in a single line, three per
+    half (management may prefer this split, so it's ranked separately).
+    <br>Each person gave a <b>1st and (optional) 2nd choice</b> in each
+    group. Below, each group is tallied on its own.
+  </div>
+
+  <div id="status">Loading results…</div>
+  <div id="body" style="display:none; flex-direction:column; gap:24px"></div>
+
+  <p class="foot" id="foot"></p>
+</div>
+<script>
+"use strict";
+const DATA_URL = "https://codeonline.io/api/poolroom/results?k=19e6f6f6bd8af7d9";
+const LABEL = {"turnleft": "A \u00b7 left 4+2 \u2014 Four On Top \u2014 Turned Left", "gridleft": "B \u00b7 left 2\u00d73 \u2014 Four On Top \u2014 Slid Left", "gridleftturn": "C \u00b7 left 2\u00d73 turn \u2014 Four On Top \u2014 Slid Left, Turned Corner", "westline": "D \u00b7 west 1\u00d76 \u2014 West Line + Wall Rounds", "westshift": "E \u00b7 west 1\u00d76 low \u2014 West Line \u2014 Shifted Down", "social": "F \u00b7 center 2\u00d73 \u2014 Four On Top", "fourturned": "G \u00b7 center 4+2 \u2014 Four On Top \u2014 Turned", "gridwide": "H \u00b7 center 2\u00d73 wide \u2014 Four On Top \u2014 Wide Aisle", "gridbal": "I \u00b7 center 2\u00d73 bal \u2014 Four On Top \u2014 Wide, Beam-Balanced", "centerline": "J \u00b7 center 1\u00d76 \u2014 Center Line", "centershift": "K \u00b7 center 1\u00d76 low \u2014 Center Line \u2014 Shifted Down", "turnright": "L \u00b7 right 4+2 \u2014 Four On Top \u2014 Turned Right", "eastline": "M \u00b7 east 1\u00d76 \u2014 East Line + West Lounge", "eastshift": "N \u00b7 east 1\u00d76 low \u2014 East Line \u2014 Shifted Down"};      // key -> "L · short — full name"
+const FAM   = {"turnleft": "fourTwo", "gridleft": "fourTwo", "gridleftturn": "fourTwo", "westline": "threeThree", "westshift": "threeThree", "social": "fourTwo", "fourturned": "fourTwo", "gridwide": "fourTwo", "gridbal": "fourTwo", "centerline": "threeThree", "centershift": "threeThree", "turnright": "fourTwo", "eastline": "threeThree", "eastshift": "threeThree"};         // key -> "fourTwo" | "threeThree"
+const VER   = "14 layouts, A-N";
+const g = id => document.getElementById(id);
+
+function tally(ballots, key){
+  const first = {}, points = {};
+  let ranked = 0;
+  for (const b of ballots){
+    const picks = (b[key] || []).filter(k => LABEL[k]);
+    if (picks.length) ranked++;
+    picks.slice(0,2).forEach((k,i) => {
+      points[k] = (points[k]||0) + (2 - i);      // 1st = 2, 2nd = 1
+      if (i === 0) first[k] = (first[k]||0) + 1;
+    });
+  }
+  return { first, points, ranked };
+}
+
+function famSection(title, note, t){
+  const rows = Object.keys(t.points)
+    .sort((a,b) => t.points[b]-t.points[a] || (t.first[b]||0)-(t.first[a]||0));
+  const maxPts = Math.max(1, ...Object.values(t.points));
+  const lead = rows[0];
+  let h = `<div><h2>${title}</h2><p class="fam-note">${note}</p>`;
+  if (lead){
+    h += `<div class="headline">Leading here: <b>${LABEL[lead]}</b>`
+       + ` — ${t.points[lead]} points, ${t.first[lead]||0} first-choice`
+       + ` vote${(t.first[lead]||0)===1?"":"s"}.</div>`;
+  }
+  h += `<table><tr><th>Layout</th><th class="barcell">Support</th>`
+     + `<th class="num">1st</th><th class="num">Pts</th></tr>`;
+  for (const k of rows){
+    const w = Math.round((t.points[k]/maxPts)*100);
+    h += `<tr><td class="lbl">${LABEL[k]}</td>`
+       + `<td class="barcell"><div class="bar" style="width:${w}%"></div></td>`
+       + `<td class="num">${t.first[k]||0}</td>`
+       + `<td class="num">${t.points[k]}</td></tr>`;
+  }
+  h += `</table><p class="fam-note" style="margin-top:8px">`
+     + `<b>How to read this:</b> <b>1st</b> = how many people made it their`
+     + ` top pick. <b>Pts</b> = a fuller score that also credits 2nd-place`
+     + ` votes (a 1st = 2 points, a 2nd = 1), so a layout with broad support`
+     + ` can lead even if another got more #1s. The bar shows points. Ranked`
+     + ` on ${t.ranked} ballot${t.ranked===1?"":"s"} in this group.</p></div>`;
+  return h;
+}
+
+function stakeholders(ballots){
+  const c = {};
+  ballots.forEach(b => { const s=b.stakeholder||"—"; c[s]=(c[s]||0)+1; });
+  const rows = Object.keys(c).sort((a,b)=>c[b]-c[a]);
+  let h = `<div><h2>Who voted</h2><p class="fam-note">Each voter picked the`
+        + ` one role that best describes them.</p><table>`;
+  for (const s of rows)
+    h += `<tr class="stk"><td class="lbl">${s}</td><td class="num">${c[s]}</td></tr>`;
+  return h + `</table></div>`;
+}
+
+fetch(DATA_URL, { cache:"no-store" })
+  .then(r => { if(!r.ok) throw 0; return r.json(); })
+  .then(d => {
+    const ballots = (d.ballots || d || []).filter(b => b && (b.fourTwo || b.threeThree));
+    if (!ballots.length){
+      g("status").textContent = "No ballots yet — results will appear here "
+        + "once people start voting.";
+      return;
+    }
+    const ft = tally(ballots, "fourTwo"), tt = tally(ballots, "threeThree");
+    g("body").innerHTML =
+        famSection("Group 1 — “4 in one room, 2 in the other”",
+                   "The Four On Top family.", ft)
+      + famSection("Group 2 — “3 in each room”",
+                   "The single-file line layouts.", tt)
+      + stakeholders(ballots);
+    g("status").style.display = "none";
+    g("body").style.display = "flex";
+    g("foot").innerHTML = `Total ballots counted: <b>${ballots.length}</b>.`
+      + ` These are the two groups' results side by side — a final choice`
+      + ` weighs which group the room actually goes with. Ballot set: ${VER}.`
+      + ` This page pulls live from the ballot box each time it loads;`
+      + ` refresh for the latest.`;
+  })
+  .catch(() => {
+    g("status").innerHTML = "Couldn't reach the results feed yet.<br>"
+      + "<span style='font-size:13px'>(The vote is collecting; the results "
+      + "feed comes online with it.)</span>";
+  });
+</script>
+</body>
+</html>

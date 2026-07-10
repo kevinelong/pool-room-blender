@@ -169,3 +169,15 @@ Applied in:
     33.5" toward the north wall, mirroring the west/east low variants) so
     the 3+3 family is six — west×2 (D,E), center×2 (J,K), east×2 (M,N).
     The 4+2 family stays at eight. Fourteen layouts total, A–N.
+
+26. **v65: live vote endpoint + private results page.** Ballot POSTs to
+    the codeonline.io Node route (ENDPOINT set; mailto fallback); verified
+    end-to-end. analysis/tally_votes.py scores the split ranked choice
+    (first-choice + Borda per family) from server JSONL or a mailto dump.
+    analysis/build_results.py emits a private results page at an
+    unguessable filename (results-<token>.html at the repo root) — NOT
+    linked from the hub or anywhere; URL shared only with the organizer.
+    It fetches a PII-stripped aggregate feed from the VPS
+    (GET /api/poolroom/results?k=<token> returning {ballots:[{stakeholder,
+    fourTwo,threeThree}]}) and renders the tally with novice-friendly
+    context. server/vote_endpoint.php is the PHP-host equivalent.
