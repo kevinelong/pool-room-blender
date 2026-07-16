@@ -26,6 +26,12 @@ from configs.v16_configs import (  # noqa: E402
 )
 from project_urls import HUB_URL  # noqa: E402
 
+# Cloud store (Node route on codeonline.io). Designs POST/GET here keyed by
+# an anonymous per-browser token (X-Client-Token); a token the server has
+# flagged in POOLROOM_ADMIN_TOKENS sees every account's designs. Set to ""
+# to hide the cloud panel entirely (local save always works).
+DESIGNS_API = "https://codeonline.io/api/poolroom/designs"
+
 
 def elements_for(cfg):
     els = []
@@ -145,6 +151,20 @@ TPL = r"""<!doctype html>
       <input type="file" id="importInp" accept=".json,application/json"
              class="hidden">
     </div>
+    <div class="box" id="cloudBox">
+      <h2>My saved designs</h2>
+      <button id="cloudSaveBtn">Save to my account</button>
+      <select id="cloudSel"></select>
+      <div class="row">
+        <button id="cloudLoadBtn" disabled>Load</button>
+        <button id="cloudDelBtn" disabled>Delete</button>
+      </div>
+      <div id="cloudMsg" class="help"></div>
+      <p class="help" id="idLine" style="word-break:break-all">This device's
+        ID: <code id="cid">…</code>
+        <button id="copyIdBtn" style="padding:1px 7px;font-size:11px;flex:0">
+          copy</button></p>
+    </div>
     <div class="box">
       <h2>Status</h2>
       <div id="status"></div>
@@ -162,7 +182,20 @@ window.DATA = DATA;                       // for tests/debugging
 const R = DATA.room;
 const INK = "#17171a", PAPER = "#f7f6f2", MUTED = "#6a6a70", ACC = "#2e7d32";
 const STORE = "poolRoomDesigns.v1", WORK = "poolRoomWork.v1";
+const API = __DESIGNS_API__;              // cloud store; "" hides the panel
+const CLIENT_KEY = "poolRoomClientId.v1"; // anonymous per-browser identity
 const EXT = { table:[26.75,46.25], round:[46,46], top:[11,22] };
+
+let cloudAdmin = false;
+function clientId(){
+  let id = localStorage.getItem(CLIENT_KEY);
+  if (!id){
+    id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+       : "id-" + Date.now().toString(36) + Math.random().toString(36).slice(2);
+    localStorage.setItem(CLIENT_KEY, id);
+  }
+  return id;
+}
 
 const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
 const dpr = window.devicePixelRatio || 1;
@@ -481,6 +514,80 @@ document.getElementById("importInp").onchange = ev => {
   ev.target.value = "";
 };
 
+// ------- cloud store (server, keyed by anonymous token) -------
+function esc(s){ return String(s).replace(/[<>&]/g,
+  c => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;" }[c])); }
+function cloudMsg(t){ document.getElementById("cloudMsg").innerText = t || ""; }
+function apiHeaders(){
+  return { "Content-Type":"application/json", "X-Client-Token": clientId() };
+}
+function cloudBtns(on){
+  document.getElementById("cloudLoadBtn").disabled = !on;
+  document.getElementById("cloudDelBtn").disabled = !on;
+}
+function renderCloud(list){
+  const sel = document.getElementById("cloudSel");
+  document.querySelector("#cloudBox h2").textContent =
+    cloudAdmin ? "All saved designs (admin)" : "My saved designs";
+  if (list === null){
+    sel.innerHTML = "<option value=''>(cloud unavailable — local save still works)</option>";
+    cloudBtns(false); return;
+  }
+  if (!list.length){
+    sel.innerHTML = "<option value=''>(nothing saved to your account yet)</option>";
+    cloudBtns(false); return;
+  }
+  sel.innerHTML = list.map(d => {
+    const who = cloudAdmin && d.owner ? "  ·  " + String(d.owner).slice(0,8) : "";
+    return `<option value="${esc(d.id)}">${esc(d.name || "untitled")}${who}</option>`;
+  }).join("");
+  cloudBtns(true);
+}
+function cloudList(){
+  if (!API) return;
+  fetch(API, { headers: apiHeaders(), cache:"no-store" })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(d => { cloudAdmin = !!d.isAdmin; renderCloud(d.designs || []); })
+    .catch(() => { cloudAdmin = false; renderCloud(null); });
+}
+function cloudSave(){
+  if (!API){ cloudMsg("Cloud saving isn't configured."); return; }
+  const name = (document.getElementById("nameInp").value.trim() || "untitled");
+  cloudMsg("Saving…");
+  fetch(API, { method:"POST", headers: apiHeaders(),
+    body: JSON.stringify({ name, base, els }) })
+    .then(r => r.ok ? r.json().catch(() => ({})) : Promise.reject(r.status))
+    .then(() => { cloudMsg("Saved “" + name + "” to your account."); cloudList(); })
+    .catch(e => cloudMsg("Couldn't save to cloud (" + e + "). It's kept in this browser."));
+}
+function cloudLoad(){
+  const id = document.getElementById("cloudSel").value;
+  if (!id) return;
+  fetch(API + "/" + encodeURIComponent(id), { headers: apiHeaders(), cache:"no-store" })
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(d => {
+      if (!Array.isArray(d.els)) throw 0;
+      base = tplByKey(d.base) ? d.base : base;
+      els = d.els.filter(e => EXT[e.t]).map(e => (
+        { t:e.t, x:+e.x||0, y:+e.y||0, rot:(+e.rot||0)%360 }));
+      els.forEach(clampEl);
+      sel = -1; dirty = true;
+      document.getElementById("nameInp").value = d.name || "";
+      document.getElementById("tplSel").value = base;
+      saveWork(); draw();
+      cloudMsg("Loaded “" + (d.name || "design") + "”.");
+    })
+    .catch(e => cloudMsg("Couldn't load that design (" + e + ")."));
+}
+function cloudDel(){
+  const selEl = document.getElementById("cloudSel");
+  const id = selEl.value, name = (selEl.selectedOptions[0] || {}).text || "";
+  if (!id || !confirm("Delete “" + name + "” from your account?")) return;
+  fetch(API + "/" + encodeURIComponent(id), { method:"DELETE", headers: apiHeaders() })
+    .then(r => r.ok ? cloudList() : Promise.reject(r.status))
+    .catch(e => cloudMsg("Couldn't delete (" + e + ")."));
+}
+
 // ------- wire up -------
 const tplSel = document.getElementById("tplSel");
 tplSel.innerHTML = DATA.layouts.map(l =>
@@ -494,6 +601,18 @@ document.getElementById("addTop").onclick = () => addEl("top");
 document.getElementById("rotBtn").onclick = rotateSel;
 document.getElementById("delBtn").onclick = removeSel;
 document.getElementById("snapChk").onchange = draw;
+document.getElementById("cloudSaveBtn").onclick = cloudSave;
+document.getElementById("cloudLoadBtn").onclick = cloudLoad;
+document.getElementById("cloudDelBtn").onclick = cloudDel;
+document.getElementById("cid").textContent = clientId();
+document.getElementById("copyIdBtn").onclick = () => {
+  const id = clientId();
+  if (navigator.clipboard) navigator.clipboard.writeText(id)
+    .then(() => cloudMsg("Device ID copied.")).catch(() => {});
+  else cloudMsg(id);
+};
+if (!API) document.getElementById("cloudBox").classList.add("hidden");
+else cloudList();
 window.addEventListener("resize", fit);
 window.__state = () => ({ base, els, sel });   // for tests
 
@@ -529,6 +648,7 @@ def main():
                  for c in CONFIGS],
     )
     html = (TPL.replace("__DATA__", json.dumps(data, separators=(",", ":")))
+               .replace("__DESIGNS_API__", json.dumps(DESIGNS_API))
                .replace("__HUB_URL__", HUB_URL))
     out = os.path.join(ROOT, "design.html")
     with open(out, "w") as fh:
