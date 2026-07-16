@@ -20,6 +20,7 @@ ROOT = os.path.abspath(os.path.join(HERE, ".."))
 sys.path.insert(0, ROOT)
 sys.path.insert(0, HERE)
 from configs.v16_configs import CONFIGS, BEAM_Y, table_rect, tbl_rot  # noqa: E402
+from build_vote import STAKEHOLDERS  # noqa: E402  (canonical role list)
 
 TOKEN = "19e6f6f6bd8af7d9"
 DATA_URL = f"https://codeonline.io/api/poolroom/results?k={TOKEN}"
@@ -47,7 +48,8 @@ def main():
     html = TPL.replace("__DATA_URL__", json.dumps(DATA_URL)) \
         .replace("__LABELS__", json.dumps(labels)) \
         .replace("__FAM__", json.dumps(fam)) \
-        .replace("__VER__", json.dumps(ballot_ver))
+        .replace("__VER__", json.dumps(ballot_ver)) \
+        .replace("__ROLES__", json.dumps(list(STAKEHOLDERS)))
     with open(os.path.join(ROOT, OUT), "w") as fh:
         fh.write(html)
     print(f"wrote {OUT} ({os.path.getsize(os.path.join(ROOT, OUT))/1e3:.0f} KB)")
@@ -105,6 +107,17 @@ TPL = r"""<!doctype html>
   .pill { display:inline-block; font-size:11px; font-weight:700;
           background:var(--acc); color:#fff; padding:2px 8px; border-radius:10px;
           vertical-align:middle; margin-left:6px; }
+  .filters { flex-wrap:wrap; align-items:center; gap:9px 14px;
+             border:2px solid var(--ink); padding:11px 14px; font-size:13.5px; }
+  .filters .flabel { font-weight:700; }
+  .rolebox { display:inline-flex; align-items:center; gap:6px; cursor:pointer;
+             user-select:none; }
+  .rolebox input { width:16px; height:16px; accent-color:var(--acc); }
+  .filters button { font:inherit; font-size:12px; padding:3px 10px;
+             cursor:pointer; background:var(--paper); color:var(--ink);
+             border:1.5px solid var(--ink); border-radius:0; }
+  .filters button:hover { background:var(--ink); color:var(--paper); }
+  .rolebox .rc { color:var(--muted); font-weight:400; }
 </style>
 </head>
 <body>
@@ -125,6 +138,12 @@ TPL = r"""<!doctype html>
     group. Below, each group is tallied on its own.
   </div>
 
+  <div id="filters" class="filters" style="display:none"></div>
+  <p class="fam-note" id="filterhint" style="display:none">
+    Every role is on by default, so this starts as the full tally. Untick a
+    role to drop its ballots and see how the ranking shifts for just the
+    roles left on.</p>
+
   <div id="status">Loading results…</div>
   <div id="body" style="display:none; flex-direction:column; gap:24px"></div>
 
@@ -136,6 +155,7 @@ const DATA_URL = __DATA_URL__;
 const LABEL = __LABELS__;      // key -> "L · short — full name"
 const FAM   = __FAM__;         // key -> "fourTwo" | "threeThree"
 const VER   = __VER__;
+const ROLES = __ROLES__;       // canonical stakeholder roles (always shown)
 const g = id => document.getElementById(id);
 
 function tally(ballots, key){
@@ -192,29 +212,77 @@ function stakeholders(ballots){
   return h + `</table></div>`;
 }
 
+let ALL = [];                        // every ballot fetched, unfiltered
+const esc = s => String(s).replace(/[&<>"]/g,
+  c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const roleOf = b => b.stakeholder || "—";
+
+function buildFilters(){
+  const counts = {};
+  ALL.forEach(b => { const r = roleOf(b); counts[r] = (counts[r]||0) + 1; });
+  // every canonical role always shows (even at 0 votes); any unexpected
+  // role value in the data is appended after, so nothing is ever hidden
+  const extra = [...new Set(ALL.map(roleOf))].filter(r => !ROLES.includes(r)).sort();
+  const roles = [...ROLES, ...extra];
+  const box = g("filters");
+  box.innerHTML = '<span class="flabel">Show roles:</span>'
+    + roles.map(r => `<label class="rolebox"><input type="checkbox"`
+        + ` class="rolechk" value="${esc(r)}" checked> ${esc(r)}`
+        + ` <span class="rc">(${counts[r]||0})</span></label>`).join("")
+    + '<button type="button" id="allBtn">All</button>'
+    + '<button type="button" id="noneBtn">None</button>';
+  box.style.display = "flex";
+  g("filterhint").style.display = "block";
+  box.querySelectorAll(".rolechk").forEach(c =>
+    c.addEventListener("change", render));
+  const setAll = v => { box.querySelectorAll(".rolechk")
+    .forEach(c => c.checked = v); render(); };
+  g("allBtn").onclick = () => setAll(true);
+  g("noneBtn").onclick = () => setAll(false);
+}
+
+function render(){
+  const on = new Set([...document.querySelectorAll(".rolechk:checked")]
+    .map(c => c.value));
+  const shown = ALL.filter(b => on.has(roleOf(b)));
+  const body = g("body");
+  if (!shown.length){
+    body.innerHTML = `<p style="text-align:center;color:var(--muted);`
+      + `padding:16px 4px">No ballots for the selected role`
+      + `${on.size === 1 ? "" : "s"}. Tick a role above to see results.</p>`;
+    g("foot").innerHTML = `Showing <b>0</b> of ${ALL.length} ballots`
+      + ` (roles unticked). Ballot set: ${VER}.`;
+    return;
+  }
+  const ft = tally(shown, "fourTwo"), tt = tally(shown, "threeThree");
+  body.innerHTML =
+      famSection("Group 1 — “4 in one room, 2 in the other”",
+                 "The Four On Top family.", ft)
+    + famSection("Group 2 — “3 in each room”",
+                 "The single-file line layouts.", tt)
+    + stakeholders(shown);
+  const filtered = shown.length !== ALL.length;
+  g("foot").innerHTML = `Total ballots counted: <b>${shown.length}</b>`
+    + (filtered ? ` of ${ALL.length} (filtered by role)` : "")
+    + `. These are the two groups' results side by side — a final choice`
+    + ` weighs which group the room actually goes with. Ballot set: ${VER}.`
+    + ` This page pulls live from the ballot box each time it loads;`
+    + ` refresh for the latest.`;
+}
+
 fetch(DATA_URL, { cache:"no-store" })
   .then(r => { if(!r.ok) throw 0; return r.json(); })
   .then(d => {
-    const ballots = (d.ballots || d || []).filter(b => b && (b.fourTwo || b.threeThree));
-    if (!ballots.length){
+    ALL = (d.ballots || d || []).filter(b => b && (b.fourTwo || b.threeThree));
+    if (!ALL.length){
       g("status").textContent = "No ballots yet — results will appear here "
         + "once people start voting.";
       return;
     }
-    const ft = tally(ballots, "fourTwo"), tt = tally(ballots, "threeThree");
-    g("body").innerHTML =
-        famSection("Group 1 — “4 in one room, 2 in the other”",
-                   "The Four On Top family.", ft)
-      + famSection("Group 2 — “3 in each room”",
-                   "The single-file line layouts.", tt)
-      + stakeholders(ballots);
+    buildFilters();
     g("status").style.display = "none";
     g("body").style.display = "flex";
-    g("foot").innerHTML = `Total ballots counted: <b>${ballots.length}</b>.`
-      + ` These are the two groups' results side by side — a final choice`
-      + ` weighs which group the room actually goes with. Ballot set: ${VER}.`
-      + ` This page pulls live from the ballot box each time it loads;`
-      + ` refresh for the latest.`;
+    render();
   })
   .catch(() => {
     g("status").innerHTML = "Couldn't reach the results feed yet.<br>"
